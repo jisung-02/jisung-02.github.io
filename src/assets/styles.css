@@ -322,13 +322,28 @@ img {
 }
 
 .flow-item {
+  --flow-step: 0rem;
+  --flow-line-end: clamp(0rem, 6vw, 2.8rem);
+  position: relative;
   padding: 1.22rem 0 1.34rem;
-  border-bottom: 1px solid var(--core-line);
+  padding-left: var(--flow-step);
   will-change: transform;
 }
 
+.flow-item::after {
+  content: "";
+  position: absolute;
+  left: var(--flow-step);
+  right: var(--flow-line-end);
+  bottom: 0;
+  height: 1px;
+  pointer-events: none;
+  background: var(--core-line);
+}
+
 .flow-item:nth-child(even) {
-  margin-left: clamp(0rem, 6vw, 2.8rem);
+  --flow-step: clamp(0rem, 6vw, 2.8rem);
+  --flow-line-end: 0rem;
 }
 
 .flow-item__meta {
@@ -787,8 +802,12 @@ html.js .reveal.is-visible {
     justify-content: space-between;
   }
 
+  .flow-item {
+    --flow-line-end: clamp(0rem, 4vw, 1.4rem);
+  }
+
   .flow-item:nth-child(even) {
-    margin-left: clamp(0rem, 4vw, 1.4rem);
+    --flow-step: clamp(0rem, 4vw, 1.4rem);
   }
 }
 
@@ -806,7 +825,11 @@ html.js .reveal.is-visible {
   }
 
   .flow-item:nth-child(even) {
-    margin-left: 0;
+    --flow-step: 0;
+  }
+
+  .flow-item {
+    --flow-line-end: 0;
   }
 
   .finder__controls {

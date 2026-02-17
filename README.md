@@ -72,6 +72,7 @@ npm install
 ### 개발/검증
 
 ```bash
+npm run verify
 npm run lint
 npm run typecheck
 npm run test
@@ -227,7 +228,7 @@ npm run build
 ### 전체 점검
 
 ```bash
-npm run lint && npm run typecheck && npm run test && npm run check-content && npm run build && npm run audit
+npm run verify && npm run build && npm run audit
 ```
 
 ---

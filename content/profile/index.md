@@ -3,6 +3,11 @@ title: Profile
 description: 현재 집중 분야와 작업 방식
 date: 2026-02-17
 tags: [profile, workflow]
+home_now_prefix: 지금은
+home_now_phrases:
+  - 프로젝트 런북을 정리하는 중
+  - 주간 리뷰 루프를 다듬는 중
+  - 데모 시나리오를 정리하는 중
 ---
 
 문제를 작게 나누고, 완료 기준을 먼저 쓰고, 짧게 검증하는 개발자입니다.

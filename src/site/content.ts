@@ -66,7 +66,7 @@ export async function loadAllMarkdown(contentRoot: string): Promise<ParsedMarkdo
 function resolveSection(relativePathWithoutExtension: string): ContentSection {
   const [section] = relativePathWithoutExtension.split(path.sep);
 
-  if (section === "about" || section === "posts" || section === "profile" || section === "projects") {
+  if (section === "posts" || section === "profile" || section === "projects") {
     return section;
   }
 

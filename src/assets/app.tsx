@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client";
 interface SearchIndexEntry {
   title: string;
   description: string;
-  section: "about" | "posts" | "profile" | "projects" | "unknown";
+  section: "posts" | "profile" | "projects" | "unknown";
   tags: string[];
   date?: string;
   url: string;
@@ -17,7 +17,6 @@ interface FinderProps {
 
 const SECTION_LABELS: Record<"all" | SearchIndexEntry["section"], string> = {
   all: "all",
-  about: "about",
   posts: "posts",
   profile: "profile",
   projects: "projects",
@@ -218,7 +217,6 @@ function Finder({ indexUrl, siteRoot }: FinderProps): JSX.Element {
           <option value="all">all</option>
           <option value="posts">posts</option>
           <option value="projects">projects</option>
-          <option value="about">about</option>
           <option value="profile">profile</option>
         </select>
       </div>
@@ -324,7 +322,7 @@ function normalizeEntry(candidate: unknown, siteRoot: string): SearchIndexEntry 
 }
 
 function normalizeSection(value: unknown): SearchIndexEntry["section"] {
-  if (value === "about" || value === "posts" || value === "profile" || value === "projects") {
+  if (value === "posts" || value === "profile" || value === "projects") {
     return value;
   }
 

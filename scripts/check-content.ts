@@ -8,7 +8,7 @@ import { parseMarkdownDocument } from "../src/site/frontmatter.js";
 
 const rootDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const contentDirectory = path.join(rootDirectory, "content");
-const requiredSections = ["about", "profile", "posts", "projects"];
+const requiredSections = ["profile", "posts", "projects"];
 
 async function main(): Promise<void> {
   const failures: string[] = [];

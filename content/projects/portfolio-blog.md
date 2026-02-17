@@ -10,7 +10,7 @@ tags: [hugo, markdown, archive]
 
 ## Architecture
 
-- `content/`: about/profile/posts/projects 문서 원본
+- `content/`: profile/posts/projects 문서 원본
 - `layouts/`: Hugo 템플릿
 - `src/assets/`: 인터랙션/스타일
 - `scripts/`: lint, typecheck, content check, build 자동화

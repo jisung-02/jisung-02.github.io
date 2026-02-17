@@ -21,7 +21,7 @@ Markdown으로 콘텐츠를 관리하고 Hugo로 정적 사이트를 생성해 G
 
 ```text
 .
-├─ content/                  # about/profile/posts/projects markdown
+├─ content/                  # profile/posts/projects markdown
 ├─ layouts/                  # Hugo 템플릿
 ├─ src/
 │  ├─ site/                  # markdown 파싱, 검색 인덱스 생성
@@ -36,7 +36,6 @@ Markdown으로 콘텐츠를 관리하고 Hugo로 정적 사이트를 생성해 G
 ## 4. 현재 페이지 구성
 
 - `/` : Home
-- `/about/` : 운영 기준/공개 원칙
 - `/profile/` : 작업 방식/현재 포커스
 - `/posts/` : 게시글 목록 및 상세
 - `/projects/` : 프로젝트 목록 및 상세
@@ -44,7 +43,6 @@ Markdown으로 콘텐츠를 관리하고 Hugo로 정적 사이트를 생성해 G
 
 콘텐츠 소스 매핑:
 
-- `content/about/index.md`
 - `content/profile/index.md`
 - `content/posts/_index.md`, `content/posts/*.md`
 - `content/projects/_index.md`, `content/projects/*.md`

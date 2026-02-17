@@ -1,4 +1,4 @@
-export type ContentSection = "about" | "posts" | "profile" | "projects" | "unknown";
+export type ContentSection = "posts" | "profile" | "projects" | "unknown";
 
 export interface FrontMatter {
   title?: string;

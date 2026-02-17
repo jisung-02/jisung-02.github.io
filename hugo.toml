@@ -40,8 +40,3 @@ relativeURLs = false
   name = "Profile"
   url = "/profile/"
   weight = 40
-
-[[menu.main]]
-  name = "About"
-  url = "/about/"
-  weight = 50

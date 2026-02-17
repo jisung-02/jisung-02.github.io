@@ -1,7 +1,7 @@
 baseURL = "https://chaejisung.github.io/blog/"
 languageCode = "ko-kr"
 defaultContentLanguage = "ko"
-title = "Jisung Notes Archive"
+title = "기록"
 timeZone = "Asia/Seoul"
 enableRobotsTXT = true
 summaryLength = 28
@@ -13,7 +13,13 @@ relativeURLs = false
 
 [params]
   description = "A working archive for project runbooks, weekly review loops, and engineering notes"
+  subtitle = "배워가는 과정을 차근히 남깁니다."
   accent = "#2563eb"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
 
 [[menu.main]]
   name = "Home"
@@ -31,11 +37,11 @@ relativeURLs = false
   weight = 30
 
 [[menu.main]]
-  name = "About"
-  url = "/about/"
+  name = "Profile"
+  url = "/profile/"
   weight = 40
 
 [[menu.main]]
-  name = "Profile"
-  url = "/profile/"
+  name = "About"
+  url = "/about/"
   weight = 50

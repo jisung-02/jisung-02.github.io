@@ -1,11 +1,20 @@
 {{ define "main" }}
-  <article class="article article--flow">
+  {{ $pageSection := .Section }}
+  {{ if and (eq $pageSection "") .File }}
+    {{ $pageSection = replaceRE "/$" "" .File.Dir }}
+  {{ end }}
+  {{ $isProfile := eq $pageSection "profile" }}
+  <article class="article article--flow{{ if $isProfile }} article--profile{{ end }}">
     <header class="page-head reveal">
-      <p class="page-head__eyebrow">{{ .Section | humanize }}</p>
+      <p class="page-head__eyebrow">{{ if $pageSection }}{{ $pageSection | humanize }}{{ else }}Page{{ end }}</p>
       <h1>{{ .Title }}</h1>
-      <p class="page-head__meta">
-        {{ if .Date }}{{ .Date.Format "2006-01-02" }} · {{ end }}{{ .ReadingTime }} min read · {{ .WordCount }} words
-      </p>
+      {{ if $isProfile }}
+        {{ with .Description }}<p class="page-head__meta">{{ . }}</p>{{ end }}
+      {{ else }}
+        <p class="page-head__meta">
+          {{ if .Date }}{{ .Date.Format "2006-01-02" }} · {{ end }}{{ .ReadingTime }} min read · {{ .WordCount }} words
+        </p>
+      {{ end }}
       {{ with .Params.tags }}
         <p class="flow-item__tags">
           {{ range . }}
@@ -15,12 +24,14 @@
       {{ end }}
     </header>
 
-    <section class="prose prose--flow reveal">
+    <section class="prose prose--flow reveal{{ if $isProfile }} prose--profile{{ end }}">
       {{ .Content }}
     </section>
 
     <nav class="article-nav reveal" aria-label="문서 이동">
-      <a href="{{ printf "%s/" .Section | relURL }}">{{ .Section | humanize }} 목록</a>
+      {{ if .Section }}
+        <a href="{{ printf "%s/" .Section | relURL }}">{{ .Section | humanize }} 목록</a>
+      {{ end }}
       <a href="{{ site.Home.RelPermalink }}">홈으로</a>
     </nav>
   </article>

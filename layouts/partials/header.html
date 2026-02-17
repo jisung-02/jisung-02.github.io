@@ -2,8 +2,10 @@
   <div class="container site-header__inner">
     <a class="site-header__brand fx-underline {{ if .IsHome }}is-active{{ end }}" href="{{ site.Home.RelPermalink }}">
       <span class="site-header__label">
-        <span class="site-header__name">Jisung</span>
-        <small class="site-header__sub">notes archive</small>
+        <span class="site-header__name">{{ site.Title }}</span>
+        {{ with site.Params.subtitle }}
+          <small class="site-header__sub">{{ . }}</small>
+        {{ end }}
       </span>
     </a>
 

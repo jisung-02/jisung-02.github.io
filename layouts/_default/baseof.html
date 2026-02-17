@@ -1,7 +1,11 @@
 <!doctype html>
 <html lang="ko">
   {{ partial "head.html" . }}
-  <body data-section="{{ .Section }}" data-kind="{{ .Kind }}">
+  {{ $bodySection := .Section }}
+  {{ if and (eq $bodySection "") .File }}
+    {{ $bodySection = replaceRE "/$" "" .File.Dir }}
+  {{ end }}
+  <body data-section="{{ $bodySection }}" data-kind="{{ .Kind }}">
     <a class="skip-link" href="#main-content">본문으로 바로가기</a>
     <div class="site-shell">
       <div class="site-progress" aria-hidden="true"></div>

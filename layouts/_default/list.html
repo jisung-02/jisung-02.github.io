@@ -1,15 +1,4 @@
 {{ define "main" }}
-  {{ $showAtmosphere := or (eq .Section "posts") (eq .Section "projects") }}
-  {{ $atmosphereImage := "" }}
-  {{ $atmosphereAlt := "" }}
-  {{ if eq .Section "posts" }}
-    {{ $atmosphereImage = "images/library-posts.jpg" }}
-    {{ $atmosphereAlt = "아치형 창과 높은 서가가 이어진 도서관 내부" }}
-  {{ else if eq .Section "projects" }}
-    {{ $atmosphereImage = "images/library-projects.jpg" }}
-    {{ $atmosphereAlt = "정돈된 열람실과 책장이 이어진 서재 풍경" }}
-  {{ end }}
-
   <header class="page-head reveal">
     <p class="page-head__eyebrow">Archive</p>
     <h1>{{ .Title }}</h1>
@@ -17,12 +6,6 @@
       <div class="page-head__body">{{ . }}</div>
     {{ end }}
   </header>
-
-  {{ if and $showAtmosphere $atmosphereImage }}
-    <figure class="section-atmosphere reveal">
-      <img src="{{ $atmosphereImage | relURL }}" alt="{{ $atmosphereAlt }}" loading="lazy" decoding="async" />
-    </figure>
-  {{ end }}
 
   {{ if gt (len .Pages) 0 }}
     <section class="flow-stream flow-stream--list" aria-label="문서 목록">

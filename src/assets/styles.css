@@ -257,18 +257,24 @@ img {
   margin-inline: auto;
 }
 
-body[data-kind="home"] .flow-stream {
+body[data-kind="home"] .flow-stream,
+body[data-kind="section"][data-section="posts"] .flow-stream,
+body[data-kind="section"][data-section="projects"] .flow-stream {
   max-width: min(100%, 84ch);
-  --timeline-offset: clamp(0.78rem, 1.6vw, 1.08rem);
+  --timeline-offset: clamp(1.2rem, 2.8vw, 1.92rem);
 }
 
-body[data-kind="home"] .flow-item {
-  --flow-line-end: clamp(1rem, 3.2vw, 2.1rem);
+body[data-kind="home"] .flow-item,
+body[data-kind="section"][data-section="posts"] .flow-item,
+body[data-kind="section"][data-section="projects"] .flow-item {
+  --flow-line-end: clamp(1.3rem, 4.1vw, 2.9rem);
 }
 
-body[data-kind="home"] .flow-item:nth-child(even) {
-  --flow-step: clamp(0.6rem, 2.4vw, 1.5rem);
-  --flow-line-end: clamp(0.2rem, 1.2vw, 0.65rem);
+body[data-kind="home"] .flow-item:nth-child(even),
+body[data-kind="section"][data-section="posts"] .flow-item:nth-child(even),
+body[data-kind="section"][data-section="projects"] .flow-item:nth-child(even) {
+  --flow-step: clamp(1.35rem, 4.8vw, 3.35rem);
+  --flow-line-end: clamp(0.4rem, 1.8vw, 1rem);
 }
 
 .flow-intro {
@@ -316,7 +322,7 @@ body[data-kind="home"] .flow-item:nth-child(even) {
 .flow-stream {
   margin-top: 1.4rem;
   position: relative;
-  --timeline-offset: clamp(1.05rem, 2vw, 1.45rem);
+  --timeline-offset: clamp(1.36rem, 3.15vw, 2.2rem);
 }
 
 .flow-stream::before {
@@ -337,73 +343,22 @@ body[data-kind="home"] .flow-item:nth-child(even) {
 }
 
 .flow-stream--list {
-  margin-top: 0.7rem;
+  margin-top: 1.4rem;
 }
 
 body[data-kind="section"][data-section="posts"] .page-head,
-body[data-kind="section"][data-section="posts"] .section-atmosphere,
-body[data-kind="section"][data-section="posts"] .flow-stream--list,
 body[data-kind="section"][data-section="posts"] .empty-state,
 body[data-kind="section"][data-section="projects"] .page-head,
-body[data-kind="section"][data-section="projects"] .section-atmosphere,
-body[data-kind="section"][data-section="projects"] .flow-stream--list,
 body[data-kind="section"][data-section="projects"] .empty-state {
-  max-width: min(100%, 118ch);
+  max-width: min(100%, 84ch);
   margin-left: auto;
   margin-right: auto;
 }
 
-body[data-kind="section"][data-section="posts"] .site-main,
-body[data-kind="section"][data-section="projects"] .site-main {
-  width: min(1120px, calc(100vw - 2.4rem));
-}
-
-body[data-kind="section"][data-section="posts"] .flow-stream--list,
-body[data-kind="section"][data-section="projects"] .flow-stream--list {
-  display: grid;
-  grid-template-columns: 1fr;
-  column-gap: clamp(1rem, 3vw, 2rem);
-  row-gap: clamp(0.8rem, 2.2vw, 1.2rem);
-  align-items: start;
-}
-
-body[data-kind="section"][data-section="posts"] .flow-stream--list::before,
-body[data-kind="section"][data-section="projects"] .flow-stream--list::before {
-  display: none;
-}
-
-body[data-kind="section"][data-section="posts"] .flow-stream--list .flow-item,
-body[data-kind="section"][data-section="posts"] .flow-stream--list .flow-item:nth-child(even),
-body[data-kind="section"][data-section="projects"] .flow-stream--list .flow-item,
-body[data-kind="section"][data-section="projects"] .flow-stream--list .flow-item:nth-child(even) {
-  --flow-step: 0;
-  --flow-line-end: 0;
-  padding: 1.08rem 1rem 1.16rem;
-  border: 1px solid rgba(var(--core-ink-rgb), 0.16);
-  border-radius: 0.7rem;
-  background: rgba(var(--core-paper-rgb), 0.62);
-  box-shadow: 0 8px 22px rgba(var(--core-ink-rgb), 0.05);
-  transition: border-color 0.24s ease, box-shadow 0.24s ease, background-color 0.24s ease;
-}
-
-body[data-kind="section"][data-section="posts"] .flow-stream--list .flow-item::after,
-body[data-kind="section"][data-section="projects"] .flow-stream--list .flow-item::after {
-  display: none;
-}
-
-body[data-kind="section"][data-section="posts"] .flow-stream--list .flow-item:hover,
-body[data-kind="section"][data-section="posts"] .flow-stream--list .flow-item:focus-within,
-body[data-kind="section"][data-section="projects"] .flow-stream--list .flow-item:hover,
-body[data-kind="section"][data-section="projects"] .flow-stream--list .flow-item:focus-within {
-  border-color: rgba(var(--core-accent-rgb), 0.62);
-  background: rgba(var(--core-paper-rgb), 0.74);
-  box-shadow: 0 12px 28px rgba(var(--core-ink-rgb), 0.09);
-}
-
 .flow-item {
   --flow-step: 0rem;
-  --flow-line-end: clamp(0rem, 6vw, 2.8rem);
-  --flow-line-gap: clamp(0.2rem, 0.55vw, 0.42rem);
+  --flow-line-end: clamp(1.25rem, 7.5vw, 3.9rem);
+  --flow-line-gap: clamp(0.44rem, 1.1vw, 0.84rem);
   position: relative;
   padding: 1.22rem 0 1.34rem;
   padding-left: calc(var(--flow-step) + var(--flow-line-gap));
@@ -422,8 +377,8 @@ body[data-kind="section"][data-section="projects"] .flow-stream--list .flow-item
 }
 
 .flow-item:nth-child(even) {
-  --flow-step: clamp(0rem, 6vw, 2.8rem);
-  --flow-line-end: 0rem;
+  --flow-step: clamp(1.25rem, 7.8vw, 4.5rem);
+  --flow-line-end: clamp(0.32rem, 1.4vw, 0.92rem);
 }
 
 .flow-item__meta {
@@ -496,52 +451,6 @@ body[data-kind="section"][data-section="projects"] .flow-stream--list .flow-item
 .page-head__meta {
   margin-top: 0.66rem;
   color: rgba(var(--core-ink-rgb), 0.78);
-}
-
-.section-atmosphere {
-  margin: 0.9rem 0 1.4rem;
-  max-width: min(100%, 68ch);
-  position: relative;
-  overflow: hidden;
-}
-
-.section-atmosphere img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 0.45rem;
-  border: 1px solid rgba(var(--core-ink-rgb), 0.24);
-  opacity: 0.9;
-  filter: saturate(0.74) sepia(0.18) contrast(0.92);
-  transition: opacity 0.4s ease, filter 0.4s ease, transform 0.4s ease;
-}
-
-.section-atmosphere::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(
-    to bottom,
-    rgba(var(--core-paper-rgb), 0.05) 0%,
-    rgba(var(--core-ink-rgb), 0.16) 100%
-  );
-  opacity: 0.2;
-}
-
-.section-atmosphere:hover img {
-  opacity: 0.96;
-  filter: saturate(0.8) sepia(0.14) contrast(0.95);
-  transform: translateY(-1px);
-}
-
-.section-atmosphere--article {
-  margin-top: -0.1rem;
-  margin-bottom: 0.15rem;
-}
-
-body[data-section="projects"] .section-atmosphere img {
-  filter: saturate(0.7) sepia(0.12) contrast(0.94);
 }
 
 .article {
@@ -871,93 +780,6 @@ html.js .reveal.is-visible {
   outline-offset: 2px;
 }
 
-@keyframes library-breathe-left {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-7px);
-  }
-}
-
-@keyframes library-breathe-right {
-  0%,
-  100% {
-    transform: translateY(-4px);
-  }
-  50% {
-    transform: translateY(4px);
-  }
-}
-
-@media (min-width: 1280px) {
-  body[data-kind="section"][data-section="posts"] .site-main::before,
-  body[data-kind="section"][data-section="posts"] .site-main::after,
-  body[data-kind="section"][data-section="projects"] .site-main::before,
-  body[data-kind="section"][data-section="projects"] .site-main::after {
-    content: "";
-    position: absolute;
-    top: 9.4rem;
-    bottom: 1.1rem;
-    width: clamp(110px, 12vw, 170px);
-    border-radius: 0.75rem;
-    border: 1px solid rgba(var(--core-ink-rgb), 0.16);
-    opacity: 0.25;
-    pointer-events: none;
-    background-size: cover;
-    background-repeat: no-repeat;
-    filter: saturate(0.74) sepia(0.14) contrast(0.93);
-    transition: opacity 0.24s ease, filter 0.24s ease;
-  }
-
-  body[data-kind="section"][data-section="posts"] .site-main::before,
-  body[data-kind="section"][data-section="projects"] .site-main::before {
-    left: clamp(-8.4rem, -10vw, -5.6rem);
-    background-position: left center;
-    animation: library-breathe-left 13s ease-in-out infinite;
-  }
-
-  body[data-kind="section"][data-section="posts"] .site-main::after,
-  body[data-kind="section"][data-section="projects"] .site-main::after {
-    right: clamp(-8.4rem, -10vw, -5.6rem);
-    background-position: right center;
-    animation: library-breathe-right 15s ease-in-out infinite;
-  }
-
-  body[data-kind="section"][data-section="posts"] .site-main::before,
-  body[data-kind="section"][data-section="posts"] .site-main::after {
-    background-image: url("../images/library-posts.jpg");
-  }
-
-  body[data-kind="section"][data-section="projects"] .site-main::before,
-  body[data-kind="section"][data-section="projects"] .site-main::after {
-    background-image: url("../images/library-projects.jpg");
-  }
-
-  body[data-kind="section"][data-section="posts"] .site-main:hover::before,
-  body[data-kind="section"][data-section="posts"] .site-main:hover::after,
-  body[data-kind="section"][data-section="projects"] .site-main:hover::before,
-  body[data-kind="section"][data-section="projects"] .site-main:hover::after {
-    opacity: 0.35;
-    filter: saturate(0.82) sepia(0.1) contrast(0.96);
-  }
-}
-
-@media (min-width: 900px) {
-  body[data-kind="section"][data-section="posts"] .flow-stream--list,
-  body[data-kind="section"][data-section="projects"] .flow-stream--list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  body[data-kind="section"][data-section="posts"] .flow-stream--list .flow-item:last-child:nth-child(odd),
-  body[data-kind="section"][data-section="projects"] .flow-stream--list .flow-item:last-child:nth-child(odd) {
-    grid-column: 1 / -1;
-    width: min(100%, 34rem);
-    justify-self: center;
-  }
-}
-
 @media (max-width: 960px) {
   .site-header__inner {
     align-items: flex-start;
@@ -971,22 +793,18 @@ html.js .reveal.is-visible {
   }
 
   .flow-item {
-    --flow-line-end: clamp(0rem, 4vw, 1.4rem);
+    --flow-line-end: clamp(0.95rem, 5.8vw, 2.5rem);
   }
 
   .flow-item:nth-child(even) {
-    --flow-step: clamp(0rem, 4vw, 1.4rem);
+    --flow-step: clamp(0.85rem, 6.4vw, 2.9rem);
+    --flow-line-end: clamp(0.3rem, 1.4vw, 0.86rem);
   }
 }
 
 @media (max-width: 760px) {
   .container {
     width: min(940px, calc(100vw - 1.4rem));
-  }
-
-  body[data-kind="section"][data-section="posts"] .site-main,
-  body[data-kind="section"][data-section="projects"] .site-main {
-    width: min(1120px, calc(100vw - 1.4rem));
   }
 
   .site-main {
@@ -1022,7 +840,6 @@ html.js .reveal.is-visible {
   html.js .reveal,
   html.js .reveal.is-visible,
   .flow-item,
-  .section-atmosphere img,
   .site-main {
     transition: none;
   }

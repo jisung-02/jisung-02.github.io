@@ -74,7 +74,10 @@ function resolveSection(relativePathWithoutExtension: string): ContentSection {
 }
 
 function resolveSlug(relativePathWithoutExtension: string): string {
-  if (relativePathWithoutExtension.endsWith(`${path.sep}index`)) {
+  if (
+    relativePathWithoutExtension.endsWith(`${path.sep}index`) ||
+    relativePathWithoutExtension.endsWith(`${path.sep}_index`)
+  ) {
     return path.basename(path.dirname(relativePathWithoutExtension));
   }
 
@@ -86,6 +89,10 @@ function resolveUrlPath(relativePathWithoutExtension: string): string {
 
   if (normalized.endsWith("/index")) {
     return `/${normalized.slice(0, -"/index".length)}/`;
+  }
+
+  if (normalized.endsWith("/_index")) {
+    return `/${normalized.slice(0, -"/_index".length)}/`;
   }
 
   return `/${normalized}/`;

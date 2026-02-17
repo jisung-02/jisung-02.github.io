@@ -662,6 +662,7 @@ body[data-kind="page"][data-section="projects"] .prose > p:first-of-type::first-
 
 .finder {
   max-width: 76ch;
+  margin-inline: auto;
   padding-top: 0.9rem;
   border-top: 1px solid var(--core-line);
 }

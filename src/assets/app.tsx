@@ -12,6 +12,7 @@ interface SearchIndexEntry {
 
 interface FinderProps {
   indexUrl: string;
+  siteRoot: string;
 }
 
 const SECTION_LABELS: Record<"all" | SearchIndexEntry["section"], string> = {
@@ -31,7 +32,7 @@ const FLOW_DRIFT_MAX_OFFSET = 12;
 const PAGE_ENTER_DURATION_MS = 380;
 const PAGE_LEAVE_DURATION_MS = 210;
 
-function Finder({ indexUrl }: FinderProps): JSX.Element {
+function Finder({ indexUrl, siteRoot }: FinderProps): JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [entries, setEntries] = useState<SearchIndexEntry[]>([]);
@@ -54,7 +55,7 @@ function Finder({ indexUrl }: FinderProps): JSX.Element {
         }
 
         const payload = (await response.json()) as unknown;
-        const normalized = normalizeEntries(payload);
+        const normalized = normalizeEntries(payload, siteRoot);
 
         if (active) {
           setEntries(normalized);
@@ -76,7 +77,7 @@ function Finder({ indexUrl }: FinderProps): JSX.Element {
     return () => {
       active = false;
     };
-  }, [indexUrl]);
+  }, [indexUrl, siteRoot]);
 
   const visibleEntries = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
@@ -275,17 +276,17 @@ function Finder({ indexUrl }: FinderProps): JSX.Element {
   );
 }
 
-function normalizeEntries(payload: unknown): SearchIndexEntry[] {
+function normalizeEntries(payload: unknown, siteRoot: string): SearchIndexEntry[] {
   if (!Array.isArray(payload)) {
     return [];
   }
 
   return payload
-    .map((candidate) => normalizeEntry(candidate))
+    .map((candidate) => normalizeEntry(candidate, siteRoot))
     .filter((candidate): candidate is SearchIndexEntry => Boolean(candidate));
 }
 
-function normalizeEntry(candidate: unknown): SearchIndexEntry | null {
+function normalizeEntry(candidate: unknown, siteRoot: string): SearchIndexEntry | null {
   if (!candidate || typeof candidate !== "object") {
     return null;
   }
@@ -293,7 +294,8 @@ function normalizeEntry(candidate: unknown): SearchIndexEntry | null {
   const raw = candidate as Record<string, unknown>;
   const title = typeof raw.title === "string" ? raw.title.trim() : "";
   const description = typeof raw.description === "string" ? raw.description.trim() : "";
-  const url = typeof raw.url === "string" ? raw.url.trim() : "";
+  const rawUrl = typeof raw.url === "string" ? raw.url.trim() : "";
+  const url = resolveNavigableUrl(rawUrl, siteRoot);
   const section = normalizeSection(raw.section);
 
   if (!title || !url) {
@@ -322,6 +324,45 @@ function normalizeSection(value: unknown): SearchIndexEntry["section"] {
   }
 
   return "unknown";
+}
+
+function normalizeSiteRoot(siteRoot: string): string {
+  const trimmed = siteRoot.trim();
+  if (!trimmed || trimmed === "/") {
+    return "";
+  }
+
+  const withLeadingSlash = trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+  return withLeadingSlash.endsWith("/") ? withLeadingSlash.slice(0, -1) : withLeadingSlash;
+}
+
+function resolveNavigableUrl(rawUrl: string, siteRoot: string): string {
+  if (!rawUrl) {
+    return "";
+  }
+
+  if (/^[a-z]+:/i.test(rawUrl)) {
+    return rawUrl;
+  }
+
+  if (!rawUrl.startsWith("/")) {
+    return rawUrl;
+  }
+
+  const normalizedRoot = normalizeSiteRoot(siteRoot);
+  if (!normalizedRoot) {
+    return rawUrl;
+  }
+
+  if (rawUrl === "/" || rawUrl === normalizedRoot) {
+    return `${normalizedRoot}/`;
+  }
+
+  if (rawUrl.startsWith(`${normalizedRoot}/`)) {
+    return rawUrl;
+  }
+
+  return `${normalizedRoot}${rawUrl}`;
 }
 
 function scoreEntry(entry: SearchIndexEntry, query: string): number {
@@ -699,8 +740,9 @@ function bootstrapReactFinder(): void {
   }
 
   const indexUrl = rootElement.dataset.indexUrl ?? "assets/search-index.json";
+  const siteRoot = rootElement.dataset.siteRoot ?? "/";
   const root = createRoot(rootElement);
-  root.render(<Finder indexUrl={indexUrl} />);
+  root.render(<Finder indexUrl={indexUrl} siteRoot={siteRoot} />);
 }
 
 function bootstrapApp(): void {

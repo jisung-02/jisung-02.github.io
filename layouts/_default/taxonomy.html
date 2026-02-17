@@ -1,8 +1,25 @@
 {{ define "main" }}
+  {{ $tagsPage := site.GetPage "/tags" }}
   <header class="page-head reveal">
     <p class="page-head__eyebrow">Tag</p>
     <h1>#{{ .Title }}</h1>
     <p class="page-head__meta">관련 문서 {{ len .Pages }}개</p>
+    {{ with $tagsPage }}
+      <nav class="tag-shelf" aria-label="태그 바로가기">
+        <div class="tag-shelf__row">
+          <a class="tag-chip tag-chip--small" href="{{ .RelPermalink }}">All</a>
+          {{ range .Pages.ByTitle }}
+            <a
+              class="tag-chip tag-chip--small {{ if eq .LinkTitle $.Title }}is-active{{ end }}"
+              href="{{ .RelPermalink }}"
+            >
+              <span class="tag-chip__name">#{{ .LinkTitle }}</span>
+              <span class="tag-chip__count">{{ len .Pages }}</span>
+            </a>
+          {{ end }}
+        </div>
+      </nav>
+    {{ end }}
   </header>
 
   <section class="flow-stream flow-stream--list" aria-label="태그 문서 목록">
@@ -16,6 +33,17 @@
         <h2><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h2>
         {{ with ($page.Description | default $page.Summary) }}
           <p>{{ . | plainify | truncate 160 }}</p>
+        {{ end }}
+        {{ with $page.Params.tags }}
+          {{ $currentTag := $.Title | urlize }}
+          <p class="flow-item__tags flow-item__tags--taxonomy">
+            {{ range first 4 . }}
+              {{ $tagSlug := . | urlize }}
+              <a class="{{ if eq $tagSlug $currentTag }}is-current{{ end }}" href="{{ printf "tags/%s/" $tagSlug | relURL }}">
+                #{{ . }}
+              </a>
+            {{ end }}
+          </p>
         {{ end }}
       </article>
     {{ end }}

@@ -2,17 +2,28 @@
   <header class="page-head reveal">
     <p class="page-head__eyebrow">Tag Index</p>
     <h1>{{ .Title }}</h1>
-    <p class="page-head__meta">태그별 문서를 빠르게 탐색할 수 있습니다.</p>
+    <p class="page-head__meta">태그를 눌러 관련 문서를 빠르게 찾을 수 있습니다.</p>
   </header>
 
-  <section class="flow-stream flow-stream--list" aria-label="태그 목록">
-    {{ range $index, $tagPage := .Pages.ByTitle }}
-      {{ $drift := cond (eq (mod $index 2) 0) "0.015" "-0.012" }}
-      <article class="flow-item reveal" data-drift data-drift-speed="{{ $drift }}">
-        <p class="flow-item__meta">Tag</p>
-        <h2><a href="{{ $tagPage.RelPermalink }}">#{{ $tagPage.LinkTitle }}</a></h2>
-        <p>{{ len $tagPage.Pages }}개의 문서</p>
-      </article>
-    {{ end }}
-  </section>
+  {{ if gt (len .Pages) 0 }}
+    <section class="tag-cloud reveal" aria-label="태그 목록">
+      <ul class="tag-cloud__list">
+        {{ range .Pages.ByTitle }}
+          <li class="tag-cloud__item">
+            <a class="tag-chip" href="{{ .RelPermalink }}">
+              <span class="tag-chip__name">#{{ .LinkTitle }}</span>
+              <span class="tag-chip__count">{{ len .Pages }}</span>
+            </a>
+            {{ with .Pages.ByDate.Reverse }}
+              {{ with index . 0 }}
+                <p class="tag-cloud__meta">최근 업데이트 {{ .Date.Format "2006-01-02" }}</p>
+              {{ end }}
+            {{ end }}
+          </li>
+        {{ end }}
+      </ul>
+    </section>
+  {{ else }}
+    <p class="empty-state reveal">등록된 태그가 아직 없습니다.</p>
+  {{ end }}
 {{ end }}

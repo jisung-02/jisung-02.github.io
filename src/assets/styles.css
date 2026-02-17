@@ -244,13 +244,16 @@ img {
   font-family: "Inter", "Pretendard", "Segoe UI", sans-serif;
 }
 
-.home-flow,
 .article,
-.flow-stream,
 .prose,
-.page-head,
-.flow-links {
+.page-head {
   max-width: 76ch;
+}
+
+.home-flow,
+.flow-stream,
+.flow-links {
+  max-width: min(100%, 96ch);
 }
 
 .flow-intro {
@@ -272,7 +275,7 @@ img {
   line-height: 1.06;
   font-family: "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
   font-size: clamp(2rem, 6vw, 4rem);
-  max-width: 20ch;
+  max-width: 26ch;
 }
 
 .flow-intro p {
@@ -319,6 +322,39 @@ img {
 
 .flow-stream--list {
   margin-top: 0.7rem;
+}
+
+body[data-kind="section"][data-section="posts"] .page-head,
+body[data-kind="section"][data-section="posts"] .section-atmosphere,
+body[data-kind="section"][data-section="posts"] .flow-stream--list,
+body[data-kind="section"][data-section="posts"] .empty-state,
+body[data-kind="section"][data-section="projects"] .page-head,
+body[data-kind="section"][data-section="projects"] .section-atmosphere,
+body[data-kind="section"][data-section="projects"] .flow-stream--list,
+body[data-kind="section"][data-section="projects"] .empty-state {
+  max-width: min(100%, 108ch);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body[data-kind="section"][data-section="posts"] .flow-stream--list,
+body[data-kind="section"][data-section="projects"] .flow-stream--list {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: clamp(0.9rem, 3vw, 2rem);
+}
+
+body[data-kind="section"][data-section="posts"] .flow-stream--list::before,
+body[data-kind="section"][data-section="projects"] .flow-stream--list::before {
+  display: none;
+}
+
+body[data-kind="section"][data-section="posts"] .flow-stream--list .flow-item,
+body[data-kind="section"][data-section="posts"] .flow-stream--list .flow-item:nth-child(even),
+body[data-kind="section"][data-section="projects"] .flow-stream--list .flow-item,
+body[data-kind="section"][data-section="projects"] .flow-stream--list .flow-item:nth-child(even) {
+  --flow-step: 0;
+  --flow-line-end: 0;
 }
 
 .flow-item {
@@ -788,6 +824,13 @@ html.js .reveal.is-visible {
 .article-nav a:focus {
   outline: 2px solid rgba(var(--core-accent-rgb), 0.88);
   outline-offset: 2px;
+}
+
+@media (min-width: 900px) {
+  body[data-kind="section"][data-section="posts"] .flow-stream--list,
+  body[data-kind="section"][data-section="projects"] .flow-stream--list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 960px) {

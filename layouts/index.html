@@ -2,14 +2,14 @@
   {{ $streamPages := where site.RegularPages "Section" "in" (slice "posts" "projects") }}
   {{ $recentStream := first 12 ($streamPages.ByDate.Reverse) }}
   {{ $nowPrefix := "지금은" }}
-  {{ $defaultNowPhrases := slice "프로젝트 런북을 정리하는 중" "주간 리뷰 루프를 다듬는 중" "데모 시나리오를 정리하는 중" }}
+  {{ $defaultNowPhrases := slice "Python에 관심을 두고 배우는 중" "Go에 관심을 두고 배우는 중" "시스템에 관심을 두고 배우는 중" "배워나가는 것을 정리하는 중" }}
   {{ $nowPhrases := $defaultNowPhrases }}
   {{ $profilePage := site.GetPage "/profile" }}
   {{ with $profilePage }}
     {{ with .Params.home_now_prefix }}{{ $nowPrefix = . }}{{ end }}
     {{ with .Params.home_now_phrases }}{{ $nowPhrases = . }}{{ end }}
   {{ end }}
-  {{ $activeNowPhrase := "프로젝트 런북을 정리하는 중" }}
+  {{ $activeNowPhrase := "배워나가는 것을 정리하는 중" }}
   {{ if gt (len $nowPhrases) 0 }}
     {{ $activeNowPhrase = index $nowPhrases 0 }}
   {{ end }}
@@ -17,9 +17,9 @@
   <article class="home-flow">
     <header class="flow-intro reveal">
       <p class="flow-intro__eyebrow">Notes Archive</p>
-      <h1>작게 만들고, 오래 꺼내 쓰는 기록을 남깁니다.</h1>
+      <h1>배워나가는 것을 차근히<br />정리합니다.</h1>
       <p>
-        프로젝트 실행 로그와 학습 노트를 압축해, 다음 작업에 바로 재사용할 수 있게 정리합니다.
+        프로젝트를 진행하며 배운 내용을 기록해, 나중에 다시 꺼내볼 수 있게 남깁니다.
       </p>
       <p class="flow-intro__now">
         {{ $nowPrefix }}

@@ -216,15 +216,85 @@ body[data-kind="page"][data-section="profile"] .site-main.container {
 }
 
 .site-header__clock {
+  --clock-bloom: 0.14;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  min-width: 82px;
+  justify-content: flex-start;
+  gap: 0.12rem;
+  min-width: 100px;
   border-radius: 999px;
   border: 1px solid var(--core-line);
-  padding: 0.24rem 0.62rem;
+  padding: 0.18rem 0.44rem;
   font-size: 0.73rem;
   color: var(--core-muted);
+  line-height: 1;
+}
+
+.site-header__clock-text {
+  white-space: nowrap;
+}
+
+.site-header__clock-bloom {
+  position: relative;
+  width: 1.68rem;
+  height: 1.68rem;
+  flex: 0 0 auto;
+}
+
+.site-header__clock-petal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.78rem;
+  height: 1.14rem;
+  border-radius: 70% 70% 54% 54%;
+  border: 1px solid rgba(var(--core-accent-rgb), 0.2);
+  background: linear-gradient(
+    180deg,
+    rgba(var(--core-paper-rgb), 0.98) 0%,
+    rgba(var(--core-accent-rgb), 0.2) 100%
+  );
+  transform-origin: 50% 82%;
+  box-shadow: 0 1px 3px rgba(var(--core-ink-rgb), 0.1);
+  opacity: calc(0.28 + var(--clock-bloom) * 0.68);
+  transition: transform 0.55s ease, opacity 0.55s ease;
+}
+
+.site-header__clock-petal--1 {
+  transform:
+    translate(-50%, -50%)
+    rotate(-34deg)
+    translateY(calc((1 - var(--clock-bloom)) * 0.16rem))
+    scale(calc(0.58 + var(--clock-bloom) * 0.44));
+}
+
+.site-header__clock-petal--2 {
+  transform:
+    translate(-50%, -50%)
+    rotate(0deg)
+    translateY(calc((1 - var(--clock-bloom)) * 0.2rem))
+    scale(calc(0.54 + var(--clock-bloom) * 0.48));
+}
+
+.site-header__clock-petal--3 {
+  transform:
+    translate(-50%, -50%)
+    rotate(34deg)
+    translateY(calc((1 - var(--clock-bloom)) * 0.16rem))
+    scale(calc(0.58 + var(--clock-bloom) * 0.44));
+}
+
+.site-header__clock-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0.29rem;
+  height: 0.29rem;
+  border-radius: 50%;
+  background: rgba(var(--core-accent-rgb), 0.58);
+  transform: translate(-50%, -50%) scale(calc(0.6 + var(--clock-bloom) * 0.4));
+  opacity: calc(0.45 + var(--clock-bloom) * 0.5);
+  transition: transform 0.55s ease, opacity 0.55s ease;
 }
 
 .site-main {
@@ -1339,7 +1409,9 @@ html.js .reveal.is-visible {
   html.js .reveal,
   html.js .reveal.is-visible,
   .flow-item,
-  .site-main {
+  .site-main,
+  .site-header__clock-petal,
+  .site-header__clock-core {
     transition: none;
   }
 

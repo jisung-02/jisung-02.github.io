@@ -31,6 +31,11 @@ const NOW_ROTATE_INTERVAL_MS = 2800;
 const FLOW_DRIFT_MAX_OFFSET = 12;
 const PAGE_ENTER_DURATION_MS = 380;
 const PAGE_LEAVE_DURATION_MS = 210;
+const CLOCK_UPDATE_INTERVAL_MS = 30_000;
+const CLOCK_BLOOM_OPEN_MINUTES = 6 * 60;
+const CLOCK_BLOOM_PEAK_MINUTES = 12 * 60;
+const CLOCK_BLOOM_CLOSE_MINUTES = 22 * 60;
+const CLOCK_BLOOM_MIN = 0.14;
 
 function Finder({ indexUrl, siteRoot }: FinderProps): JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -657,31 +662,111 @@ function setupLocalClock(): void {
     return;
   }
 
-  const timezone = target.dataset.timezone ?? "Asia/Seoul";
-  const label = target.dataset.label ?? "Seoul";
+  const browserTimeZone = readBrowserTimeZone();
+  const timezone = target.dataset.timezone ?? browserTimeZone ?? "Asia/Seoul";
+  const label = target.dataset.label ?? formatTimezoneLabel(timezone);
+  const bloom = createClockBloom();
+  const text = document.createElement("span");
+  text.className = "site-header__clock-text";
+  target.replaceChildren(bloom, text);
 
-  const updateClock = (): void => {
-    try {
-      const text = new Intl.DateTimeFormat("en-GB", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-        timeZone: timezone,
-      }).format(new Date());
-
-      target.textContent = `${label} ${text}`;
-    } catch {
-      const fallback = new Intl.DateTimeFormat("en-GB", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      }).format(new Date());
-      target.textContent = `${label} ${fallback}`;
-    }
+  const updateClockAndBloom = (): void => {
+    const reading = readClockTime(timezone);
+    text.textContent = `${label} ${reading.text}`;
+    const bloomLevel = getClockBloomLevel(reading.hour, reading.minute);
+    target.style.setProperty("--clock-bloom", bloomLevel.toFixed(3));
   };
 
-  updateClock();
-  window.setInterval(updateClock, 30_000);
+  updateClockAndBloom();
+  window.setInterval(updateClockAndBloom, CLOCK_UPDATE_INTERVAL_MS);
+}
+
+function readBrowserTimeZone(): string | null {
+  try {
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    if (timezone && timezone.trim().length > 0) {
+      return timezone;
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
+function formatTimezoneLabel(timezone: string): string {
+  const segments = timezone.split("/");
+  const city = segments[segments.length - 1] ?? "";
+  const normalized = city.replaceAll("_", " ").trim();
+  return normalized.length > 0 ? normalized : "Local";
+}
+
+function createClockBloom(): HTMLSpanElement {
+  const bloom = document.createElement("span");
+  bloom.className = "site-header__clock-bloom";
+  bloom.setAttribute("aria-hidden", "true");
+
+  for (let index = 1; index <= 3; index += 1) {
+    const petal = document.createElement("span");
+    petal.className = `site-header__clock-petal site-header__clock-petal--${index}`;
+    bloom.append(petal);
+  }
+
+  const core = document.createElement("span");
+  core.className = "site-header__clock-core";
+  bloom.append(core);
+  return bloom;
+}
+
+function readClockTime(timeZone: string): { text: string; hour: number; minute: number } {
+  const now = new Date();
+
+  try {
+    const formatter = new Intl.DateTimeFormat("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+      timeZone,
+    });
+    const parts = formatter.formatToParts(now);
+    const hourPart = Number(parts.find((part) => part.type === "hour")?.value ?? now.getHours());
+    const minutePart = Number(parts.find((part) => part.type === "minute")?.value ?? now.getMinutes());
+    const hour = Number.isFinite(hourPart) ? hourPart : now.getHours();
+    const minute = Number.isFinite(minutePart) ? minutePart : now.getMinutes();
+    return {
+      text: `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`,
+      hour,
+      minute,
+    };
+  } catch {
+    const hour = now.getHours();
+    const minute = now.getMinutes();
+    return {
+      text: `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`,
+      hour,
+      minute,
+    };
+  }
+}
+
+function getClockBloomLevel(hour: number, minute: number): number {
+  const minutes = hour * 60 + minute;
+
+  if (minutes <= CLOCK_BLOOM_OPEN_MINUTES || minutes >= CLOCK_BLOOM_CLOSE_MINUTES) {
+    return CLOCK_BLOOM_MIN;
+  }
+
+  if (minutes <= CLOCK_BLOOM_PEAK_MINUTES) {
+    const progress =
+      (minutes - CLOCK_BLOOM_OPEN_MINUTES) /
+      (CLOCK_BLOOM_PEAK_MINUTES - CLOCK_BLOOM_OPEN_MINUTES);
+    return CLOCK_BLOOM_MIN + progress * (1 - CLOCK_BLOOM_MIN);
+  }
+
+  const fade =
+    (minutes - CLOCK_BLOOM_PEAK_MINUTES) /
+    (CLOCK_BLOOM_CLOSE_MINUTES - CLOCK_BLOOM_PEAK_MINUTES);
+  return CLOCK_BLOOM_MIN + (1 - fade) * (1 - CLOCK_BLOOM_MIN);
 }
 
 function setupFlowDrift(): void {

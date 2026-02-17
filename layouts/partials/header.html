@@ -19,7 +19,7 @@
         {{ $isTags := or (eq $.Kind "taxonomy") (eq $.Kind "taxonomyTerm") }}
         <a href="{{ "tags/" | relURL }}" class="fx-underline {{ if $isTags }}is-active{{ end }}">Tags</a>
       </nav>
-      <span id="local-clock" class="site-header__clock" data-label="Seoul" data-timezone="Asia/Seoul"></span>
+      <span id="local-clock" class="site-header__clock"></span>
     </div>
   </div>
 </header>

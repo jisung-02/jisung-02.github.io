@@ -13,7 +13,7 @@ relativeURLs = false
 
 [params]
   description = "A working archive for project runbooks, weekly review loops, and engineering notes"
-  subtitle = "배워가는 과정을 차근히 남깁니다."
+  subtitle = "학습한 내용을 기록합니다."
   accent = "#2563eb"
 
 [markup]

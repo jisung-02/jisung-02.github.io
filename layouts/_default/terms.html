@@ -1,22 +1,22 @@
 {{ define "main" }}
-  <header class="page-head reveal">
-    <p class="page-head__eyebrow">Tag Index</p>
+  <header class="page-hero page-hero--compact">
+    <p class="section-eyebrow">Tag Lake</p>
     <h1>{{ .Title }}</h1>
-    <p class="page-head__meta">태그를 눌러 관련 문서를 빠르게 찾을 수 있습니다.</p>
+    <p class="page-hero__meta">태그를 눌러 관련 문서를 빠르게 찾을 수 있습니다.</p>
   </header>
 
   {{ if gt (len .Pages) 0 }}
-    <section class="tag-cloud reveal" aria-label="태그 목록">
-      <ul class="tag-cloud__list">
-        {{ range .Pages.ByTitle }}
-          <li class="tag-cloud__item">
-            <a class="tag-chip" href="{{ .RelPermalink }}">
-              <span class="tag-chip__name">#{{ .LinkTitle }}</span>
-              <span class="tag-chip__count">{{ len .Pages }}</span>
+    <section class="tag-cloud-panel" aria-label="태그 목록">
+      <ul class="tag-cloud-grid">
+        {{ range $tag := .Pages.ByTitle }}
+          <li class="tag-cloud-grid__item" style="--tag-size: {{ add 1 (mod (len $tag.Pages) 4) }};">
+            <a class="tag-cloud-grid__link" href="{{ $tag.RelPermalink }}">
+              <strong>#{{ $tag.LinkTitle }}</strong>
+              <span>{{ len $tag.Pages }} entries</span>
             </a>
-            {{ with .Pages.ByDate.Reverse }}
+            {{ with $tag.Pages.ByDate.Reverse }}
               {{ with index . 0 }}
-                <p class="tag-cloud__meta">최근 업데이트 {{ .Date.Format "2006-01-02" }}</p>
+                <p class="tag-cloud-grid__meta">최근 업데이트 {{ .Date.Format "2006.01.02" }}</p>
               {{ end }}
             {{ end }}
           </li>
@@ -24,6 +24,11 @@
       </ul>
     </section>
   {{ else }}
-    <p class="empty-state reveal">등록된 태그가 아직 없습니다.</p>
+    <section class="section-block section-block--empty">
+      <div class="empty-state">
+        <p class="section-eyebrow">Still Water</p>
+        <h2>등록된 태그가 아직 없습니다.</h2>
+      </div>
+    </section>
   {{ end }}
 {{ end }}

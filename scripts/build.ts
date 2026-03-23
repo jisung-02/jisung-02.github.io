@@ -1,5 +1,5 @@
 import { execSync } from "node:child_process";
-import { copyFile, mkdir, rename, rm } from "node:fs/promises";
+import { copyFile, cp, mkdir, rename, rm } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -22,6 +22,8 @@ async function main(): Promise<void> {
   });
 
   await copyFile(path.join(rootDirectory, "src", "assets", "styles.css"), path.join(temporaryAssetsDirectory, "styles.css"));
+  await copyStaticAssetDirectory("fonts", temporaryAssetsDirectory);
+  await copyStaticAssetDirectory("sprites", temporaryAssetsDirectory);
 
   await build({
     entryPoints: [path.join(rootDirectory, "src", "assets", "app.tsx")],
@@ -47,6 +49,16 @@ async function main(): Promise<void> {
   }
 
   console.log("build ok: dist generated");
+}
+
+async function copyStaticAssetDirectory(directoryName: string, outputDirectory: string): Promise<void> {
+  const sourceDirectory = path.join(rootDirectory, "src", "assets", directoryName);
+
+  await cp(sourceDirectory, path.join(outputDirectory, directoryName), {
+    recursive: true,
+    force: true,
+    errorOnExist: false,
+  });
 }
 
 void main();

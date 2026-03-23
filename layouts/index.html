@@ -1,67 +1,82 @@
 {{ define "main" }}
   {{ $streamPages := where site.RegularPages "Section" "in" (slice "posts" "projects") }}
-  {{ $recentStream := first 12 ($streamPages.ByDate.Reverse) }}
-  {{ $nowPrefix := "지금은" }}
-  {{ $defaultNowPhrases := slice "Python에 관심을 두고 배우는 중" "Go에 관심을 두고 배우는 중" "시스템에 관심을 두고 배우는 중" "배워나가는 것을 정리하는 중" }}
-  {{ $nowPhrases := $defaultNowPhrases }}
-  {{ $profilePage := site.GetPage "/profile" }}
-  {{ with $profilePage }}
-    {{ with .Params.home_now_prefix }}{{ $nowPrefix = . }}{{ end }}
-    {{ with .Params.home_now_phrases }}{{ $nowPhrases = . }}{{ end }}
-  {{ end }}
-  {{ $activeNowPhrase := "배워나가는 것을 정리하는 중" }}
-  {{ if gt (len $nowPhrases) 0 }}
-    {{ $activeNowPhrase = index $nowPhrases 0 }}
-  {{ end }}
+  {{ $recentStream := first 9 ($streamPages.ByDate.Reverse) }}
+  {{ $postsCount := len (where site.RegularPages "Section" "posts") }}
+  {{ $projectsCount := len (where site.RegularPages "Section" "projects") }}
+  {{ $tagsCount := len site.Taxonomies.tags }}
 
-  <article class="home-flow">
-    <header class="flow-intro reveal">
-      <p class="flow-intro__eyebrow">Notes Archive</p>
-      <h1>{{ site.Params.subtitle }}</h1>
-      <p>
-        프로젝트를 진행하며 배운 내용을 기록해, 나중에 다시 꺼내볼 수 있게 남깁니다.
-      </p>
-      <p class="flow-intro__now">
-        {{ $nowPrefix }}
-        <span
-          id="now-rotator"
-          data-now-phrases="{{ delimit $nowPhrases "," }}"
-        >
-          {{ $activeNowPhrase }}
-        </span>
-      </p>
-    </header>
+  <section class="hero-panel">
+    <div class="hero-panel__content">
+      <p class="section-eyebrow">Pixel Lake</p>
+      <h1>{{ site.Title }}</h1>
+      <p class="hero-panel__body">{{ site.Params.subtitle }}</p>
+      <p class="hero-panel__body">호수 위에 떠오른 카드처럼 최근 학습과 프로젝트를 가볍게 훑어보고, 우파루파를 따라가며 기록 사이를 이동할 수 있도록 구성했습니다.</p>
+      <div class="hero-panel__stats" aria-label="사이트 통계">
+        <span class="lake-stat"><strong>{{ $postsCount }}</strong><small>posts</small></span>
+        <span class="lake-stat"><strong>{{ $projectsCount }}</strong><small>projects</small></span>
+        <span class="lake-stat"><strong>{{ $tagsCount }}</strong><small>tags</small></span>
+      </div>
+      <nav class="hero-panel__actions" aria-label="홈 바로가기">
+        <a href="{{ "posts/" | relURL }}">Posts</a>
+        <a href="{{ "projects/" | relURL }}">Projects</a>
+        <a href="{{ "profile/" | relURL }}">Profile</a>
+      </nav>
+    </div>
+    <aside class="hero-panel__aside" aria-label="사이트 소개">
+      <p class="section-eyebrow">Lake Notes</p>
+      <ul class="hero-panel__notes">
+        <li>커서를 움직이면 우파루파가 가까운 카드에 반응합니다.</li>
+        <li>검색은 하단 Finder에서 `/` 단축키로 바로 사용할 수 있습니다.</li>
+        <li>모바일에서는 우파루파가 천천히 유영하며 카드 주변을 순회합니다.</li>
+      </ul>
+    </aside>
+  </section>
 
-    {{ if gt (len $recentStream) 0 }}
-      <section class="flow-stream" aria-label="최근 업데이트">
+  {{ if gt (len $recentStream) 0 }}
+    <section class="section-block" aria-labelledby="recent-posts-title">
+      <div class="section-block__header">
+        <div>
+          <p class="section-eyebrow">Recent Drift</p>
+          <h2 id="recent-posts-title">최근 글과 프로젝트</h2>
+        </div>
+        <a class="section-block__link" href="{{ "posts/" | relURL }}">전체 보기</a>
+      </div>
+      <div class="post-grid">
         {{ range $index, $page := $recentStream }}
-          {{ $drift := cond (eq (mod $index 2) 0) "0.03" "-0.02" }}
-          <article class="flow-item reveal" data-drift data-drift-speed="{{ $drift }}">
-            <p class="flow-item__meta">
-              {{ if $page.Date }}{{ $page.Date.Format "2006-01-02" }} · {{ end }}{{ $page.Section | humanize }}
-            </p>
-            <h2><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h2>
-            {{ with ($page.Description | default $page.Summary) }}
-              <p>{{ . | plainify | truncate 140 }}</p>
-            {{ end }}
-            {{ with $page.Params.tags }}
-              <p class="flow-item__tags">
-                {{ range first 3 . }}
-                  <a href="{{ printf "tags/%s/" (. | urlize) | relURL }}">#{{ . }}</a>
-                {{ end }}
-              </p>
-            {{ end }}
+          <article
+            class="post-card"
+            data-card-id="{{ $page.RelPermalink }}"
+            data-card-kind="{{ $page.Section }}"
+            style="--float-delay: {{ mul (mod $index 5) 0.35 }}s; --card-offset: {{ cond (eq (mod $index 2) 0) "-4px" "4px" }};"
+          >
+            <a class="post-card__link" href="{{ $page.RelPermalink }}">
+              {{ with $page.Params.tags }}
+                <p class="post-card__tags">
+                  {{ range first 3 . }}
+                    <span class="tag-pill">#{{ . }}</span>
+                  {{ end }}
+                </p>
+              {{ end }}
+              <h3>{{ $page.Title }}</h3>
+              {{ with ($page.Description | default $page.Summary) }}
+                <p class="post-card__summary">{{ . | plainify | truncate 140 }}</p>
+              {{ end }}
+              <div class="post-card__meta">
+                <span>{{ if $page.Date }}{{ $page.Date.Format "2006.01.02" }}{{ end }}</span>
+                <span>{{ $page.Section | humanize }}</span>
+                <span>{{ $page.ReadingTime }} min</span>
+              </div>
+            </a>
           </article>
         {{ end }}
-      </section>
-    {{ else }}
-      <p class="empty-state reveal">표시할 콘텐츠가 아직 없습니다.</p>
-    {{ end }}
-
-    <nav class="flow-links reveal" aria-label="바로가기">
-      <a href="{{ "posts/" | relURL }}">All posts</a>
-      <a href="{{ "projects/" | relURL }}">All projects</a>
-      <a href="{{ "profile/" | relURL }}">Profile</a>
-    </nav>
-  </article>
+      </div>
+    </section>
+  {{ else }}
+    <section class="section-block section-block--empty">
+      <div class="empty-state">
+        <p class="section-eyebrow">Still Water</p>
+        <h2>표시할 콘텐츠가 아직 없습니다.</h2>
+      </div>
+    </section>
+  {{ end }}
 {{ end }}

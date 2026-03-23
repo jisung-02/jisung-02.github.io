@@ -4,35 +4,38 @@
     {{ $pageSection = replaceRE "/$" "" .File.Dir }}
   {{ end }}
   {{ $isProfile := eq $pageSection "profile" }}
-  <article class="article article--flow{{ if $isProfile }} article--profile{{ end }}">
-    <header class="page-head reveal">
-      <p class="page-head__eyebrow">{{ if $pageSection }}{{ $pageSection | humanize }}{{ else }}Page{{ end }}</p>
+
+  <article class="reader-layout{{ if $isProfile }} reader-layout--profile{{ end }}">
+    <header class="page-hero page-hero--compact">
+      <p class="section-eyebrow">{{ if $pageSection }}{{ $pageSection | humanize }}{{ else }}Page{{ end }}</p>
       <h1>{{ .Title }}</h1>
       {{ if $isProfile }}
-        {{ with .Description }}<p class="page-head__meta">{{ . }}</p>{{ end }}
+        {{ with .Description }}<p class="page-hero__meta">{{ . }}</p>{{ end }}
       {{ else }}
-        <p class="page-head__meta">
-          {{ if .Date }}{{ .Date.Format "2006-01-02" }} · {{ end }}{{ .ReadingTime }} min read · {{ .WordCount }} words
+        <p class="page-hero__meta">
+          {{ if .Date }}{{ .Date.Format "2006.01.02" }} · {{ end }}{{ .ReadingTime }} min read · {{ .WordCount }} words
         </p>
       {{ end }}
       {{ with .Params.tags }}
-        <p class="flow-item__tags">
+        <p class="post-card__tags">
           {{ range . }}
-            <a href="{{ printf "tags/%s/" (. | urlize) | relURL }}">#{{ . }}</a>
+            <a class="tag-pill" href="{{ printf "tags/%s/" (. | urlize) | relURL }}">#{{ . }}</a>
           {{ end }}
         </p>
       {{ end }}
     </header>
 
-    <section class="prose prose--flow reveal{{ if $isProfile }} prose--profile{{ end }}">
-      {{ .Content }}
+    <section class="reader-panel">
+      <div class="reader-panel__body{{ if $isProfile }} reader-panel__body--profile{{ end }}">
+        {{ .Content }}
+      </div>
     </section>
 
-    <nav class="article-nav reveal" aria-label="문서 이동">
+    <nav class="reader-nav" aria-label="문서 이동">
       {{ if .Section }}
-        <a href="{{ printf "%s/" .Section | relURL }}">{{ .Section | humanize }} 목록</a>
+        <a href="{{ printf "%s/" .Section | relURL }}">{{ .Section | humanize }}</a>
       {{ end }}
-      <a href="{{ site.Home.RelPermalink }}">홈으로</a>
+      <a href="{{ site.Home.RelPermalink }}">Home</a>
     </nav>
   </article>
 {{ end }}

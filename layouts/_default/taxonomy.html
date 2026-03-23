@@ -1,20 +1,16 @@
 {{ define "main" }}
   {{ $tagsPage := site.GetPage "/tags" }}
-  <header class="page-head reveal">
-    <p class="page-head__eyebrow">Tag</p>
+  <header class="page-hero page-hero--compact">
+    <p class="section-eyebrow">Tag Filter</p>
     <h1>#{{ .Title }}</h1>
-    <p class="page-head__meta">관련 문서 {{ len .Pages }}개</p>
+    <p class="page-hero__meta">관련 문서 {{ len .Pages }}개</p>
     {{ with $tagsPage }}
       <nav class="tag-shelf" aria-label="태그 바로가기">
         <div class="tag-shelf__row">
-          <a class="tag-chip tag-chip--small" href="{{ .RelPermalink }}">All</a>
+          <a class="tag-pill" href="{{ .RelPermalink }}">all</a>
           {{ range .Pages.ByTitle }}
-            <a
-              class="tag-chip tag-chip--small {{ if eq .LinkTitle $.Title }}is-active{{ end }}"
-              href="{{ .RelPermalink }}"
-            >
-              <span class="tag-chip__name">#{{ .LinkTitle }}</span>
-              <span class="tag-chip__count">{{ len .Pages }}</span>
+            <a class="tag-pill {{ if eq .LinkTitle $.Title }}is-active{{ end }}" href="{{ .RelPermalink }}">
+              #{{ .LinkTitle }} · {{ len .Pages }}
             </a>
           {{ end }}
         </div>
@@ -22,30 +18,43 @@
     {{ end }}
   </header>
 
-  <section class="flow-stream flow-stream--list" aria-label="태그 문서 목록">
-    {{ range $index, $page := .Pages.ByDate.Reverse }}
-      {{ $drift := cond (eq (mod $index 2) 0) "0.02" "-0.015" }}
-      <article class="flow-item reveal" data-drift data-drift-speed="{{ $drift }}">
-        <p class="flow-item__meta">
-          {{ if $page.Date }}{{ $page.Date.Format "2006-01-02" }} · {{ end }}{{ $page.Section | humanize }}
-          · {{ $page.ReadingTime }} min
-        </p>
-        <h2><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h2>
-        {{ with ($page.Description | default $page.Summary) }}
-          <p>{{ . | plainify | truncate 160 }}</p>
-        {{ end }}
-        {{ with $page.Params.tags }}
-          {{ $currentTag := $.Title | urlize }}
-          <p class="flow-item__tags flow-item__tags--taxonomy">
-            {{ range first 4 . }}
-              {{ $tagSlug := . | urlize }}
-              <a class="{{ if eq $tagSlug $currentTag }}is-current{{ end }}" href="{{ printf "tags/%s/" $tagSlug | relURL }}">
-                #{{ . }}
-              </a>
+  <section class="section-block" aria-label="태그 문서 목록">
+    <div class="section-block__header">
+      <div>
+        <p class="section-eyebrow">Matched Entries</p>
+        <h2>{{ len .Pages }}개의 문서가 수면 위에 떠 있습니다</h2>
+      </div>
+    </div>
+    <div class="post-grid">
+      {{ range $index, $page := .Pages.ByDate.Reverse }}
+        <article
+          class="post-card"
+          data-card-id="{{ $page.RelPermalink }}"
+          data-card-kind="{{ $page.Section }}"
+          style="--float-delay: {{ mul (mod $index 6) 0.3 }}s; --card-offset: {{ cond (eq (mod $index 2) 0) "-5px" "5px" }};"
+        >
+          <a class="post-card__link" href="{{ $page.RelPermalink }}">
+            {{ with $page.Params.tags }}
+              {{ $currentTag := $.Title | urlize }}
+              <p class="post-card__tags">
+                {{ range first 4 . }}
+                  {{ $tagSlug := . | urlize }}
+                  <span class="tag-pill {{ if eq $tagSlug $currentTag }}is-active{{ end }}">#{{ . }}</span>
+                {{ end }}
+              </p>
             {{ end }}
-          </p>
-        {{ end }}
-      </article>
-    {{ end }}
+            <h2>{{ $page.Title }}</h2>
+            {{ with ($page.Description | default $page.Summary) }}
+              <p class="post-card__summary">{{ . | plainify | truncate 160 }}</p>
+            {{ end }}
+            <div class="post-card__meta">
+              <span>{{ if $page.Date }}{{ $page.Date.Format "2006.01.02" }}{{ end }}</span>
+              <span>{{ $page.Section | humanize }}</span>
+              <span>{{ $page.ReadingTime }} min</span>
+            </div>
+          </a>
+        </article>
+      {{ end }}
+    </div>
   </section>
 {{ end }}

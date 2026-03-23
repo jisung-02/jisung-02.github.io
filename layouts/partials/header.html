@@ -1,25 +1,23 @@
 <header class="site-header">
   <div class="container site-header__inner">
-    <a class="site-header__brand fx-underline {{ if .IsHome }}is-active{{ end }}" href="{{ site.Home.RelPermalink }}">
-      <span class="site-header__label">
-        <span class="site-header__name">{{ site.Title }}</span>
-        {{ with site.Params.subtitle }}
-          <small class="site-header__sub">{{ . }}</small>
-        {{ end }}
+    <a class="site-brand {{ if .IsHome }}is-active{{ end }}" href="{{ site.Home.RelPermalink }}">
+      <span class="site-brand__sprite" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </span>
+      <span class="site-brand__text">
+        <strong>{{ site.Title }}</strong>
+        <small>pixel lake archive</small>
       </span>
     </a>
-
-    <div class="site-header__actions">
-      <nav class="site-nav" aria-label="주요 네비게이션">
-        {{ range site.Menus.main }}
-          {{ $isHomeMenu := and $.IsHome (eq .Name "Home") }}
-          {{ $isActive := or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) $isHomeMenu }}
-          <a href="{{ .URL | relURL }}" class="fx-underline {{ if $isActive }}is-active{{ end }}">{{ .Name }}</a>
-        {{ end }}
-        {{ $isTags := or (eq $.Kind "taxonomy") (eq $.Kind "taxonomyTerm") }}
-        <a href="{{ "tags/" | relURL }}" class="fx-underline {{ if $isTags }}is-active{{ end }}">Tags</a>
-      </nav>
-      <span id="local-clock" class="site-header__clock"></span>
-    </div>
+    <nav class="site-nav" aria-label="주요 네비게이션">
+      {{ range site.Menus.main }}
+        {{ $isHomeMenu := and $.IsHome (eq .Name "Home") }}
+        {{ $isActive := or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) $isHomeMenu }}
+        <a href="{{ .URL | relURL }}" class="{{ if $isActive }}is-active{{ end }}">{{ .Name }}</a>
+      {{ end }}
+      {{ $isTags := or (eq $.Kind "taxonomy") (eq $.Kind "taxonomyTerm") }}
+      <a href="{{ "tags/" | relURL }}" class="{{ if $isTags }}is-active{{ end }}">Tags</a>
+    </nav>
+    <span id="local-clock" class="site-header__clock" data-timezone="Asia/Seoul"></span>
   </div>
 </header>

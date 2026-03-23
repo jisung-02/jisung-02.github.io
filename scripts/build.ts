@@ -1,5 +1,5 @@
 import { execSync } from "node:child_process";
-import { copyFile, cp, mkdir, rename, rm } from "node:fs/promises";
+import { copyFile, cp, mkdir, readdir, rename, rm } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -48,6 +48,7 @@ async function main(): Promise<void> {
     throw new Error(`Hugo build failed. Ensure \`hugo\` is installed and available in PATH. ${message}`);
   }
 
+  await createLocalPreviewMirror(path.join(rootDirectory, "dist"));
   console.log("build ok: dist generated");
 }
 
@@ -59,6 +60,26 @@ async function copyStaticAssetDirectory(directoryName: string, outputDirectory: 
     force: true,
     errorOnExist: false,
   });
+}
+
+async function createLocalPreviewMirror(distDirectory: string): Promise<void> {
+  const previewDirectory = path.join(distDirectory, "blog");
+  await rm(previewDirectory, { recursive: true, force: true });
+  await mkdir(previewDirectory, { recursive: true });
+
+  const entries = await readdir(distDirectory, { withFileTypes: true });
+
+  for (const entry of entries) {
+    if (entry.name === "blog") {
+      continue;
+    }
+
+    await cp(path.join(distDirectory, entry.name), path.join(previewDirectory, entry.name), {
+      recursive: true,
+      force: true,
+      errorOnExist: false,
+    });
+  }
 }
 
 void main();

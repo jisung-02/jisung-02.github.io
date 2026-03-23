@@ -11,7 +11,9 @@ dist/
 public/
 resources/
 static/assets/app.js
+static/assets/fonts/
 static/assets/search-index.json
+static/assets/sprites/
 static/assets/styles.css
 .hugo_build.lock
 

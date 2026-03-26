@@ -1,20 +1,20 @@
 {{ define "main" }}
   {{ $streamPages := where site.RegularPages "Section" "in" (slice "posts" "projects") }}
-  {{ $recentStream := first 9 ($streamPages.ByDate.Reverse) }}
+  {{ $recentStream := first 8 ($streamPages.ByDate.Reverse) }}
   {{ $postsCount := len (where site.RegularPages "Section" "posts") }}
   {{ $projectsCount := len (where site.RegularPages "Section" "projects") }}
   {{ $tagsCount := len site.Taxonomies.tags }}
 
   <section class="hero-panel">
     <div class="hero-panel__content">
-      <p class="section-eyebrow">Pixel Lake</p>
+      <p class="section-eyebrow">Home</p>
       <h1>{{ site.Title }}</h1>
       <p class="hero-panel__body">{{ site.Params.subtitle }}</p>
-      <p class="hero-panel__body">호수 위에 떠오른 카드처럼 최근 학습과 프로젝트를 가볍게 훑어보고, 우파루파를 따라가며 기록 사이를 이동할 수 있도록 구성했습니다.</p>
+      <p class="hero-panel__body">프로젝트 메모, 실험 기록, 글 초안을 가장 기본적인 구조로 정리하는 정적 사이트입니다.</p>
       <div class="hero-panel__stats" aria-label="사이트 통계">
-        <span class="lake-stat"><strong>{{ $postsCount }}</strong><small>posts</small></span>
-        <span class="lake-stat"><strong>{{ $projectsCount }}</strong><small>projects</small></span>
-        <span class="lake-stat"><strong>{{ $tagsCount }}</strong><small>tags</small></span>
+        <span class="summary-stat"><strong>{{ $postsCount }}</strong><small>posts</small></span>
+        <span class="summary-stat"><strong>{{ $projectsCount }}</strong><small>projects</small></span>
+        <span class="summary-stat"><strong>{{ $tagsCount }}</strong><small>tags</small></span>
       </div>
       <nav class="hero-panel__actions" aria-label="홈 바로가기">
         <a href="{{ "posts/" | relURL }}">Posts</a>
@@ -23,11 +23,11 @@
       </nav>
     </div>
     <aside class="hero-panel__aside" aria-label="사이트 소개">
-      <p class="section-eyebrow">Lake Notes</p>
+      <p class="section-eyebrow">Guide</p>
       <ul class="hero-panel__notes">
-        <li>커서를 움직이면 우파루파가 가까운 카드에 반응합니다.</li>
-        <li>검색은 하단 Finder에서 `/` 단축키로 바로 사용할 수 있습니다.</li>
-        <li>모바일에서는 우파루파가 천천히 유영하며 카드 주변을 순회합니다.</li>
+        <li>구조는 유지하고 디자인만 기본형으로 되돌렸습니다.</li>
+        <li>홈에서는 최근 글과 프로젝트만 바로 확인할 수 있습니다.</li>
+        <li>세부 페이지는 읽기와 작성에 방해되지 않는 단순한 레이아웃으로 정리했습니다.</li>
       </ul>
     </aside>
   </section>
@@ -36,20 +36,16 @@
     <section class="section-block" aria-labelledby="recent-posts-title">
       <div class="section-block__header">
         <div>
-          <p class="section-eyebrow">Recent Drift</p>
+          <p class="section-eyebrow">Recent</p>
           <h2 id="recent-posts-title">최근 글과 프로젝트</h2>
         </div>
         <a class="section-block__link" href="{{ "posts/" | relURL }}">전체 보기</a>
       </div>
       <div class="post-grid">
-        {{ range $index, $page := $recentStream }}
-          <article
-            class="post-card"
-            data-card-id="{{ $page.RelPermalink }}"
-            data-card-kind="{{ $page.Section }}"
-            style="--float-delay: {{ mul (mod $index 5) 0.35 }}s; --card-offset: {{ cond (eq (mod $index 2) 0) "-4px" "4px" }};"
-          >
+        {{ range $page := $recentStream }}
+          <article class="post-card">
             <a class="post-card__link" href="{{ $page.RelPermalink }}">
+              <span class="post-card__section">{{ $page.Section | humanize }}</span>
               {{ with $page.Params.tags }}
                 <p class="post-card__tags">
                   {{ range first 3 . }}
@@ -74,7 +70,7 @@
   {{ else }}
     <section class="section-block section-block--empty">
       <div class="empty-state">
-        <p class="section-eyebrow">Still Water</p>
+        <p class="section-eyebrow">Empty</p>
         <h2>표시할 콘텐츠가 아직 없습니다.</h2>
       </div>
     </section>

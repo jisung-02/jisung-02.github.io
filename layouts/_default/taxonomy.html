@@ -1,7 +1,7 @@
 {{ define "main" }}
   {{ $tagsPage := site.GetPage "/tags" }}
   <header class="page-hero page-hero--compact">
-    <p class="section-eyebrow">Tag Filter</p>
+    <p class="section-eyebrow">Tag</p>
     <h1>#{{ .Title }}</h1>
     <p class="page-hero__meta">관련 문서 {{ len .Pages }}개</p>
     {{ with $tagsPage }}
@@ -22,18 +22,14 @@
     <div class="section-block__header">
       <div>
         <p class="section-eyebrow">Matched Entries</p>
-        <h2>{{ len .Pages }}개의 문서가 수면 위에 떠 있습니다</h2>
+        <h2>{{ len .Pages }}개의 문서</h2>
       </div>
     </div>
     <div class="post-grid">
-      {{ range $index, $page := .Pages.ByDate.Reverse }}
-        <article
-          class="post-card"
-          data-card-id="{{ $page.RelPermalink }}"
-          data-card-kind="{{ $page.Section }}"
-          style="--float-delay: {{ mul (mod $index 6) 0.3 }}s; --card-offset: {{ cond (eq (mod $index 2) 0) "-5px" "5px" }};"
-        >
+      {{ range $page := .Pages.ByDate.Reverse }}
+        <article class="post-card">
           <a class="post-card__link" href="{{ $page.RelPermalink }}">
+            <span class="post-card__section">{{ $page.Section | humanize }}</span>
             {{ with $page.Params.tags }}
               {{ $currentTag := $.Title | urlize }}
               <p class="post-card__tags">

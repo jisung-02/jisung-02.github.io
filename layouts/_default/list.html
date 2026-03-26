@@ -5,7 +5,7 @@
     {{ with .Content }}
       <div class="page-hero__body">{{ . }}</div>
     {{ end }}
-    <p class="page-hero__meta">{{ len .Pages }} entries floating on the lake</p>
+    <p class="page-hero__meta">{{ len .Pages }} entries</p>
   </header>
 
   {{ if gt (len .Pages) 0 }}
@@ -17,14 +17,10 @@
         </div>
       </div>
       <div class="post-grid">
-        {{ range $index, $page := .Pages.ByDate.Reverse }}
-          <article
-            class="post-card"
-            data-card-id="{{ $page.RelPermalink }}"
-            data-card-kind="{{ $page.Section }}"
-            style="--float-delay: {{ mul (mod $index 6) 0.3 }}s; --card-offset: {{ cond (eq (mod $index 2) 0) "-6px" "6px" }};"
-          >
+        {{ range $page := .Pages.ByDate.Reverse }}
+          <article class="post-card">
             <a class="post-card__link" href="{{ $page.RelPermalink }}">
+              <span class="post-card__section">{{ $page.Section | humanize }}</span>
               {{ with $page.Params.tags }}
                 <p class="post-card__tags">
                   {{ range first 4 . }}
@@ -49,7 +45,7 @@
   {{ else }}
     <section class="section-block section-block--empty">
       <div class="empty-state">
-        <p class="section-eyebrow">Still Water</p>
+        <p class="section-eyebrow">Empty</p>
         <h2>아직 공개된 콘텐츠가 없습니다.</h2>
       </div>
     </section>

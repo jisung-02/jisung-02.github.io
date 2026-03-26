@@ -1,12 +1,9 @@
 <header class="site-header">
   <div class="container site-header__inner">
     <a class="site-brand {{ if .IsHome }}is-active{{ end }}" href="{{ site.Home.RelPermalink }}">
-      <span class="site-brand__sprite" aria-hidden="true">
-        <span></span><span></span><span></span>
-      </span>
       <span class="site-brand__text">
         <strong>{{ site.Title }}</strong>
-        <small>pixel lake archive</small>
+        <small>{{ site.Params.subtitle }}</small>
       </span>
     </a>
     <nav class="site-nav" aria-label="주요 네비게이션">
@@ -18,6 +15,5 @@
       {{ $isTags := or (eq $.Kind "taxonomy") (eq $.Kind "taxonomyTerm") }}
       <a href="{{ "tags/" | relURL }}" class="{{ if $isTags }}is-active{{ end }}">Tags</a>
     </nav>
-    <span id="local-clock" class="site-header__clock" data-timezone="Asia/Seoul"></span>
   </div>
 </header>

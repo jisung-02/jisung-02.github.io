@@ -1,15 +1,15 @@
 {{ define "main" }}
   <header class="page-hero page-hero--compact">
-    <p class="section-eyebrow">Tag Lake</p>
+    <p class="section-eyebrow">Tags</p>
     <h1>{{ .Title }}</h1>
-    <p class="page-hero__meta">태그를 눌러 관련 문서를 빠르게 찾을 수 있습니다.</p>
+    <p class="page-hero__meta">태그를 눌러 관련 문서를 확인할 수 있습니다.</p>
   </header>
 
   {{ if gt (len .Pages) 0 }}
     <section class="tag-cloud-panel" aria-label="태그 목록">
       <ul class="tag-cloud-grid">
         {{ range $tag := .Pages.ByTitle }}
-          <li class="tag-cloud-grid__item" style="--tag-size: {{ add 1 (mod (len $tag.Pages) 4) }};">
+          <li class="tag-cloud-grid__item">
             <a class="tag-cloud-grid__link" href="{{ $tag.RelPermalink }}">
               <strong>#{{ $tag.LinkTitle }}</strong>
               <span>{{ len $tag.Pages }} entries</span>
@@ -26,7 +26,7 @@
   {{ else }}
     <section class="section-block section-block--empty">
       <div class="empty-state">
-        <p class="section-eyebrow">Still Water</p>
+        <p class="section-eyebrow">Empty</p>
         <h2>등록된 태그가 아직 없습니다.</h2>
       </div>
     </section>

@@ -18,12 +18,3 @@ export interface ParsedMarkdown {
   sourcePath: string;
   urlPath: string;
 }
-
-export interface SearchIndexEntry {
-  title: string;
-  description: string;
-  section: ContentSection;
-  tags: string[];
-  date?: string;
-  url: string;
-}

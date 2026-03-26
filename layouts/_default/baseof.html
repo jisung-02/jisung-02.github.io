@@ -1,20 +1,8 @@
 <!doctype html>
 <html lang="ko">
   {{ partial "head.html" . }}
-  {{ $bodySection := .Section }}
-  {{ if and (eq $bodySection "") .File }}
-    {{ $bodySection = replaceRE "/$" "" .File.Dir }}
-  {{ end }}
-  <body data-section="{{ $bodySection }}" data-kind="{{ .Kind }}" data-site-root="{{ site.Home.RelPermalink }}">
+  <body>
     <a class="skip-link" href="#main-content">본문으로 바로가기</a>
-    <div class="lake-stage">
-      <canvas
-        id="lake-canvas"
-        class="lake-stage__canvas"
-        role="img"
-        aria-label="호수를 헤엄치는 우파루파"
-      ></canvas>
-    </div>
     <div class="site-shell">
       {{ partial "header.html" . }}
       <main id="main-content" class="site-main">
@@ -22,6 +10,5 @@
       </main>
       {{ partial "footer.html" . }}
     </div>
-    <script type="module" src="{{ "assets/app.js" | relURL }}"></script>
   </body>
 </html>

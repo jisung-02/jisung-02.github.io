@@ -1,6 +1,6 @@
 # portfolio-blog
 
-Markdown으로 콘텐츠를 관리하고 Hugo로 정적 사이트를 생성해 GitHub Pages로 배포하는 개인 블로그입니다.
+Markdown으로 콘텐츠를 관리하고 Hugo로 정적 사이트를 생성해 GitHub Pages로 배포하는 최소형 블로그입니다.
 
 ## 1. 저장소 / 배포 정보
 
@@ -12,9 +12,8 @@ Markdown으로 콘텐츠를 관리하고 Hugo로 정적 사이트를 생성해 G
 
 - **SSG**: Hugo Extended
 - **콘텐츠**: Markdown (`content/`)
-- **UI 자산**: React 18 + TypeScript (`src/assets/app.tsx`)
 - **스타일**: CSS (`src/assets/styles.css`)
-- **빌드**: esbuild + Node scripts
+- **빌드**: Node scripts
 - **배포**: GitHub Actions + GitHub Pages (`dist/`)
 
 ## 3. 프로젝트 구조
@@ -24,9 +23,9 @@ Markdown으로 콘텐츠를 관리하고 Hugo로 정적 사이트를 생성해 G
 ├─ content/                  # profile/posts/projects markdown
 ├─ layouts/                  # Hugo 템플릿
 ├─ src/
-│  ├─ site/                  # markdown 파싱, 검색 인덱스 생성
-│  └─ assets/                # React/CSS 소스
-├─ static/assets/            # 빌드 산출 자산(app.js, styles.css, search-index.json)
+│  ├─ site/                  # markdown 파싱 유틸
+│  └─ assets/                # CSS 소스
+├─ static/assets/            # 빌드 산출 자산(styles.css)
 ├─ scripts/                  # lint/typecheck/check-content/build 스크립트
 ├─ tests/                    # node:test 기반 테스트
 ├─ dist/                     # 최종 정적 사이트 산출물
@@ -40,6 +39,12 @@ Markdown으로 콘텐츠를 관리하고 Hugo로 정적 사이트를 생성해 G
 - `/posts/` : 게시글 목록 및 상세
 - `/projects/` : 프로젝트 목록 및 상세
 - `/tags/` : 태그 아카이브
+
+디자인 원칙:
+
+- 흰 배경 기반의 기본형 레이아웃
+- 장식용 런타임 없음
+- 콘텐츠 읽기와 작성에 집중
 
 콘텐츠 소스 매핑:
 

@@ -9,6 +9,24 @@
   --core-line: rgba(var(--core-ink-rgb), 0.2);
   --core-accent-soft: rgba(var(--core-accent-rgb), 0.13);
   --scroll-progress: 0%;
+  --aqua-deep: #0d2233;
+  --aqua-panel: rgba(13, 34, 51, 0.75);
+  --aqua-panel-solid: rgba(13, 34, 51, 0.85);
+  --aqua-line: rgba(168, 224, 240, 0.15);
+  --aqua-text: rgba(220, 235, 245, 0.92);
+  --aqua-text-muted: rgba(168, 200, 220, 0.7);
+  --aqua-accent: #5cb8d6;
+  --aqua-accent-rgb: 92, 184, 214;
+}
+
+/* ─── Aquarium canvas ──────────────────────────────────────────────────────── */
+.aquarium-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  pointer-events: auto;
+  touch-action: none;
 }
 
 * {
@@ -23,38 +41,22 @@ body {
 body {
   margin: 0;
   font-family: "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
-  color: var(--core-ink);
-  background: var(--core-paper);
+  color: var(--aqua-text);
+  background: var(--aqua-deep);
   line-height: 1.72;
   letter-spacing: 0.003em;
 }
 
+.site-main {
+  color: var(--core-ink);
+}
+
 body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(circle at 5% 0%, var(--core-accent-soft), transparent 34%),
-    radial-gradient(circle at 93% 12%, rgba(var(--core-ink-rgb), 0.06), transparent 36%);
+  content: none;
 }
 
 body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  opacity: 0.15;
-  background-image:
-    repeating-linear-gradient(
-      0deg,
-      rgba(var(--core-ink-rgb), 0.06) 0,
-      rgba(var(--core-ink-rgb), 0.06) 1px,
-      transparent 1px,
-      transparent 3px
-    );
+  content: none;
 }
 
 a {
@@ -63,6 +65,10 @@ a {
 }
 
 a:hover {
+  color: var(--aqua-accent);
+}
+
+.site-main a:hover {
   color: var(--core-accent);
 }
 
@@ -82,8 +88,9 @@ img {
   z-index: 80;
   transform: translateY(-150%);
   border-radius: 999px;
-  border: 1px solid var(--core-line);
-  background: rgba(var(--core-paper-rgb), 0.96);
+  border: 1px solid var(--aqua-line);
+  background: var(--aqua-panel-solid);
+  color: var(--aqua-text);
   font-size: 0.78rem;
   font-weight: 600;
   padding: 0.44rem 0.78rem;
@@ -95,6 +102,16 @@ img {
 
 .site-shell {
   position: relative;
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.site-header,
+.site-footer {
+  pointer-events: auto;
 }
 
 .site-progress {
@@ -120,9 +137,10 @@ img {
   position: sticky;
   top: 0;
   z-index: 60;
-  backdrop-filter: blur(10px);
-  background: rgba(var(--core-paper-rgb), 0.88);
-  border-bottom: 1px solid var(--core-line);
+  backdrop-filter: blur(14px);
+  background: var(--aqua-panel-solid);
+  border-bottom: 1px solid var(--aqua-line);
+  color: var(--aqua-text);
 }
 
 .site-header__inner {
@@ -163,7 +181,7 @@ img {
   letter-spacing: 0.08em;
   line-height: 1.1;
   white-space: nowrap;
-  color: var(--core-muted);
+  color: var(--aqua-text-muted);
 }
 
 .site-header__actions {
@@ -182,11 +200,11 @@ img {
 
 .site-nav a {
   font-size: 0.89rem;
-  color: rgba(var(--core-ink-rgb), 0.82);
+  color: var(--aqua-text-muted);
 }
 
 .site-nav a.is-active {
-  color: var(--core-ink);
+  color: var(--aqua-text);
 }
 
 .fx-underline {
@@ -202,7 +220,7 @@ img {
   height: 1px;
   transform: scaleX(0);
   transform-origin: left;
-  background: rgba(var(--core-accent-rgb), 0.92);
+  background: rgba(var(--aqua-accent-rgb), 0.9);
   transition: transform 0.2s ease;
 }
 
@@ -217,15 +235,31 @@ img {
   justify-content: center;
   min-width: 82px;
   border-radius: 999px;
-  border: 1px solid var(--core-line);
+  border: 1px solid var(--aqua-line);
   padding: 0.24rem 0.62rem;
   font-size: 0.73rem;
-  color: var(--core-muted);
+  color: var(--aqua-text-muted);
 }
 
 .site-main {
-  padding: 2.1rem 0 3.4rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 2.1rem 1.2rem 1.4rem;
   position: relative;
+  background: var(--aqua-panel);
+  backdrop-filter: blur(10px);
+  border-radius: 0.6rem 0.6rem 0 0;
+  margin-top: 0.8rem;
+  margin-bottom: 0;
+  pointer-events: none;
+  border: 1px solid var(--aqua-line);
+  border-bottom: none;
+}
+
+.site-main * {
+  pointer-events: auto;
 }
 
 .site-header,
@@ -376,6 +410,44 @@ img {
 
 .flow-links a {
   color: rgba(var(--core-ink-rgb), 0.72);
+}
+
+/* Home page: horizontal scroll layout */
+.home-flow {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: none;
+  overflow: hidden;
+}
+
+.home-flow .flow-stream {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1.4rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: none;
+  margin-top: 1.4rem;
+  padding-bottom: 1rem;
+}
+
+.home-flow .flow-stream::before {
+  display: none;
+}
+
+.home-flow .flow-item {
+  flex: 0 0 280px;
+  border-bottom: none;
+  border-right: 1px solid var(--core-line);
+  padding: 0 1.4rem 0 0;
+  margin-left: 0 !important;
+}
+
+.home-flow .flow-item:last-child {
+  border-right: none;
 }
 
 .page-head {
@@ -550,8 +622,13 @@ body[data-kind="page"][data-section="projects"] .prose > p:first-of-type::first-
 }
 
 .site-footer {
-  border-top: 1px solid var(--core-line);
-  padding: 1.8rem 0 2.5rem;
+  padding: 1.8rem 1.2rem 2.5rem;
+  background: var(--aqua-panel);
+  backdrop-filter: blur(10px);
+  border-radius: 0 0 0.6rem 0.6rem;
+  margin-bottom: 0.8rem;
+  border: 1px solid var(--aqua-line);
+  border-top: 1px solid var(--aqua-line);
 }
 
 .site-footer__inner {
@@ -561,14 +638,15 @@ body[data-kind="page"][data-section="projects"] .prose > p:first-of-type::first-
 
 .site-footer__meta {
   margin: 0;
-  color: rgba(var(--core-ink-rgb), 0.74);
+  color: var(--aqua-text-muted);
   font-size: 0.9rem;
 }
 
 .finder {
   max-width: 76ch;
   padding-top: 0.9rem;
-  border-top: 1px solid var(--core-line);
+  border-top: 1px solid var(--aqua-line);
+  color: var(--aqua-text);
 }
 
 .finder__head {
@@ -585,13 +663,13 @@ body[data-kind="page"][data-section="projects"] .prose > p:first-of-type::first-
 
 .finder__count {
   font-size: 0.75rem;
-  color: var(--core-muted);
+  color: var(--aqua-text-muted);
 }
 
 .finder__subtitle {
   margin: 0.28rem 0 0.8rem;
   font-size: 0.82rem;
-  color: var(--core-muted);
+  color: var(--aqua-text-muted);
 }
 
 .finder__controls {
@@ -604,17 +682,17 @@ body[data-kind="page"][data-section="projects"] .prose > p:first-of-type::first-
 .finder__select,
 .finder__recent button {
   width: 100%;
-  border: 1px solid var(--core-line);
+  border: 1px solid var(--aqua-line);
   border-radius: 0.65rem;
   padding: 0.5rem 0.62rem;
   font: inherit;
   font-size: 0.86rem;
-  color: var(--core-ink);
-  background: rgba(var(--core-paper-rgb), 0.8);
+  color: var(--aqua-text);
+  background: rgba(13, 34, 51, 0.6);
 }
 
 .finder__input::placeholder {
-  color: rgba(var(--core-ink-rgb), 0.45);
+  color: var(--aqua-text-muted);
 }
 
 .finder__recent {
@@ -643,13 +721,13 @@ body[data-kind="page"][data-section="projects"] .prose > p:first-of-type::first-
 }
 
 .finder__item {
-  border-bottom: 1px solid var(--core-line);
+  border-bottom: 1px solid var(--aqua-line);
 }
 
 .finder__item.is-active,
 .finder__item:hover,
 .finder__item:focus-within {
-  border-bottom-color: rgba(var(--core-accent-rgb), 0.75);
+  border-bottom-color: rgba(var(--aqua-accent-rgb), 0.75);
 }
 
 .finder__link {
@@ -659,24 +737,24 @@ body[data-kind="page"][data-section="projects"] .prose > p:first-of-type::first-
 }
 
 .finder__link span {
-  color: rgba(var(--core-ink-rgb), 0.66);
+  color: var(--aqua-text-muted);
   font-size: 0.81rem;
 }
 
 .finder__badge {
   width: fit-content;
-  border: 1px solid var(--core-line);
+  border: 1px solid var(--aqua-line);
   border-radius: 999px;
   padding: 0.02rem 0.4rem;
   font-size: 0.65rem;
   text-transform: uppercase;
-  color: var(--core-muted);
+  color: var(--aqua-text-muted);
 }
 
 .finder__status {
   margin: 0.72rem 0 0;
   font-size: 0.82rem;
-  color: var(--core-muted);
+  color: var(--aqua-text-muted);
 }
 
 .finder__status--error {
@@ -771,7 +849,7 @@ html.js .reveal.is-visible {
 .flow-links a:focus,
 .flow-item a:focus,
 .article-nav a:focus {
-  outline: 2px solid rgba(var(--core-accent-rgb), 0.88);
+  outline: 2px solid rgba(var(--aqua-accent-rgb), 0.88);
   outline-offset: 2px;
 }
 
@@ -807,6 +885,10 @@ html.js .reveal.is-visible {
 
   .flow-item:nth-child(even) {
     margin-left: 0;
+  }
+
+  .home-flow .flow-item {
+    flex: 0 0 240px;
   }
 
   .finder__controls {

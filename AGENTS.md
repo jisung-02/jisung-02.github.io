@@ -42,10 +42,12 @@ This file applies to the entire repository.
 **폴더 구조:**
 ```
 content/
-├── posts/        ← 포스트 글 (.md)
-├── projects/     ← 프로젝트 런북 (.md)
-├── about.md      ← About 페이지
-└── profile.md    ← Profile 페이지
+├── posts/           ← 포스트 글 (.md)
+├── projects/        ← 프로젝트 런북 (.md)
+├── about/
+│   └── _index.md    ← About 페이지
+└── profile/
+    └── _index.md    ← Profile 페이지
 ```
 
 **front matter 형식 (모든 .md 파일 상단):**

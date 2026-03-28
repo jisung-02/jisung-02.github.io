@@ -1,5 +1,6 @@
 import { type KeyboardEvent as ReactKeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
+import { initAquarium } from "./aquarium/index.js";
 
 interface SearchIndexEntry {
   title: string;
@@ -709,6 +710,7 @@ function bootstrapApp(): void {
   setupLocalClock();
   setupMotionAndReveal();
   bootstrapReactFinder();
+  initAquarium();
 }
 
 if (document.readyState === "loading") {

@@ -32,6 +32,34 @@ This file applies to the entire repository.
 - Keep UI colors limited (2–3 core colors).
 - Use only HTTPS links in markdown frontmatter and body.
 
+## Obsidian vault setup
+`content/` 폴더를 Obsidian vault로 사용합니다.
+
+**필수 설정 (Settings → Files & Links):**
+- `Use [[Wikilinks]]` → **끄기** (Hugo가 `[[]]` 문법을 파싱하지 못함)
+- `New link format` → **Relative path to file**
+
+**폴더 구조:**
+```
+content/
+├── posts/        ← 포스트 글 (.md)
+├── projects/     ← 프로젝트 런북 (.md)
+├── about.md      ← About 페이지
+└── profile.md    ← Profile 페이지
+```
+
+**front matter 형식 (모든 .md 파일 상단):**
+```yaml
+---
+title: "제목"
+description: "설명"
+date: YYYY-MM-DD
+tags: ["태그1", "태그2"]
+---
+```
+- `posts/`, `projects/` 하위 파일은 `date` 필드 필수
+- `about.md`, `profile.md`는 `date` 생략 가능
+
 ## Commit style
 - Write commit subjects in Conventional Commit form: `feat: ...`, `fix: ...`, `refactor: ...`, `docs: ...`, `test: ...`, or `chore: ...`.
 - Keep the first line focused on intent, but still include the Conventional Commit prefix.

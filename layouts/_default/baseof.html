@@ -1,14 +1,16 @@
 <!doctype html>
 <html lang="ko">
   {{ partial "head.html" . }}
-  <body>
+  <body data-section="{{ .Section }}" data-kind="{{ .Kind }}">
     <a class="skip-link" href="#main-content">본문으로 바로가기</a>
     <div class="site-shell">
+      <div class="site-progress" aria-hidden="true"></div>
       {{ partial "header.html" . }}
-      <main id="main-content" class="site-main">
-        <div class="container page-stack">{{ block "main" . }}{{ end }}</div>
+      <main id="main-content" class="container site-main">
+        {{ block "main" . }}{{ end }}
       </main>
       {{ partial "footer.html" . }}
     </div>
+    <script type="module" src="{{ "assets/app.js" | relURL }}"></script>
   </body>
 </html>

@@ -1,41 +1,44 @@
 {{ define "main" }}
-  {{ $pageSection := .Section }}
-  {{ if and (eq $pageSection "") .File }}
-    {{ $pageSection = replaceRE "/$" "" .File.Dir }}
+  {{ $showAtmosphere := or (eq .Section "posts") (eq .Section "projects") }}
+  {{ $atmosphereImage := "" }}
+  {{ $atmosphereAlt := "" }}
+  {{ if eq .Section "posts" }}
+    {{ $atmosphereImage = "images/library-posts.jpg" }}
+    {{ $atmosphereAlt = "창가와 서가가 이어진 조용한 도서관 내부" }}
+  {{ else if eq .Section "projects" }}
+    {{ $atmosphereImage = "images/library-projects.jpg" }}
+    {{ $atmosphereAlt = "나무 책상과 긴 서가가 배치된 열람실 풍경" }}
   {{ end }}
-  {{ $isProfile := eq $pageSection "profile" }}
 
-  <article class="reader-layout{{ if $isProfile }} reader-layout--profile{{ end }}">
-    <header class="page-hero page-hero--compact">
-      <p class="section-eyebrow">{{ if $pageSection }}{{ $pageSection | humanize }}{{ else }}Page{{ end }}</p>
+  <article class="article article--flow">
+    <header class="page-head reveal">
+      <p class="page-head__eyebrow">{{ .Section | humanize }}</p>
       <h1>{{ .Title }}</h1>
-      {{ if $isProfile }}
-        {{ with .Description }}<p class="page-hero__meta">{{ . }}</p>{{ end }}
-      {{ else }}
-        <p class="page-hero__meta">
-          {{ if .Date }}{{ .Date.Format "2006.01.02" }} · {{ end }}{{ .ReadingTime }} min read · {{ .WordCount }} words
-        </p>
-      {{ end }}
+      <p class="page-head__meta">
+        {{ if .Date }}{{ .Date.Format "2006-01-02" }} · {{ end }}{{ .ReadingTime }} min read · {{ .WordCount }} words
+      </p>
       {{ with .Params.tags }}
-        <p class="post-card__tags">
+        <p class="flow-item__tags">
           {{ range . }}
-            <a class="tag-pill" href="{{ printf "tags/%s/" (. | urlize) | relURL }}">#{{ . }}</a>
+            <a href="{{ printf "tags/%s/" (. | urlize) | relURL }}">#{{ . }}</a>
           {{ end }}
         </p>
       {{ end }}
     </header>
 
-    <section class="reader-panel">
-      <div class="reader-panel__body{{ if $isProfile }} reader-panel__body--profile{{ end }}">
-        {{ .Content }}
-      </div>
+    {{ if and $showAtmosphere $atmosphereImage }}
+      <figure class="section-atmosphere section-atmosphere--article reveal">
+        <img src="{{ $atmosphereImage | relURL }}" alt="{{ $atmosphereAlt }}" loading="lazy" decoding="async" />
+      </figure>
+    {{ end }}
+
+    <section class="prose prose--flow reveal">
+      {{ .Content }}
     </section>
 
-    <nav class="reader-nav" aria-label="문서 이동">
-      {{ if .Section }}
-        <a href="{{ printf "%s/" .Section | relURL }}">{{ .Section | humanize }}</a>
-      {{ end }}
-      <a href="{{ site.Home.RelPermalink }}">Home</a>
+    <nav class="article-nav reveal" aria-label="문서 이동">
+      <a href="{{ printf "%s/" .Section | relURL }}">{{ .Section | humanize }} 목록</a>
+      <a href="{{ site.Home.RelPermalink }}">홈으로</a>
     </nav>
   </article>
 {{ end }}

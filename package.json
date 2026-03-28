@@ -4,7 +4,6 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "verify": "npm run lint && npm run typecheck && npm run test && npm run check-content",
     "lint": "tsx scripts/lint.ts",
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test tests/**/*.test.ts",
@@ -12,8 +11,15 @@
     "build": "tsx scripts/build.ts",
     "audit": "npm audit --audit-level=high"
   },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
   "devDependencies": {
     "@types/node": "^22.13.1",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "esbuild": "^0.25.0",
     "tsx": "^4.19.2",
     "typescript": "^5.8.2"
   }

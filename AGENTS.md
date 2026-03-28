@@ -31,3 +31,8 @@ This file applies to the entire repository.
 - Avoid unnecessary dependencies.
 - Keep UI colors limited (2–3 core colors).
 - Use only HTTPS links in markdown frontmatter and body.
+
+## Commit style
+- Write commit subjects in Conventional Commit form: `feat: ...`, `fix: ...`, `refactor: ...`, `docs: ...`, `test: ...`, or `chore: ...`.
+- Keep the first line focused on intent, but still include the Conventional Commit prefix.
+- If a commit body includes Lore-style rationale or trailers, keep the Conventional Commit subject as the first line.

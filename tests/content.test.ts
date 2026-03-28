@@ -38,32 +38,3 @@ date: 2026-02-16
     await rm(tempRoot, { recursive: true, force: true });
   }
 });
-
-test("loadMarkdownFile resolves section landing page from _index.md", async () => {
-  const tempRoot = await mkdtemp(path.join(os.tmpdir(), "portfolio-content-section-"));
-
-  try {
-    const sectionDirectory = path.join(tempRoot, "posts");
-    await mkdir(sectionDirectory, { recursive: true });
-
-    const markdownPath = path.join(sectionDirectory, "_index.md");
-    await writeFile(
-      markdownPath,
-      `---
-title: Posts
-date: 2026-02-17
----
-
-섹션 소개`,
-      "utf8",
-    );
-
-    const parsed = await loadMarkdownFile(markdownPath, tempRoot);
-
-    assert.equal(parsed.section, "posts");
-    assert.equal(parsed.slug, "posts");
-    assert.equal(parsed.urlPath, "/posts/");
-  } finally {
-    await rm(tempRoot, { recursive: true, force: true });
-  }
-});

@@ -1,56 +1,23 @@
 {{ define "main" }}
-  {{ $tagsPage := site.GetPage "/tags" }}
-  <header class="page-hero page-hero--compact">
-    <p class="section-eyebrow">Tag</p>
+  <header class="page-head reveal">
+    <p class="page-head__eyebrow">Tag</p>
     <h1>#{{ .Title }}</h1>
-    <p class="page-hero__meta">관련 문서 {{ len .Pages }}개</p>
-    {{ with $tagsPage }}
-      <nav class="tag-shelf" aria-label="태그 바로가기">
-        <div class="tag-shelf__row">
-          <a class="tag-pill" href="{{ .RelPermalink }}">all</a>
-          {{ range .Pages.ByTitle }}
-            <a class="tag-pill {{ if eq .LinkTitle $.Title }}is-active{{ end }}" href="{{ .RelPermalink }}">
-              #{{ .LinkTitle }} · {{ len .Pages }}
-            </a>
-          {{ end }}
-        </div>
-      </nav>
-    {{ end }}
+    <p class="page-head__meta">관련 문서 {{ len .Pages }}개</p>
   </header>
 
-  <section class="section-block" aria-label="태그 문서 목록">
-    <div class="section-block__header">
-      <div>
-        <p class="section-eyebrow">Matched Entries</p>
-        <h2>{{ len .Pages }}개의 문서</h2>
-      </div>
-    </div>
-    <div class="post-grid">
-      {{ range $page := .Pages.ByDate.Reverse }}
-        <article class="post-card">
-          <a class="post-card__link" href="{{ $page.RelPermalink }}">
-            <span class="post-card__section">{{ $page.Section | humanize }}</span>
-            {{ with $page.Params.tags }}
-              {{ $currentTag := $.Title | urlize }}
-              <p class="post-card__tags">
-                {{ range first 4 . }}
-                  {{ $tagSlug := . | urlize }}
-                  <span class="tag-pill {{ if eq $tagSlug $currentTag }}is-active{{ end }}">#{{ . }}</span>
-                {{ end }}
-              </p>
-            {{ end }}
-            <h2>{{ $page.Title }}</h2>
-            {{ with ($page.Description | default $page.Summary) }}
-              <p class="post-card__summary">{{ . | plainify | truncate 160 }}</p>
-            {{ end }}
-            <div class="post-card__meta">
-              <span>{{ if $page.Date }}{{ $page.Date.Format "2006.01.02" }}{{ end }}</span>
-              <span>{{ $page.Section | humanize }}</span>
-              <span>{{ $page.ReadingTime }} min</span>
-            </div>
-          </a>
-        </article>
-      {{ end }}
-    </div>
+  <section class="flow-stream flow-stream--list" aria-label="태그 문서 목록">
+    {{ range $index, $page := .Pages.ByDate.Reverse }}
+      {{ $drift := cond (eq (mod $index 2) 0) "0.02" "-0.015" }}
+      <article class="flow-item reveal" data-drift data-drift-speed="{{ $drift }}">
+        <p class="flow-item__meta">
+          {{ if $page.Date }}{{ $page.Date.Format "2006-01-02" }} · {{ end }}{{ $page.Section | humanize }}
+          · {{ $page.ReadingTime }} min
+        </p>
+        <h2><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h2>
+        {{ with ($page.Description | default $page.Summary) }}
+          <p>{{ . | plainify | truncate 160 }}</p>
+        {{ end }}
+      </article>
+    {{ end }}
   </section>
 {{ end }}

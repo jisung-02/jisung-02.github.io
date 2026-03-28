@@ -1,53 +1,53 @@
 {{ define "main" }}
-  <header class="page-hero">
-    <p class="section-eyebrow">{{ .Section | humanize }}</p>
+  {{ $showAtmosphere := or (eq .Section "posts") (eq .Section "projects") }}
+  {{ $atmosphereImage := "" }}
+  {{ $atmosphereAlt := "" }}
+  {{ if eq .Section "posts" }}
+    {{ $atmosphereImage = "images/library-posts.jpg" }}
+    {{ $atmosphereAlt = "아치형 창과 높은 서가가 이어진 도서관 내부" }}
+  {{ else if eq .Section "projects" }}
+    {{ $atmosphereImage = "images/library-projects.jpg" }}
+    {{ $atmosphereAlt = "정돈된 열람실과 책장이 이어진 서재 풍경" }}
+  {{ end }}
+
+  <header class="page-head reveal">
+    <p class="page-head__eyebrow">Archive</p>
     <h1>{{ .Title }}</h1>
     {{ with .Content }}
-      <div class="page-hero__body">{{ . }}</div>
+      <div class="page-head__body">{{ . }}</div>
     {{ end }}
-    <p class="page-hero__meta">{{ len .Pages }} entries</p>
   </header>
 
+  {{ if and $showAtmosphere $atmosphereImage }}
+    <figure class="section-atmosphere reveal">
+      <img src="{{ $atmosphereImage | relURL }}" alt="{{ $atmosphereAlt }}" loading="lazy" decoding="async" />
+    </figure>
+  {{ end }}
+
   {{ if gt (len .Pages) 0 }}
-    <section class="section-block" aria-label="문서 목록">
-      <div class="section-block__header">
-        <div>
-          <p class="section-eyebrow">Sorted by Date</p>
-          <h2>최신 순서로 살펴보기</h2>
-        </div>
-      </div>
-      <div class="post-grid">
-        {{ range $page := .Pages.ByDate.Reverse }}
-          <article class="post-card">
-            <a class="post-card__link" href="{{ $page.RelPermalink }}">
-              <span class="post-card__section">{{ $page.Section | humanize }}</span>
-              {{ with $page.Params.tags }}
-                <p class="post-card__tags">
-                  {{ range first 4 . }}
-                    <span class="tag-pill">#{{ . }}</span>
-                  {{ end }}
-                </p>
+    <section class="flow-stream flow-stream--list" aria-label="문서 목록">
+      {{ range $index, $page := .Pages.ByDate.Reverse }}
+        {{ $drift := cond (eq (mod $index 2) 0) "0.02" "-0.015" }}
+        <article class="flow-item reveal" data-drift data-drift-speed="{{ $drift }}">
+          <p class="flow-item__meta">
+            {{ if $page.Date }}{{ $page.Date.Format "2006-01-02" }} · {{ end }}{{ $page.Section | humanize }}
+            · {{ $page.ReadingTime }} min
+          </p>
+          <h2><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h2>
+          {{ with ($page.Description | default $page.Summary) }}
+            <p>{{ . | plainify | truncate 160 }}</p>
+          {{ end }}
+          {{ with $page.Params.tags }}
+            <p class="flow-item__tags">
+              {{ range first 4 . }}
+                <a href="{{ printf "tags/%s/" (. | urlize) | relURL }}">#{{ . }}</a>
               {{ end }}
-              <h2>{{ $page.Title }}</h2>
-              {{ with ($page.Description | default $page.Summary) }}
-                <p class="post-card__summary">{{ . | plainify | truncate 160 }}</p>
-              {{ end }}
-              <div class="post-card__meta">
-                <span>{{ if $page.Date }}{{ $page.Date.Format "2006.01.02" }}{{ end }}</span>
-                <span>{{ $page.Section | humanize }}</span>
-                <span>{{ $page.ReadingTime }} min</span>
-              </div>
-            </a>
-          </article>
-        {{ end }}
-      </div>
+            </p>
+          {{ end }}
+        </article>
+      {{ end }}
     </section>
   {{ else }}
-    <section class="section-block section-block--empty">
-      <div class="empty-state">
-        <p class="section-eyebrow">Empty</p>
-        <h2>아직 공개된 콘텐츠가 없습니다.</h2>
-      </div>
-    </section>
+    <p class="empty-state reveal">아직 공개된 콘텐츠가 없습니다.</p>
   {{ end }}
 {{ end }}

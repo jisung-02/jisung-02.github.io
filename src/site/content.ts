@@ -66,7 +66,7 @@ export async function loadAllMarkdown(contentRoot: string): Promise<ParsedMarkdo
 function resolveSection(relativePathWithoutExtension: string): ContentSection {
   const [section] = relativePathWithoutExtension.split(path.sep);
 
-  if (section === "posts" || section === "profile" || section === "projects") {
+  if (section === "about" || section === "posts" || section === "profile" || section === "projects") {
     return section;
   }
 
@@ -74,10 +74,7 @@ function resolveSection(relativePathWithoutExtension: string): ContentSection {
 }
 
 function resolveSlug(relativePathWithoutExtension: string): string {
-  if (
-    relativePathWithoutExtension.endsWith(`${path.sep}index`) ||
-    relativePathWithoutExtension.endsWith(`${path.sep}_index`)
-  ) {
+  if (relativePathWithoutExtension.endsWith(`${path.sep}index`)) {
     return path.basename(path.dirname(relativePathWithoutExtension));
   }
 
@@ -89,10 +86,6 @@ function resolveUrlPath(relativePathWithoutExtension: string): string {
 
   if (normalized.endsWith("/index")) {
     return `/${normalized.slice(0, -"/index".length)}/`;
-  }
-
-  if (normalized.endsWith("/_index")) {
-    return `/${normalized.slice(0, -"/_index".length)}/`;
   }
 
   return `/${normalized}/`;

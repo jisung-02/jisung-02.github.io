@@ -1,4 +1,4 @@
-export type ContentSection = "posts" | "profile" | "projects" | "unknown";
+export type ContentSection = "about" | "posts" | "profile" | "projects" | "unknown";
 
 export interface FrontMatter {
   title?: string;
@@ -17,4 +17,13 @@ export interface ParsedMarkdown {
   section: ContentSection;
   sourcePath: string;
   urlPath: string;
+}
+
+export interface SearchIndexEntry {
+  title: string;
+  description: string;
+  section: ContentSection;
+  tags: string[];
+  date?: string;
+  url: string;
 }

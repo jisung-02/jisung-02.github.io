@@ -1,11 +1,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#ffffff" />
+  <meta name="theme-color" content="#f4eedf" />
+  <meta name="color-scheme" content="light" />
   <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ site.Params.description }}{{ end }}" />
   <meta
     http-equiv="Content-Security-Policy"
-    content="default-src 'self'; style-src 'self'; img-src 'self' https: data:; font-src 'self'"
+    content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' https: data:; connect-src 'self'"
   />
   <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
   <link rel="stylesheet" href="{{ "assets/styles.css" | relURL }}" />

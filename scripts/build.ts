@@ -1,7 +1,11 @@
 import { execSync } from "node:child_process";
-import { copyFile, cp, mkdir, readdir, rename, rm } from "node:fs/promises";
+import { copyFile, mkdir, rename, rm } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
+import { build } from "esbuild";
+
+import { generateSearchIndex } from "../src/site/search-index.js";
 
 const rootDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const staticDirectory = path.join(rootDirectory, "static");
@@ -12,7 +16,22 @@ async function main(): Promise<void> {
   await rm(temporaryAssetsDirectory, { recursive: true, force: true });
   await mkdir(temporaryAssetsDirectory, { recursive: true });
 
+  await generateSearchIndex({
+    contentDirectory: path.join(rootDirectory, "content"),
+    outputFilePath: path.join(temporaryAssetsDirectory, "search-index.json"),
+  });
+
   await copyFile(path.join(rootDirectory, "src", "assets", "styles.css"), path.join(temporaryAssetsDirectory, "styles.css"));
+
+  await build({
+    entryPoints: [path.join(rootDirectory, "src", "assets", "app.tsx")],
+    outfile: path.join(temporaryAssetsDirectory, "app.js"),
+    bundle: true,
+    format: "esm",
+    target: ["es2020"],
+    minify: true,
+    sourcemap: false,
+  });
 
   await rm(staticAssetsDirectory, { recursive: true, force: true });
   await rename(temporaryAssetsDirectory, staticAssetsDirectory);
@@ -27,28 +46,7 @@ async function main(): Promise<void> {
     throw new Error(`Hugo build failed. Ensure \`hugo\` is installed and available in PATH. ${message}`);
   }
 
-  await createLocalPreviewMirror(path.join(rootDirectory, "dist"));
   console.log("build ok: dist generated");
-}
-
-async function createLocalPreviewMirror(distDirectory: string): Promise<void> {
-  const previewDirectory = path.join(distDirectory, "blog");
-  await rm(previewDirectory, { recursive: true, force: true });
-  await mkdir(previewDirectory, { recursive: true });
-
-  const entries = await readdir(distDirectory, { withFileTypes: true });
-
-  for (const entry of entries) {
-    if (entry.name === "blog") {
-      continue;
-    }
-
-    await cp(path.join(distDirectory, entry.name), path.join(previewDirectory, entry.name), {
-      recursive: true,
-      force: true,
-      errorOnExist: false,
-    });
-  }
 }
 
 void main();

@@ -1,4 +1,4 @@
-import type { Bubble, EnvironmentElement } from "./types.js";
+import type { Bubble, EnvironmentElement, SectionTheme } from "./types.js";
 import { MAX_BUBBLES, BUBBLE_SPAWN_INTERVAL_MIN, BUBBLE_SPAWN_INTERVAL_MAX, SAND_HEIGHT } from "./types.js";
 import { PLANT_SPRITE, SHELL_SPRITE, SNAIL_SPRITE } from "./sprites.js";
 import { drawSprite } from "./utils.js";
@@ -10,11 +10,16 @@ export class Environment {
   private bubbles: Bubble[] = [];
   private nextBubbleTime = 0;
   private time = 0;
+  private theme: SectionTheme;
 
   // Sand texture dots (generated once)
   private sandDots: Array<{ x: number; y: number; r: number; alpha: number }> = [];
   private canvasW = 0;
   private canvasH = 0;
+
+  constructor(theme: SectionTheme) {
+    this.theme = theme;
+  }
 
   init(w: number, h: number): void {
     this.canvasW = w;
@@ -39,7 +44,7 @@ export class Environment {
 
   private placeElements(w: number, h: number): void {
     const sandY = h - SAND_HEIGHT;
-    const plantCount = 6 + Math.floor(Math.random() * 3);
+    const plantCount = this.theme.plantCountMin + Math.floor(Math.random() * (this.theme.plantCountMax - this.theme.plantCountMin + 1));
     const plantSpacing = w / (plantCount + 1);
 
     this.plants = [];
@@ -148,9 +153,8 @@ export class Environment {
 
     // Sand floor gradient
     const sandGrad = ctx.createLinearGradient(0, sandY, 0, h);
-    sandGrad.addColorStop(0, "#c4a86a");
-    sandGrad.addColorStop(0.3, "#b09050");
-    sandGrad.addColorStop(1, "#8a7040");
+    sandGrad.addColorStop(0, this.theme.sandTop);
+    sandGrad.addColorStop(1, this.theme.sandBottom);
     ctx.fillStyle = sandGrad;
     ctx.fillRect(0, sandY, w, SAND_HEIGHT);
 
@@ -158,7 +162,7 @@ export class Environment {
     for (const dot of this.sandDots) {
       ctx.save();
       ctx.globalAlpha = dot.alpha;
-      ctx.fillStyle = "#6a5030";
+      ctx.fillStyle = this.theme.sandDotColor;
       ctx.beginPath();
       ctx.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2);
       ctx.fill();
@@ -191,7 +195,7 @@ export class Environment {
       ctx.globalAlpha = b.opacity;
       ctx.beginPath();
       ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
-      ctx.strokeStyle = "#a8e0f0";
+      ctx.strokeStyle = this.theme.bubbleColor;
       ctx.lineWidth = 1;
       ctx.stroke();
       // Highlight

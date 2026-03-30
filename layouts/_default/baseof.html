@@ -2,15 +2,18 @@
 <html lang="ko">
   {{ partial "head.html" . }}
   <body data-section="{{ .Section }}" data-kind="{{ .Kind }}">
-    <canvas id="aquarium-canvas" class="aquarium-canvas" aria-hidden="true"></canvas>
     <a class="skip-link" href="#main-content">본문으로 바로가기</a>
-    <div class="site-shell">
-      <div class="site-progress" aria-hidden="true"></div>
-      {{ partial "header.html" . }}
-      <main id="main-content" class="container site-main">
-        {{ block "main" . }}{{ end }}
-      </main>
-      {{ partial "footer.html" . }}
+    <div class="aquarium-layout">
+      <canvas id="aquarium-canvas" class="aquarium-canvas" aria-hidden="true"></canvas>
+      <canvas id="pretext-overlay" class="pretext-overlay" aria-hidden="true"></canvas>
+      <div class="site-shell">
+        <div class="site-progress" aria-hidden="true"></div>
+        {{ partial "header.html" . }}
+        <main id="main-content" class="container site-main">
+          {{ block "main" . }}{{ end }}
+        </main>
+        {{ partial "footer.html" . }}
+      </div>
     </div>
     <script type="module" src="{{ "assets/app.js" | relURL }}"></script>
   </body>

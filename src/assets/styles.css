@@ -1,3 +1,4 @@
+/* ─── CSS Custom Properties ────────────────────────────────────────────────── */
 :root {
   --core-paper: #f4eedf;
   --core-ink: #2e2a25;
@@ -10,8 +11,8 @@
   --core-accent-soft: rgba(var(--core-accent-rgb), 0.13);
   --scroll-progress: 0%;
   --aqua-deep: #0d2233;
-  --aqua-panel: rgba(13, 34, 51, 0.75);
-  --aqua-panel-solid: rgba(13, 34, 51, 0.85);
+  --aqua-panel: rgba(13, 34, 51, 0.55);
+  --aqua-panel-solid: rgba(13, 34, 51, 0.88);
   --aqua-line: rgba(168, 224, 240, 0.15);
   --aqua-text: rgba(220, 235, 245, 0.92);
   --aqua-text-muted: rgba(168, 200, 220, 0.7);
@@ -19,16 +20,18 @@
   --aqua-accent-rgb: 92, 184, 214;
 }
 
-/* ─── Aquarium canvas ──────────────────────────────────────────────────────── */
-.aquarium-canvas {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  display: block;
-  pointer-events: auto;
-  touch-action: none;
+/* Section-specific accent colors */
+body[data-section="posts"] {
+  --aqua-accent: #7b68ee;
+  --aqua-accent-rgb: 123, 104, 238;
 }
 
+body[data-section="projects"] {
+  --aqua-accent: #6b9e23;
+  --aqua-accent-rgb: 107, 158, 35;
+}
+
+/* ─── Reset & Base ─────────────────────────────────────────────────────────── */
 * {
   box-sizing: border-box;
 }
@@ -36,27 +39,15 @@
 html,
 body {
   min-height: 100%;
+  margin: 0;
 }
 
 body {
-  margin: 0;
   font-family: "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
   color: var(--aqua-text);
   background: var(--aqua-deep);
   line-height: 1.72;
   letter-spacing: 0.003em;
-}
-
-.site-main {
-  color: var(--core-ink);
-}
-
-body::before {
-  content: none;
-}
-
-body::after {
-  content: none;
 }
 
 a {
@@ -76,31 +67,44 @@ img {
   max-width: 100%;
 }
 
-.container {
-  width: min(940px, calc(100vw - 2.4rem));
-  margin: 0 auto;
+/* ─── Aquarium Layout ──────────────────────────────────────────────────────── */
+/* Full-page grid: left = aquarium, right = content shell */
+.aquarium-layout {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: minmax(280px, 35%) 1fr;
+  grid-template-rows: 1fr;
 }
 
-.skip-link {
+/* ─── Aquarium Canvas ──────────────────────────────────────────────────────── */
+.aquarium-canvas {
   position: fixed;
-  top: 0.7rem;
-  left: 0.7rem;
-  z-index: 80;
-  transform: translateY(-150%);
-  border-radius: 999px;
-  border: 1px solid var(--aqua-line);
-  background: var(--aqua-panel-solid);
-  color: var(--aqua-text);
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 0.44rem 0.78rem;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  pointer-events: auto;
+  touch-action: none;
+  /* Canvas fills the entire viewport as a background; */
+  /* content shell visually occupies only the right portion */
 }
 
-.skip-link:focus {
-  transform: translateY(0);
+/* ─── Pretext Overlay Canvas ───────────────────────────────────────────────── */
+.pretext-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  display: none;
 }
 
+.pretext-overlay.is-active {
+  display: block;
+}
+
+/* ─── Site Shell ───────────────────────────────────────────────────────────── */
 .site-shell {
+  grid-column: 2;
   position: relative;
   z-index: 1;
   pointer-events: none;
@@ -114,6 +118,26 @@ img {
   pointer-events: auto;
 }
 
+/* ─── Skip Link ────────────────────────────────────────────────────────────── */
+.skip-link {
+  position: fixed;
+  top: 0.7rem;
+  left: 0.7rem;
+  z-index: 80;
+  transform: translateY(-150%);
+  border: 1px solid var(--aqua-line);
+  background: var(--aqua-panel-solid);
+  color: var(--aqua-text);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.44rem 0.78rem;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* ─── Scroll Progress ──────────────────────────────────────────────────────── */
 .site-progress {
   position: fixed;
   top: 0;
@@ -129,31 +153,35 @@ img {
   display: block;
   width: var(--scroll-progress);
   height: 100%;
-  background: var(--core-accent);
+  background: var(--aqua-accent);
   transition: width 0.14s linear;
 }
 
+/* ─── Header ───────────────────────────────────────────────────────────────── */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 60;
-  backdrop-filter: blur(14px);
+  backdrop-filter: blur(18px);
   background: var(--aqua-panel-solid);
   border-bottom: 1px solid var(--aqua-line);
   color: var(--aqua-text);
+  /* Pixel-art style: no border-radius */
 }
 
 .site-header__inner {
-  min-height: 68px;
+  min-height: 64px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  padding: 0 1.2rem;
 }
 
 .site-header__brand {
   display: inline-flex;
   align-items: center;
+  gap: 0.5rem;
   flex-shrink: 0;
 }
 
@@ -217,9 +245,10 @@ img {
   left: 0;
   bottom: -0.14rem;
   width: 100%;
-  height: 1px;
+  height: 2px;
   transform: scaleX(0);
   transform-origin: left;
+  /* Pixel-stepped underline via repeating-linear-gradient */
   background: rgba(var(--aqua-accent-rgb), 0.9);
   transition: transform 0.2s ease;
 }
@@ -234,11 +263,16 @@ img {
   align-items: center;
   justify-content: center;
   min-width: 82px;
-  border-radius: 999px;
   border: 1px solid var(--aqua-line);
   padding: 0.24rem 0.62rem;
   font-size: 0.73rem;
   color: var(--aqua-text-muted);
+}
+
+/* ─── Main Content Panel ───────────────────────────────────────────────────── */
+.container {
+  width: min(860px, calc(100vw - 2.4rem));
+  margin: 0 auto;
 }
 
 .site-main {
@@ -246,22 +280,27 @@ img {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  padding: 2.1rem 1.2rem 1.4rem;
+  padding: 2.1rem 1.4rem 1.4rem;
   position: relative;
+  /* Glass panel over aquarium — less opaque so aquarium shows through */
   background: var(--aqua-panel);
-  backdrop-filter: blur(10px);
-  border-radius: 0.6rem 0.6rem 0 0;
-  margin-top: 0.8rem;
+  backdrop-filter: blur(18px);
+  /* Pixel-art: no border-radius, use step-shadow border */
+  margin-top: 0;
   margin-bottom: 0;
   pointer-events: none;
-  border: 1px solid var(--aqua-line);
-  border-bottom: none;
+  border-left: 1px solid var(--aqua-line);
+  color: var(--core-ink);
+  /* Pixel-stepped shadow on left edge for depth */
+  box-shadow: -4px 0 0 0 rgba(var(--aqua-accent-rgb), 0.06),
+              -8px 0 0 0 rgba(var(--aqua-accent-rgb), 0.03);
 }
 
 .site-main * {
   pointer-events: auto;
 }
 
+/* ─── Typography & UI font assignments ────────────────────────────────────── */
 .site-header,
 .site-nav,
 .site-header__sub,
@@ -287,6 +326,7 @@ img {
   max-width: 76ch;
 }
 
+/* ─── Flow Intro (Homepage) ────────────────────────────────────────────────── */
 .flow-intro {
   margin: 0;
   display: grid;
@@ -329,6 +369,7 @@ img {
   opacity: 0.34;
 }
 
+/* ─── Flow Stream ──────────────────────────────────────────────────────────── */
 .flow-stream {
   margin-top: 1.4rem;
   position: relative;
@@ -412,7 +453,7 @@ img {
   color: rgba(var(--core-ink-rgb), 0.72);
 }
 
-/* Home page: horizontal scroll layout */
+/* ─── Home Page: Horizontal Scroll ────────────────────────────────────────── */
 .home-flow {
   flex: 1;
   display: flex;
@@ -450,6 +491,7 @@ img {
   border-right: none;
 }
 
+/* ─── Page Head ────────────────────────────────────────────────────────────── */
 .page-head {
   margin: 0 0 0.6rem;
 }
@@ -475,6 +517,7 @@ img {
   color: rgba(var(--core-ink-rgb), 0.78);
 }
 
+/* ─── Section Atmosphere ───────────────────────────────────────────────────── */
 .section-atmosphere {
   margin: 0.9rem 0 1.4rem;
   max-width: min(100%, 68ch);
@@ -486,7 +529,6 @@ img {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 0.45rem;
   border: 1px solid rgba(var(--core-ink-rgb), 0.24);
   opacity: 0.9;
   filter: saturate(0.74) sepia(0.18) contrast(0.92);
@@ -521,6 +563,7 @@ body[data-section="projects"] .section-atmosphere img {
   filter: saturate(0.7) sepia(0.12) contrast(0.94);
 }
 
+/* ─── Article & Prose ──────────────────────────────────────────────────────── */
 .article {
   display: grid;
   gap: 1.2rem;
@@ -530,6 +573,8 @@ body[data-section="projects"] .section-atmosphere img {
   max-width: 72ch;
   padding-bottom: 0.2rem;
   font-size: 1.03rem;
+  /* Positioning context for Pretext overlay lines */
+  position: relative;
 }
 
 .prose > :first-child {
@@ -588,7 +633,6 @@ body[data-kind="page"][data-section="projects"] .prose > p:first-of-type::first-
 
 .prose :not(pre) > code {
   font-size: 0.86em;
-  border-radius: 0.35em;
   background: rgba(var(--core-ink-rgb), 0.08);
   padding: 0.08em 0.24em;
 }
@@ -597,11 +641,29 @@ body[data-kind="page"][data-section="projects"] .prose > p:first-of-type::first-
   margin: 1rem 0;
   padding: 0.8rem;
   overflow: auto;
-  border-radius: 0.7rem;
   background: rgba(var(--core-ink-rgb), 0.93);
   color: var(--core-paper);
 }
 
+/* ─── Pretext Effect Lines ─────────────────────────────────────────────────── */
+.pretext-line {
+  position: absolute;
+  white-space: pre;
+  pointer-events: none;
+  /* Same as prose font */
+  font-family: "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif;
+  font-size: 1.03rem;
+  line-height: 1.72;
+  letter-spacing: 0.003em;
+  color: rgba(var(--core-ink-rgb), 0.84);
+}
+
+/* When Pretext effect is active, hide original prose text */
+.prose.pretext-active > * {
+  visibility: hidden;
+}
+
+/* ─── Article Nav ──────────────────────────────────────────────────────────── */
 .article-nav {
   display: flex;
   flex-wrap: wrap;
@@ -621,14 +683,15 @@ body[data-kind="page"][data-section="projects"] .prose > p:first-of-type::first-
   color: rgba(var(--core-ink-rgb), 0.72);
 }
 
+/* ─── Footer ───────────────────────────────────────────────────────────────── */
 .site-footer {
-  padding: 1.8rem 1.2rem 2.5rem;
+  padding: 1.8rem 1.4rem 2.5rem;
   background: var(--aqua-panel);
-  backdrop-filter: blur(10px);
-  border-radius: 0 0 0.6rem 0.6rem;
-  margin-bottom: 0.8rem;
-  border: 1px solid var(--aqua-line);
+  backdrop-filter: blur(18px);
+  border-left: 1px solid var(--aqua-line);
   border-top: 1px solid var(--aqua-line);
+  box-shadow: -4px 0 0 0 rgba(var(--aqua-accent-rgb), 0.06),
+              -8px 0 0 0 rgba(var(--aqua-accent-rgb), 0.03);
 }
 
 .site-footer__inner {
@@ -642,6 +705,7 @@ body[data-kind="page"][data-section="projects"] .prose > p:first-of-type::first-
   font-size: 0.9rem;
 }
 
+/* ─── Finder (Search) ──────────────────────────────────────────────────────── */
 .finder {
   max-width: 76ch;
   padding-top: 0.9rem;
@@ -683,7 +747,6 @@ body[data-kind="page"][data-section="projects"] .prose > p:first-of-type::first-
 .finder__recent button {
   width: 100%;
   border: 1px solid var(--aqua-line);
-  border-radius: 0.65rem;
   padding: 0.5rem 0.62rem;
   font: inherit;
   font-size: 0.86rem;
@@ -704,7 +767,6 @@ body[data-kind="page"][data-section="projects"] .prose > p:first-of-type::first-
 
 .finder__recent button {
   width: auto;
-  border-radius: 999px;
   padding: 0.2rem 0.52rem;
   font-size: 0.74rem;
   cursor: pointer;
@@ -744,7 +806,6 @@ body[data-kind="page"][data-section="projects"] .prose > p:first-of-type::first-
 .finder__badge {
   width: fit-content;
   border: 1px solid var(--aqua-line);
-  border-radius: 999px;
   padding: 0.02rem 0.4rem;
   font-size: 0.65rem;
   text-transform: uppercase;
@@ -763,11 +824,11 @@ body[data-kind="page"][data-section="projects"] .prose > p:first-of-type::first-
 
 mark {
   background: rgba(var(--core-accent-rgb), 0.24);
-  border-radius: 0.25em;
   color: inherit;
   padding: 0 0.1em;
 }
 
+/* ─── Page Transitions ─────────────────────────────────────────────────────── */
 @view-transition {
   navigation: auto;
 }
@@ -787,23 +848,13 @@ mark {
 }
 
 @keyframes page-fade-out {
-  from {
-    opacity: 1;
-  }
-  to {
-    opacity: 0;
-  }
+  from { opacity: 1; }
+  to   { opacity: 0; }
 }
 
 @keyframes page-fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .site-main {
@@ -825,6 +876,7 @@ html.is-page-leave .site-main {
   transform: translateY(-4px);
 }
 
+/* ─── Reveal Animations ────────────────────────────────────────────────────── */
 .reveal {
   opacity: 1;
   transform: translateY(0);
@@ -841,6 +893,7 @@ html.js .reveal.is-visible {
   transform: translateY(0);
 }
 
+/* ─── Focus Styles ─────────────────────────────────────────────────────────── */
 .finder__input:focus,
 .finder__select:focus,
 .finder__recent button:focus,
@@ -853,11 +906,36 @@ html.js .reveal.is-visible {
   outline-offset: 2px;
 }
 
+/* ─── Aquarium Hint (mobile: thin visible strip above content) ─────────────── */
+/* On mobile, a thin strip shows the aquarium creature before content starts */
+.aquarium-hint {
+  display: none;
+}
+
+/* ─── Responsive: Tablet / Mobile ─────────────────────────────────────────── */
 @media (max-width: 960px) {
+  /* Switch to single-column: aquarium as top strip, content below */
+  .aquarium-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: 200px 1fr;
+  }
+
+  .site-shell {
+    grid-column: 1;
+    grid-row: 2;
+    min-height: calc(100vh - 200px);
+  }
+
+  /* Keep canvas fixed full-screen */
+  .aquarium-canvas {
+    position: fixed;
+    inset: 0;
+  }
+
   .site-header__inner {
     align-items: flex-start;
     flex-direction: column;
-    padding: 0.5rem 0;
+    padding: 0.5rem 1rem;
   }
 
   .site-header__actions {
@@ -871,6 +949,10 @@ html.js .reveal.is-visible {
 }
 
 @media (max-width: 760px) {
+  .aquarium-layout {
+    grid-template-rows: 160px 1fr;
+  }
+
   .container {
     width: min(940px, calc(100vw - 1.4rem));
   }
@@ -896,6 +978,7 @@ html.js .reveal.is-visible {
   }
 }
 
+/* ─── Reduced Motion ───────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),
   ::view-transition-new(root) {

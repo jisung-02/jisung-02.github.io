@@ -5,26 +5,59 @@ import { drawSprite } from "./utils.js";
 const IDLE_FRAME_INTERVAL = 0.5;
 const SWIM_FRAME_INTERVAL = 0.18;
 const EAT_FRAME_INTERVAL = 0.2;
+const BREACHING_FRAME_INTERVAL = 0.12;
 const IDLE_BOBSPEED = 1.4;
 const IDLE_BOBAMP = 3;
+const SCALE_MULTIPLIER = 4 / 3; // Upgrade from scale 3 to 4
 
 export class Creature {
   position: Vec2;
   private target: Vec2 | null = null;
   private state: CreatureState = "idle";
-  private facingLeft = false;
+  facingLeft = false;
   private frameIndex = 0;
   private frameTimer = 0;
   private idleTime = 0;
   private readonly type: CreatureType;
-  private readonly sprite: SpriteSheet;
+  readonly sprite: SpriteSheet;
   private readonly speed: number;
+  private scaledSprite: SpriteSheet;
 
   constructor(sprite: SpriteSheet, type: CreatureType) {
     this.sprite = sprite;
     this.type = type;
     this.speed = CREATURE_SPEEDS[type];
     this.position = { x: 0, y: 0 };
+    // Create upscaled sprite (scale 3 → 4)
+    this.scaledSprite = { ...sprite, scale: Math.round(sprite.scale * SCALE_MULTIPLIER) };
+  }
+
+  getPosition(): Vec2 {
+    return { ...this.position };
+  }
+
+  getScaledDimensions(): { w: number; h: number } {
+    const s = this.scaledSprite;
+    return { w: s.width * s.scale, h: s.height * s.scale };
+  }
+
+  setBreach(active: boolean): void {
+    if (active) {
+      this.state = "breaching";
+      this.frameIndex = 0;
+      this.frameTimer = 0;
+    } else if (this.state === "breaching") {
+      this.state = "idle";
+    }
+  }
+
+  drawOnContext(ctx: CanvasRenderingContext2D, pos: Vec2): void {
+    const s = this.scaledSprite;
+    const frames = s.frames.swim;
+    const frame = frames[Math.min(this.frameIndex, frames.length - 1)];
+    const w = s.width * s.scale;
+    const h = s.height * s.scale;
+    drawSprite(ctx, frame, s.palette, pos.x - w / 2, pos.y - h / 2, s.scale, this.facingLeft);
   }
 
   moveTo(pos: Vec2): void {
@@ -93,17 +126,22 @@ export class Creature {
       }
     }
 
-    // Clamp to viewport
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    const sandY = h - SAND_HEIGHT;
-    const halfW = this.sprite.width * this.sprite.scale / 2;
-    const halfH = this.sprite.height * this.sprite.scale / 2;
-    this.position.x = Math.max(halfW, Math.min(w - halfW, this.position.x));
-    this.position.y = Math.max(halfH + 10, Math.min(sandY - halfH - 4, this.position.y));
+    // Clamp to viewport (only when not breaching)
+    if (this.state !== "breaching") {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const sandY = h - SAND_HEIGHT;
+      const halfW = this.scaledSprite.width * this.scaledSprite.scale / 2;
+      const halfH = this.scaledSprite.height * this.scaledSprite.scale / 2;
+      this.position.x = Math.max(halfW, Math.min(w - halfW, this.position.x));
+      this.position.y = Math.max(halfH + 10, Math.min(sandY - halfH - 4, this.position.y));
+    }
 
     // Advance animation frame
-    const interval = this.state === "idle" ? IDLE_FRAME_INTERVAL : this.state === "eating" ? EAT_FRAME_INTERVAL : SWIM_FRAME_INTERVAL;
+    const interval = this.state === "idle" ? IDLE_FRAME_INTERVAL
+      : this.state === "eating" ? EAT_FRAME_INTERVAL
+      : this.state === "breaching" ? BREACHING_FRAME_INTERVAL
+      : SWIM_FRAME_INTERVAL;
     this.frameTimer += delta;
     if (this.frameTimer >= interval) {
       this.frameTimer = 0;
@@ -126,17 +164,21 @@ export class Creature {
   }
 
   private stateToFrameKey(): "idle" | "swim" | "eat" {
-    if (this.state === "swimming") return "swim";
+    if (this.state === "swimming" || this.state === "breaching") return "swim";
     if (this.state === "eating") return "eat";
     return "idle";
   }
 
   draw(ctx: CanvasRenderingContext2D): void {
-    const frames = this.sprite.frames[this.stateToFrameKey()];
+    // Skip drawing if breaching (drawn on overlay canvas instead)
+    if (this.state === "breaching") return;
+
+    const s = this.scaledSprite;
+    const frames = s.frames[this.stateToFrameKey()];
     const frame = frames[Math.min(this.frameIndex, frames.length - 1)];
-    const scale = this.sprite.scale;
-    const w = this.sprite.width * scale;
-    const h = this.sprite.height * scale;
+    const scale = s.scale;
+    const w = s.width * scale;
+    const h = s.height * scale;
 
     // Gentle bob in idle
     const bobOffset = this.state === "idle" ? Math.sin(this.idleTime * IDLE_BOBSPEED) * IDLE_BOBAMP : 0;
@@ -144,7 +186,7 @@ export class Creature {
     const drawX = this.position.x - w / 2;
     const drawY = this.position.y - h / 2 + bobOffset;
 
-    drawSprite(ctx, frame, this.sprite.palette, drawX, drawY, scale, this.facingLeft);
+    drawSprite(ctx, frame, s.palette, drawX, drawY, scale, this.facingLeft);
   }
 }
 

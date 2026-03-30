@@ -1,4 +1,4 @@
-import type { FoodPellet } from "./types.js";
+import type { FoodPellet, SectionTheme } from "./types.js";
 import type { Environment } from "./environment.js";
 import type { Creature } from "./creatures.js";
 import { FOOD_SPRITE } from "./sprites.js";
@@ -9,9 +9,10 @@ export interface RendererHandle {
   ctx: CanvasRenderingContext2D;
   startLoop: (env: Environment, creature: Creature, food: FoodPellet[]) => void;
   renderStatic: (env: Environment, creature: Creature, food: FoodPellet[]) => void;
+  stopLoop: () => void;
 }
 
-export function createRenderer(): RendererHandle {
+export function createRenderer(theme: SectionTheme): RendererHandle {
   const canvas = document.getElementById("aquarium-canvas") as HTMLCanvasElement;
   const ctx = canvas.getContext("2d")!;
 
@@ -42,9 +43,9 @@ export function createRenderer(): RendererHandle {
     const w = window.innerWidth;
     const h = window.innerHeight;
     const grad = ctx.createLinearGradient(0, 0, 0, h);
-    grad.addColorStop(0, "#0d2233");
-    grad.addColorStop(0.4, "#0f2e3e");
-    grad.addColorStop(1, "#1a4a4a");
+    grad.addColorStop(0, theme.waterTop);
+    grad.addColorStop(0.4, theme.waterMid);
+    grad.addColorStop(1, theme.waterBottom);
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, w, h);
 
@@ -59,7 +60,7 @@ export function createRenderer(): RendererHandle {
       const ry = 40 + Math.cos(now + i * 0.7) * 15;
       ctx.beginPath();
       ctx.ellipse(cx, cy, rx, ry, Math.sin(now + i) * 0.5, 0, Math.PI * 2);
-      ctx.fillStyle = "#7fd4e8";
+      ctx.fillStyle = theme.causticColor;
       ctx.fill();
     }
     ctx.restore();
@@ -114,5 +115,12 @@ export function createRenderer(): RendererHandle {
     drawFrame(env, creature, food);
   }
 
-  return { canvas, ctx, startLoop, renderStatic };
+  function stopLoop(): void {
+    if (animId) {
+      cancelAnimationFrame(animId);
+      animId = 0;
+    }
+  }
+
+  return { canvas, ctx, startLoop, renderStatic, stopLoop };
 }

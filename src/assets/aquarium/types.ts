@@ -14,7 +14,59 @@ export interface SpriteSheet {
 }
 
 export type CreatureType = "axolotl" | "betta" | "lungfish";
-export type CreatureState = "idle" | "swimming" | "eating";
+export type CreatureState = "idle" | "swimming" | "eating" | "breaching";
+
+export interface SectionTheme {
+  waterTop: string;
+  waterMid: string;
+  waterBottom: string;
+  sandTop: string;
+  sandBottom: string;
+  sandDotColor: string;
+  causticColor: string;
+  bubbleColor: string;
+  plantCountMin: number;
+  plantCountMax: number;
+}
+
+export const SECTION_THEMES: Record<string, SectionTheme> = {
+  posts: {
+    waterTop: "#0a1a3d",
+    waterMid: "#0d2050",
+    waterBottom: "#1a2a6a",
+    sandTop: "#8a8aaa",
+    sandBottom: "#5a5a7a",
+    sandDotColor: "#4a4a6a",
+    causticColor: "#9088d8",
+    bubbleColor: "#b8b0f0",
+    plantCountMin: 5,
+    plantCountMax: 7,
+  },
+  projects: {
+    waterTop: "#0d1a0d",
+    waterMid: "#122212",
+    waterBottom: "#1e3a1e",
+    sandTop: "#a09060",
+    sandBottom: "#706040",
+    sandDotColor: "#5a4a30",
+    causticColor: "#c8a840",
+    bubbleColor: "#d4c870",
+    plantCountMin: 8,
+    plantCountMax: 11,
+  },
+  default: {
+    waterTop: "#0d2233",
+    waterMid: "#0f2e3e",
+    waterBottom: "#1a4a4a",
+    sandTop: "#c4a86a",
+    sandBottom: "#8a7040",
+    sandDotColor: "#6a5030",
+    causticColor: "#7fd4e8",
+    bubbleColor: "#a8e0f0",
+    plantCountMin: 6,
+    plantCountMax: 9,
+  },
+};
 
 export interface Vec2 {
   x: number;

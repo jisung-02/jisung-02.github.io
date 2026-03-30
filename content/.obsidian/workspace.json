@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "scratchpad/Ansible.md",
+                "file": "scratchpad/Ansible 학습.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Ansible"
+              "title": "Ansible 학습"
             }
           }
         ]
@@ -183,10 +183,10 @@
       "bases:새 베이스 생성하기": false
     }
   },
-  "active": "6141d56a2d44b4a5",
+  "active": "4dd685b3b9005814",
   "lastOpenFiles": [
     "scratchpad/UTM사용법.md",
-    "scratchpad/Ansible.md",
+    "scratchpad/Ansible 학습.md",
     "Pasted image 20260330151432.png",
     "Pasted image 20260330150545.png",
     "Pasted image 20260330150535.png",

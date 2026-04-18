@@ -1,0 +1,22 @@
+{{- $page := .Page -}}
+{{- $folders := .Children -}}
+{{- $isNested := .Nested | default false -}}
+{{- if gt (len $folders) 0 -}}
+  <ul class="vault-nav__list{{ if $isNested }} vault-nav__list--nested{{ end }}">
+    {{- range $folders }}
+      {{- $folderURL := "" -}}
+      {{- with .indexPage }}
+        {{- $folderURL = .urlPath | relURL -}}
+      {{- else -}}
+        {{- $folderURL = printf "/%s/" .path | relURL -}}
+      {{- end -}}
+      {{- $isActive := hasPrefix $page.RelPermalink $folderURL -}}
+      <li class="vault-nav__item">
+        <a class="vault-nav__link fx-underline{{ if $isActive }} is-active{{ end }}" href="{{ $folderURL }}">{{ .name }}</a>
+        {{- if gt (len .children) 0 -}}
+          {{ partial "vault-nav.html" (dict "Page" $page "Children" .children "Nested" true) }}
+        {{- end -}}
+      </li>
+    {{- end -}}
+  </ul>
+{{- end -}}

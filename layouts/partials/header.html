@@ -1,6 +1,8 @@
+{{- $page := .Page -}}
+{{- $vaultNav := .VaultNav -}}
 <header class="site-header">
   <div class="container site-header__inner">
-    <a class="site-header__brand fx-underline {{ if .IsHome }}is-active{{ end }}" href="{{ site.Home.RelPermalink }}">
+    <a class="site-header__brand fx-underline {{ if $page.IsHome }}is-active{{ end }}" href="{{ site.Home.RelPermalink }}">
       <span class="site-header__label">
         <span class="site-header__name">Jisung</span>
         <small class="site-header__sub">notes archive</small>
@@ -8,14 +10,18 @@
     </a>
 
     <div class="site-header__actions">
-      <nav class="site-nav" aria-label="주요 네비게이션">
-        {{ range site.Menus.main }}
-          {{ $isHomeMenu := and $.IsHome (eq .Name "Home") }}
-          {{ $isActive := or ($.IsMenuCurrent "main" .) ($.HasMenuCurrent "main" .) $isHomeMenu }}
-          <a href="{{ .URL | relURL }}" class="fx-underline {{ if $isActive }}is-active{{ end }}">{{ .Name }}</a>
+      <nav class="vault-nav" aria-label="폴더 네비게이션">
+        <div class="vault-nav__top">
+          {{ $isHome := $page.IsHome }}
+          <a href="{{ site.Home.RelPermalink }}" class="vault-nav__link fx-underline {{ if $isHome }}is-active{{ end }}">Home</a>
+          {{ $isTags := or (eq $page.Kind "taxonomy") (eq $page.Kind "taxonomyTerm") }}
+          <a href="{{ "tags/" | relURL }}" class="vault-nav__link fx-underline {{ if $isTags }}is-active{{ end }}">Tags</a>
+        </div>
+        {{ with $vaultNav }}
+          {{ with .topLevelFolders }}
+            {{ partial "vault-nav.html" (dict "Page" $page "Children" .) }}
+          {{ end }}
         {{ end }}
-        {{ $isTags := or (eq $.Kind "taxonomy") (eq $.Kind "taxonomyTerm") }}
-        <a href="{{ "tags/" | relURL }}" class="fx-underline {{ if $isTags }}is-active{{ end }}">Tags</a>
       </nav>
       <span id="local-clock" class="site-header__clock" data-label="Seoul" data-timezone="Asia/Seoul"></span>
     </div>

@@ -240,3 +240,32 @@ draft`,
     await rm(tempRoot, { recursive: true, force: true });
   }
 });
+
+test("buildNavigationData preserves nested folder hierarchy", async () => {
+  const tempRoot = await mkdtemp(path.join(os.tmpdir(), "portfolio-nav-nested-"));
+
+  try {
+    const nestedDirectory = path.join(tempRoot, "scratchpad", "network");
+    await mkdir(nestedDirectory, { recursive: true });
+
+    await writeFile(
+      path.join(nestedDirectory, "ssh-routing.md"),
+      `---
+title: SSH Routing
+date: 2026-01-03
+---
+
+ssh routing`,
+      "utf8",
+    );
+
+    const entries = await loadAllMarkdown(tempRoot);
+    const payload = buildNavigationData(entries);
+    const scratchpad = payload.topLevelFolders.find((folder) => folder.path === "scratchpad");
+
+    assert.equal(scratchpad?.children[0]?.path, "scratchpad/network");
+    assert.equal(scratchpad?.children[0]?.pages[0]?.title, "SSH Routing");
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
+});

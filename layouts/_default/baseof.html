@@ -8,7 +8,7 @@
       <canvas id="pretext-overlay" class="pretext-overlay" aria-hidden="true"></canvas>
       <div class="site-shell">
         <div class="site-progress" aria-hidden="true"></div>
-        {{ partial "header.html" . }}
+        {{ partial "header.html" (dict "Page" . "VaultNav" (index hugo.Data.generated "vault-navigation")) }}
         <main id="main-content" class="container site-main">
           {{ block "main" . }}{{ end }}
         </main>

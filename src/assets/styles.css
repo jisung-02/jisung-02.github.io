@@ -214,25 +214,63 @@ img {
 
 .site-header__actions {
   display: inline-flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.92rem;
   flex-wrap: wrap;
   justify-content: flex-end;
 }
 
-.site-nav {
+.vault-nav {
+  display: grid;
+  gap: 0.42rem;
+  max-width: min(46rem, 100%);
+}
+
+.vault-nav__top {
   display: flex;
   flex-wrap: wrap;
   gap: 0.78rem;
+  align-items: center;
 }
 
-.site-nav a {
+.vault-nav__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.42rem 0.72rem;
+}
+
+.vault-nav__list--nested {
+  width: 100%;
+  padding-left: 0.88rem;
+  border-left: 1px solid var(--aqua-line);
+  display: grid;
+  gap: 0.34rem;
+}
+
+.vault-nav__item {
+  display: grid;
+  gap: 0.34rem;
+}
+
+.vault-nav__link {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.03rem;
   font-size: 0.89rem;
   color: var(--aqua-text-muted);
+  line-height: 1.15;
 }
 
-.site-nav a.is-active {
+.vault-nav__link.is-active {
   color: var(--aqua-text);
+}
+
+.vault-nav__link.fx-underline::after {
+  bottom: -0.12rem;
 }
 
 .fx-underline {
@@ -302,7 +340,7 @@ img {
 
 /* ─── Typography & UI font assignments ────────────────────────────────────── */
 .site-header,
-.site-nav,
+.vault-nav,
 .site-header__sub,
 .site-header__clock,
 .flow-intro__eyebrow,
@@ -897,7 +935,7 @@ html.js .reveal.is-visible {
 .finder__input:focus,
 .finder__select:focus,
 .finder__recent button:focus,
-.site-nav a:focus,
+.vault-nav a:focus,
 .site-header__brand:focus,
 .flow-links a:focus,
 .flow-item a:focus,
@@ -940,7 +978,10 @@ html.js .reveal.is-visible {
 
   .site-header__actions {
     width: 100%;
-    justify-content: space-between;
+    justify-content: flex-start;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.65rem;
   }
 
   .flow-item:nth-child(even) {

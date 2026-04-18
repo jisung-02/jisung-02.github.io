@@ -1,5 +1,6 @@
+import assert from "node:assert/strict";
 import { execSync } from "node:child_process";
-import { copyFile, mkdir, rename, rm, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -64,6 +65,8 @@ async function main(): Promise<void> {
     throw new Error(`Hugo build failed. Ensure \`hugo\` is installed and available in PATH. ${message}`);
   }
 
+  await assertRenderedHeaderNavigation(path.join(rootDirectory, "dist"));
+
   console.log("build ok: dist generated");
 }
 
@@ -78,6 +81,27 @@ export async function writeGeneratedArtifacts(options: GeneratedArtifactsOptions
 
 async function writeGeneratedJson(filePath: string, payload: unknown): Promise<void> {
   await writeFile(filePath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
+}
+
+async function assertRenderedHeaderNavigation(distDirectory: string): Promise<void> {
+  const homeHtml = await readFile(path.join(distDirectory, "index.html"), "utf8");
+  assert.match(
+    homeHtml,
+    /<nav class=vault-nav aria-label="홈, 태그, 폴더 네비게이션">[\s\S]*?<a class="vault-nav__link fx-underline" href=\/blog\/about\/>About<\/a>/,
+    "expected the About folder link to render with the /blog/ base path and authored label",
+  );
+  assert.match(
+    homeHtml,
+    /<nav class=vault-nav aria-label="홈, 태그, 폴더 네비게이션">[\s\S]*?<a class="vault-nav__link fx-underline" href=\/blog\/scratchpad\/>Scratchpad<\/a>/,
+    "expected the Scratchpad folder link to render with a humanized fallback label",
+  );
+
+  const postsHtml = await readFile(path.join(distDirectory, "posts", "index.html"), "utf8");
+  assert.match(
+    postsHtml,
+    /<nav class=vault-nav aria-label="홈, 태그, 폴더 네비게이션">[\s\S]*?<a class="vault-nav__link fx-underline is-active" href=\/blog\/posts\/>Posts<\/a>/,
+    "expected the Posts folder link to stay active on posts pages",
+  );
 }
 
 function isDirectExecution(): boolean {

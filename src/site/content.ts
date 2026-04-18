@@ -32,15 +32,24 @@ export async function loadMarkdownFile(
   const { frontMatter, body } = parseMarkdownDocument(raw);
 
   const relativePath = path.relative(contentRoot, filePath);
+  const vaultPath = normalizeVaultPath(relativePath);
+  const pathSegments = vaultPath.split("/");
   const relativePathWithoutExtension = relativePath.replace(/\.md$/, "");
+  const isIndex = path.basename(relativePath) === "_index.md";
+  const title = resolveTitle(frontMatter.title, relativePathWithoutExtension);
 
   const section = resolveSection(relativePathWithoutExtension);
   const slug = resolveSlug(relativePathWithoutExtension);
   const urlPath = resolveUrlPath(relativePathWithoutExtension);
 
   const summary = resolveSummary(frontMatter.description, body);
+  const date = typeof frontMatter.date === "string" ? frontMatter.date : undefined;
 
   return {
+    title,
+    vaultPath,
+    pathSegments,
+    isIndex,
     frontMatter,
     body,
     summary,
@@ -48,6 +57,7 @@ export async function loadMarkdownFile(
     section,
     sourcePath: filePath,
     urlPath,
+    date,
   };
 }
 
@@ -74,7 +84,7 @@ function resolveSection(relativePathWithoutExtension: string): ContentSection {
 }
 
 function resolveSlug(relativePathWithoutExtension: string): string {
-  if (relativePathWithoutExtension.endsWith(`${path.sep}index`)) {
+  if (relativePathWithoutExtension.endsWith(`${path.sep}index`) || relativePathWithoutExtension.endsWith(`${path.sep}_index`)) {
     return path.basename(path.dirname(relativePathWithoutExtension));
   }
 
@@ -88,7 +98,23 @@ function resolveUrlPath(relativePathWithoutExtension: string): string {
     return `/${normalized.slice(0, -"/index".length)}/`;
   }
 
+  if (normalized.endsWith("/_index")) {
+    return `/${normalized.slice(0, -"/_index".length)}/`;
+  }
+
   return `/${normalized}/`;
+}
+
+function normalizeVaultPath(relativePath: string): string {
+  return relativePath.split(path.sep).join("/");
+}
+
+function resolveTitle(title: unknown, relativePathWithoutExtension: string): string {
+  if (typeof title === "string" && title.trim().length > 0) {
+    return title.trim();
+  }
+
+  return resolveSlug(relativePathWithoutExtension);
 }
 
 function resolveSummary(description: unknown, body: string): string {

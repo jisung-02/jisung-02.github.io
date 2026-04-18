@@ -34,6 +34,10 @@ date: 2026-02-16
     assert.equal(parsed.urlPath, "/posts/deep/");
     assert.equal(parsed.frontMatter.title, "Deep Dive");
     assert.match(parsed.summary, /본문에 링크/);
+    assert.equal(parsed.title, "Deep Dive");
+    assert.equal(parsed.vaultPath, "posts/deep/index.md");
+    assert.deepEqual(parsed.pathSegments, ["posts", "deep", "index.md"]);
+    assert.equal(parsed.isIndex, false);
   } finally {
     await rm(tempRoot, { recursive: true, force: true });
   }

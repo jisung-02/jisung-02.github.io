@@ -2,17 +2,7 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { loadAllMarkdown } from "./content.js";
-import type { ContentSection, ParsedMarkdown } from "./types.js";
-
-export interface SearchIndexEntry {
-  title: string;
-  description: string;
-  section: ContentSection;
-  sectionLabel: string;
-  tags: string[];
-  date?: string;
-  url: string;
-}
+import type { ParsedMarkdown, SearchIndexEntry } from "./types.js";
 
 export interface GenerateSearchIndexOptions {
   contentDirectory: string;

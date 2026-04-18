@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
-import { mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import test from "node:test";
 
+import { writeGeneratedArtifacts, type GeneratedArtifactsOptions } from "../scripts/build.js";
 import { loadAllMarkdown } from "../src/site/content.js";
 import { buildSearchIndex } from "../src/site/search-index.js";
 
@@ -71,4 +72,50 @@ test("buildSearchIndex includes folder labels for arbitrary vault sections", () 
   ] as Awaited<ReturnType<typeof loadAllMarkdown>>);
 
   assert.equal(index[0]?.sectionLabel, "scratchpad/network");
+});
+
+test("writeGeneratedArtifacts writes the generated JSON payloads to disk", async () => {
+  const tempRoot = await mkdtemp(path.join(os.tmpdir(), "portfolio-artifacts-"));
+
+  try {
+    const generatedDataDirectory = path.join(tempRoot, "data", "generated");
+    const staticAssetsDirectory = path.join(tempRoot, "static", "assets");
+    const artifacts: GeneratedArtifactsOptions = {
+      generatedDataDirectory,
+      staticAssetsDirectory,
+      searchIndex: [
+        {
+          title: "First Post",
+          description: "First description",
+          section: "posts",
+          sectionLabel: "posts",
+          tags: ["one"],
+          date: "2026-01-01",
+          url: "/posts/first/",
+        },
+      ],
+      navigationData: {
+        topLevelFolders: [],
+        recentNotes: [],
+      },
+    };
+
+    await writeGeneratedArtifacts(artifacts);
+
+    const generatedSearchIndex = JSON.parse(
+      await readFile(path.join(generatedDataDirectory, "search-index.json"), "utf8"),
+    ) as unknown;
+    const generatedNavigation = JSON.parse(
+      await readFile(path.join(generatedDataDirectory, "vault-navigation.json"), "utf8"),
+    ) as unknown;
+    const staticSearchIndex = JSON.parse(
+      await readFile(path.join(staticAssetsDirectory, "search-index.json"), "utf8"),
+    ) as unknown;
+
+    assert.deepEqual(generatedSearchIndex, artifacts.searchIndex);
+    assert.deepEqual(generatedNavigation, artifacts.navigationData);
+    assert.deepEqual(staticSearchIndex, artifacts.searchIndex);
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
 });

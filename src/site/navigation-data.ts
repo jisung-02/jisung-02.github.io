@@ -10,7 +10,6 @@ export interface NavigationRecentNote {
 }
 
 export interface NavigationData {
-  generatedAt: string;
   topLevelFolders: VaultFolderNode[];
   recentNotes: NavigationRecentNote[];
 }
@@ -20,7 +19,6 @@ export function buildNavigationData(entries: ParsedMarkdown[]): NavigationData {
   const tree = buildVaultTree(publicEntries.map(toTreeEntry));
 
   return {
-    generatedAt: new Date().toISOString(),
     topLevelFolders: tree.children,
     recentNotes: publicEntries
       .filter((entry) => !entry.isIndex)

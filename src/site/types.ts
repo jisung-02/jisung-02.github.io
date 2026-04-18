@@ -68,6 +68,7 @@ export interface SearchIndexEntry {
   title: string;
   description: string;
   section: ContentSection;
+  sectionLabel: string;
   tags: string[];
   date?: string;
   url: string;

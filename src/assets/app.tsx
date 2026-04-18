@@ -1,15 +1,7 @@
 import { type KeyboardEvent as ReactKeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { initAquarium } from "./aquarium/index.js";
-
-interface SearchIndexEntry {
-  title: string;
-  description: string;
-  section: "about" | "posts" | "profile" | "projects" | "unknown";
-  tags: string[];
-  date?: string;
-  url: string;
-}
+import type { SearchIndexEntry } from "../site/types.js";
 
 interface FinderProps {
   indexUrl: string;
@@ -306,11 +298,13 @@ function normalizeEntry(candidate: unknown): SearchIndexEntry | null {
     : [];
 
   const date = typeof raw.date === "string" ? raw.date : undefined;
+  const sectionLabel = typeof raw.sectionLabel === "string" ? raw.sectionLabel.trim() : "";
 
   return {
     title,
     description,
     section,
+    sectionLabel: sectionLabel || section,
     tags,
     date,
     url,

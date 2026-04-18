@@ -173,7 +173,7 @@ test("buildVaultTree excludes asset entries and counts them on the folder", () =
   assert.equal(deepFolder?.pages[0].title, "Note");
 });
 
-test("buildNavigationData returns generatedAt, folders, and recent notes", async () => {
+test("buildNavigationData returns folders and recent notes without a build timestamp", async () => {
   const tempRoot = await mkdtemp(path.join(os.tmpdir(), "portfolio-nav-data-"));
 
   try {
@@ -230,7 +230,7 @@ draft`,
     const entries = await loadAllMarkdown(tempRoot);
     const payload = buildNavigationData(entries);
 
-    assert.match(payload.generatedAt, /^\d{4}-\d{2}-\d{2}T/);
+    assert.equal("generatedAt" in payload, false);
     assert.deepEqual(payload.topLevelFolders.map((folder) => folder.path), ["posts", "scratchpad"]);
     assert.deepEqual(payload.recentNotes.map((note) => note.title), ["SSH Routing", "First Post"]);
     assert.deepEqual(payload.recentNotes.map((note) => note.folder), ["scratchpad/network", "posts"]);

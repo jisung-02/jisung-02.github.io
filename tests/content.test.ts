@@ -13,7 +13,7 @@ test("loadMarkdownFile resolves section, slug, url, summary", async () => {
     const nestedDirectory = path.join(tempRoot, "posts", "deep");
     await mkdir(nestedDirectory, { recursive: true });
 
-    const markdownPath = path.join(nestedDirectory, "_index.md");
+    const markdownPath = path.join(nestedDirectory, "index.md");
     await writeFile(
       markdownPath,
       `---
@@ -35,7 +35,7 @@ date: 2026-02-16
     assert.equal(parsed.frontMatter.title, "Deep Dive");
     assert.match(parsed.summary, /본문에 링크/);
     assert.equal(parsed.title, "Deep Dive");
-    assert.equal(parsed.vaultPath, "posts/deep/_index.md");
+    assert.equal(parsed.vaultPath, "posts/deep/index.md");
     assert.deepEqual(parsed.pathSegments, ["posts", "deep"]);
     assert.equal(parsed.isIndex, true);
     assert.deepEqual(parsed.tags, []);

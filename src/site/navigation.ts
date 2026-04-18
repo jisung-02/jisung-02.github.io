@@ -6,12 +6,12 @@ import type {
 } from "./types.js";
 
 export function buildVaultTree(entries: readonly VaultTreeEntry[]): VaultFolderNode {
-  const root = createFolderNode("", 0);
+  const root = createFolderNode("", "", -1);
 
   for (const entry of entries) {
     const folder = ensureFolder(root, entry.pathSegments);
 
-    if (entry.kind === "asset" || !entry.vaultPath.toLowerCase().endsWith(".md")) {
+    if (entry.kind === "asset") {
       folder.assetCount += 1;
       continue;
     }
@@ -29,8 +29,9 @@ export function buildVaultTree(entries: readonly VaultTreeEntry[]): VaultFolderN
   return root;
 }
 
-function createFolderNode(path: string, depth: number): VaultFolderNode {
+function createFolderNode(name: string, path: string, depth: number): VaultFolderNode {
   return {
+    name,
     path,
     depth,
     children: [],
@@ -48,7 +49,7 @@ function ensureFolder(root: VaultFolderNode, pathSegments: readonly string[]): V
     let next = current.children.find((child) => child.path === nextPath);
 
     if (!next) {
-      next = createFolderNode(nextPath, current.depth + 1);
+      next = createFolderNode(segment, nextPath, current.depth + 1);
       current.children.push(next);
     }
 
@@ -59,7 +60,7 @@ function ensureFolder(root: VaultFolderNode, pathSegments: readonly string[]): V
 }
 
 function sortFolderTree(node: VaultFolderNode): void {
-  node.children.sort((left, right) => left.path.localeCompare(right.path));
+  node.children.sort((left, right) => left.name.localeCompare(right.name));
   node.pages.sort(comparePages);
 
   for (const child of node.children) {

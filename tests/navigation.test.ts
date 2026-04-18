@@ -53,18 +53,22 @@ note`,
     const entries = await loadAllMarkdown(tempRoot);
     const tree = buildVaultTree(entries.map(toTreeEntry));
 
+    assert.equal(tree.name, "");
     assert.equal(tree.path, "");
-    assert.equal(tree.depth, 0);
+    assert.equal(tree.depth, -1);
     assert.deepEqual(tree.children.map((child) => child.path), ["posts"]);
 
     const postsFolder = tree.children[0];
+    assert.equal(postsFolder?.name, "posts");
     assert.equal(postsFolder?.path, "posts");
-    assert.equal(postsFolder?.depth, 1);
+    assert.equal(postsFolder?.depth, 0);
     assert.equal(postsFolder?.indexPage?.title, "Posts");
     assert.deepEqual(postsFolder?.children.map((child) => child.path), ["posts/deep"]);
 
     const deepFolder = postsFolder?.children[0];
+    assert.equal(deepFolder?.name, "deep");
     assert.equal(deepFolder?.path, "posts/deep");
+    assert.equal(deepFolder?.depth, 1);
     assert.equal(deepFolder?.pages.length, 1);
     assert.equal(deepFolder?.pages[0].title, "First Deep Note");
   } finally {
@@ -137,6 +141,11 @@ test("buildVaultTree excludes asset entries and counts them on the folder", () =
       pathSegments: ["posts", "deep"],
     },
     {
+      kind: "asset",
+      vaultPath: "posts/deep/notes.txt",
+      pathSegments: ["posts", "deep"],
+    },
+    {
       kind: "page",
       title: "Note",
       urlPath: "/posts/deep/note/",
@@ -147,22 +156,15 @@ test("buildVaultTree excludes asset entries and counts them on the folder", () =
       pathSegments: ["posts", "deep"],
       isIndex: false,
     },
-    {
-      kind: "page",
-      title: "Broken Image",
-      urlPath: "/posts/deep/image.png/",
-      vaultPath: "posts/deep/image.png",
-      summary: "image",
-      date: "2026-01-04",
-      tags: [],
-      pathSegments: ["posts", "deep"],
-      isIndex: false,
-    },
   ]);
 
   const postsFolder = tree.children[0];
   const deepFolder = postsFolder?.children[0];
 
+  assert.equal(postsFolder?.name, "posts");
+  assert.equal(postsFolder?.depth, 0);
+  assert.equal(deepFolder?.name, "deep");
+  assert.equal(deepFolder?.depth, 1);
   assert.equal(postsFolder?.path, "posts");
   assert.equal(deepFolder?.path, "posts/deep");
   assert.equal(deepFolder?.assetCount, 2);

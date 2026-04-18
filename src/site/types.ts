@@ -39,6 +39,7 @@ export interface VaultPageSummary {
 }
 
 export interface VaultFolderNode {
+  name: string;
   path: string;
   depth: number;
   children: VaultFolderNode[];

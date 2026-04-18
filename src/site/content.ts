@@ -35,7 +35,7 @@ export async function loadMarkdownFile(
   const vaultPath = normalizeVaultPath(relativePath);
   const pathSegments = vaultPath.split("/").slice(0, -1);
   const relativePathWithoutExtension = relativePath.replace(/\.md$/, "");
-  const isIndex = path.basename(relativePath) === "_index.md";
+  const isIndex = isIndexFile(relativePath);
   const title = resolveTitle(frontMatter.title, relativePathWithoutExtension);
   const tags = resolveTags(frontMatter.tags);
 
@@ -86,12 +86,9 @@ function resolveSection(relativePathWithoutExtension: string): ContentSection {
 }
 
 function resolveSlug(relativePathWithoutExtension: string): string {
-  if (relativePathWithoutExtension === "_index") {
-    return "index";
-  }
-
-  if (relativePathWithoutExtension.endsWith(`${path.sep}_index`)) {
-    return path.basename(path.dirname(relativePathWithoutExtension));
+  if (isIndexPath(relativePathWithoutExtension)) {
+    const parentDirectory = path.dirname(relativePathWithoutExtension);
+    return parentDirectory === "." ? "index" : path.basename(parentDirectory);
   }
 
   return path.basename(relativePathWithoutExtension);
@@ -100,11 +97,15 @@ function resolveSlug(relativePathWithoutExtension: string): string {
 function resolveUrlPath(relativePathWithoutExtension: string): string {
   const normalized = relativePathWithoutExtension.split(path.sep).join("/");
 
+  if (normalized.endsWith("/index")) {
+    return `/${normalized.slice(0, -"/index".length)}/`;
+  }
+
   if (normalized.endsWith("/_index")) {
     return `/${normalized.slice(0, -"/_index".length)}/`;
   }
 
-  if (normalized === "_index") {
+  if (normalized === "index" || normalized === "_index") {
     return "/";
   }
 
@@ -138,6 +139,15 @@ function resolveTags(tags: unknown): string[] {
   }
 
   return tags.filter((tag): tag is string => typeof tag === "string");
+}
+
+function isIndexFile(relativePath: string): boolean {
+  return isIndexPath(relativePath.replace(/\.md$/, ""));
+}
+
+function isIndexPath(relativePathWithoutExtension: string): boolean {
+  const baseName = path.basename(relativePathWithoutExtension);
+  return baseName === "index" || baseName === "_index";
 }
 
 function stripMarkdown(markdown: string): string {

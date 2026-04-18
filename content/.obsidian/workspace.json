@@ -4,24 +4,39 @@
     "type": "split",
     "children": [
       {
-        "id": "83391810824a86e2",
+        "id": "35bd667ea5275374",
         "type": "tabs",
         "children": [
           {
-            "id": "6141d56a2d44b4a5",
+            "id": "c7dbe1fa2fc2b433",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "scratchpad/Ansible 학습.md",
+                "file": "scratchpad/기술 트렌드 팔로업.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Ansible 학습"
+              "title": "기술 트렌드 팔로업"
+            }
+          },
+          {
+            "id": "f16bfc3cd8e2170d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "scratchpad/기술 트렌드 팔로업.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "기술 트렌드 팔로업"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -183,10 +198,18 @@
       "bases:새 베이스 생성하기": false
     }
   },
-  "active": "4dd685b3b9005814",
+  "active": "f16bfc3cd8e2170d",
   "lastOpenFiles": [
-    "scratchpad/UTM사용법.md",
+    "scratchpad/의존성 역전.md",
+    "scratchpad/AI를 위한 CLI.md",
+    "scratchpad/기술 트렌드 팔로업.md",
+    "scratchpad/클라우드플레어 제품군.md",
+    "scratchpad/리눅스 네임스페이스.md",
+    "scratchpad/ssh 라우팅 한계 분석.md",
+    "scratchpad/OpenStack FloatingIP와 기타등등.md",
+    "Pasted image 20260330101613.png",
     "scratchpad/Ansible 학습.md",
+    "scratchpad/UTM사용법.md",
     "Pasted image 20260330151432.png",
     "Pasted image 20260330150545.png",
     "Pasted image 20260330150535.png",
@@ -196,9 +219,7 @@
     "Pasted image 20260330150145.png",
     "Pasted image 20260330150136.png",
     "Pasted image 20260330150127.png",
-    "Pasted image 20260330150004.png",
     "scratchpad/PaperClip.md",
-    "scratchpad/기술 트렌드 팔로업.md",
     "scratchpad/스프링 낙서장.md",
     "scratchpad/2026-03 AI 개발 기술 팔로업.md",
     "scratchpad/AI Agent 인프라 & 보안 기술 정리.md",
@@ -206,7 +227,6 @@
     "scratchpad/내가 무엇을 모르는지 알아보았다.md",
     "scratchpad/OS 기본기 정리 (컨테이너 포함).md",
     "scratchpad/RSA Conference 2026.md",
-    "scratchpad/ssh 라우팅 한계 분석.md",
     "projects/sample-project.md",
     "profile/_index.md",
     "scratchpad"

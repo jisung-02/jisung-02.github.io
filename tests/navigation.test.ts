@@ -53,3 +53,49 @@ note`,
     await rm(tempRoot, { recursive: true, force: true });
   }
 });
+
+test("buildVaultTree excludes non-markdown and image-like entries", () => {
+  const tree = buildVaultTree([
+    {
+      title: "Image",
+      vaultPath: "posts/deep/image.png",
+      pathSegments: ["posts", "deep", "image.png"],
+      isIndex: false,
+      section: "unknown",
+      summary: "image",
+      slug: "image",
+      urlPath: "/posts/deep/image.png/",
+      sourcePath: "/tmp/posts/deep/image.png",
+    } as never,
+    {
+      title: "Text",
+      vaultPath: "posts/deep/notes.txt",
+      pathSegments: ["posts", "deep", "notes.txt"],
+      isIndex: false,
+      section: "unknown",
+      summary: "text",
+      slug: "notes",
+      urlPath: "/posts/deep/notes.txt/",
+      sourcePath: "/tmp/posts/deep/notes.txt",
+    } as never,
+    {
+      title: "Note",
+      vaultPath: "posts/deep/note.md",
+      pathSegments: ["posts", "deep", "note.md"],
+      isIndex: false,
+      section: "posts",
+      summary: "note",
+      slug: "note",
+      urlPath: "/posts/deep/note/",
+      sourcePath: "/tmp/posts/deep/note.md",
+    } as never,
+  ]);
+
+  const postsFolder = tree.folders[0];
+  const deepFolder = postsFolder?.folders[0];
+
+  assert.equal(postsFolder?.name, "posts");
+  assert.equal(deepFolder?.name, "deep");
+  assert.equal(deepFolder?.pages.length, 1);
+  assert.equal(deepFolder?.pages[0].title, "Note");
+});

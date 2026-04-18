@@ -4,6 +4,10 @@ export function buildVaultTree(entries: readonly VaultPageSummary[]): VaultFolde
   const root: VaultFolderNode = createFolderNode("", []);
 
   for (const entry of entries) {
+    if (!isNavigableMarkdownEntry(entry)) {
+      continue;
+    }
+
     const folderSegments = entry.pathSegments.slice(0, -1);
     const folder = ensureFolder(root, folderSegments);
 
@@ -41,4 +45,22 @@ function ensureFolder(root: VaultFolderNode, pathSegments: string[]): VaultFolde
   }
 
   return current;
+}
+
+function isNavigableMarkdownEntry(entry: unknown): entry is VaultPageSummary {
+  if (!entry || typeof entry !== "object") {
+    return false;
+  }
+
+  const candidate = entry as Partial<VaultPageSummary>;
+  if (typeof candidate.vaultPath !== "string" || !candidate.vaultPath.toLowerCase().endsWith(".md")) {
+    return false;
+  }
+
+  if (!Array.isArray(candidate.pathSegments) || candidate.pathSegments.length === 0) {
+    return false;
+  }
+
+  const lastSegment = candidate.pathSegments[candidate.pathSegments.length - 1];
+  return typeof lastSegment === "string" && lastSegment.toLowerCase().endsWith(".md");
 }

@@ -50,3 +50,25 @@ draft`,
     await rm(tempRoot, { recursive: true, force: true });
   }
 });
+
+test("buildSearchIndex includes folder labels for arbitrary vault sections", () => {
+  const index = buildSearchIndex([
+    {
+      title: "SSH Routing",
+      vaultPath: "scratchpad/network/ssh-routing.md",
+      pathSegments: ["scratchpad", "network"],
+      isIndex: false,
+      tags: ["network"],
+      frontMatter: { title: "SSH Routing", tags: ["network"], date: "2026-04-18" },
+      body: "",
+      summary: "jump host notes",
+      slug: "ssh-routing",
+      section: "unknown",
+      sourcePath: "/tmp/ssh-routing.md",
+      urlPath: "/scratchpad/network/ssh-routing/",
+      date: "2026-04-18",
+    },
+  ] as Awaited<ReturnType<typeof loadAllMarkdown>>);
+
+  assert.equal(index[0]?.sectionLabel, "scratchpad/network");
+});

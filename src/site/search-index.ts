@@ -2,7 +2,17 @@ import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { loadAllMarkdown } from "./content.js";
-import type { ParsedMarkdown, SearchIndexEntry } from "./types.js";
+import type { ContentSection, ParsedMarkdown } from "./types.js";
+
+export interface SearchIndexEntry {
+  title: string;
+  description: string;
+  section: ContentSection;
+  sectionLabel: string;
+  tags: string[];
+  date?: string;
+  url: string;
+}
 
 export interface GenerateSearchIndexOptions {
   contentDirectory: string;
@@ -31,6 +41,7 @@ export function buildSearchIndex(entries: ParsedMarkdown[]): SearchIndexEntry[] 
         title: entry.frontMatter.title ?? entry.slug,
         description: entry.summary,
         section: entry.section,
+        sectionLabel: entry.pathSegments.join("/") || entry.section,
         tags,
         date: entry.frontMatter.date,
         url: entry.urlPath,

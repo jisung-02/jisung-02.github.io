@@ -13,6 +13,7 @@ resources/
 static/assets/app.js
 static/assets/search-index.json
 static/assets/styles.css
+data/generated/
 .hugo_build.lock
 
 # Test artifacts

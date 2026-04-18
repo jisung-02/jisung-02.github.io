@@ -5,6 +5,7 @@ import path from "node:path";
 import test from "node:test";
 
 import { loadAllMarkdown } from "../src/site/content.js";
+import { buildNavigationData } from "../src/site/navigation-data.js";
 import { buildVaultTree } from "../src/site/navigation.js";
 import type { VaultTreeEntry } from "../src/site/types.js";
 
@@ -170,4 +171,72 @@ test("buildVaultTree excludes asset entries and counts them on the folder", () =
   assert.equal(deepFolder?.assetCount, 2);
   assert.equal(deepFolder?.pages.length, 1);
   assert.equal(deepFolder?.pages[0].title, "Note");
+});
+
+test("buildNavigationData returns generatedAt, folders, and recent notes", async () => {
+  const tempRoot = await mkdtemp(path.join(os.tmpdir(), "portfolio-nav-data-"));
+
+  try {
+    const postsDirectory = path.join(tempRoot, "posts");
+    const nestedDirectory = path.join(tempRoot, "scratchpad", "network");
+    await mkdir(postsDirectory, { recursive: true });
+    await mkdir(nestedDirectory, { recursive: true });
+
+    await writeFile(
+      path.join(postsDirectory, "_index.md"),
+      `---
+title: Posts
+date: 2026-01-04
+---
+
+posts index`,
+      "utf8",
+    );
+
+    await writeFile(
+      path.join(postsDirectory, "first.md"),
+      `---
+title: First Post
+date: 2026-01-02
+---
+
+first post`,
+      "utf8",
+    );
+
+    await writeFile(
+      path.join(nestedDirectory, "ssh-routing.md"),
+      `---
+title: SSH Routing
+date: 2026-01-03
+---
+
+ssh routing`,
+      "utf8",
+    );
+
+    await writeFile(
+      path.join(tempRoot, "scratchpad", "draft.md"),
+      `---
+title: Draft Note
+date: 2026-01-05
+draft: true
+---
+
+draft`,
+      "utf8",
+    );
+
+    const entries = await loadAllMarkdown(tempRoot);
+    const payload = buildNavigationData(entries);
+
+    assert.match(payload.generatedAt, /^\d{4}-\d{2}-\d{2}T/);
+    assert.deepEqual(payload.topLevelFolders.map((folder) => folder.path), ["posts", "scratchpad"]);
+    assert.deepEqual(payload.recentNotes.map((note) => note.title), ["SSH Routing", "First Post"]);
+    assert.deepEqual(payload.recentNotes.map((note) => note.folder), ["scratchpad/network", "posts"]);
+    assert.equal(payload.recentNotes.some((note) => note.title === "Posts"), false);
+    assert.equal(payload.recentNotes.some((note) => note.title === "Draft Note"), false);
+  } finally {
+    await rm(tempRoot, { recursive: true, force: true });
+  }
 });

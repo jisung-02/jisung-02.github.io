@@ -1,44 +1,55 @@
-import type { VaultFolderNode, VaultPageSummary } from "./types.js";
+import type {
+  VaultFolderNode,
+  VaultPageSummary,
+  VaultTreeEntry,
+  VaultTreePageEntry,
+} from "./types.js";
 
-export function buildVaultTree(entries: readonly VaultPageSummary[]): VaultFolderNode {
-  const root: VaultFolderNode = createFolderNode("", []);
+export function buildVaultTree(entries: readonly VaultTreeEntry[]): VaultFolderNode {
+  const root = createFolderNode("", 0);
 
   for (const entry of entries) {
-    if (!isNavigableMarkdownEntry(entry)) {
+    const folder = ensureFolder(root, entry.pathSegments);
+
+    if (entry.kind === "asset" || !entry.vaultPath.toLowerCase().endsWith(".md")) {
+      folder.assetCount += 1;
       continue;
     }
 
-    const folderSegments = entry.pathSegments.slice(0, -1);
-    const folder = ensureFolder(root, folderSegments);
-
+    const page = toVaultPageSummary(entry);
     if (entry.isIndex) {
-      folder.indexPage = entry;
+      folder.indexPage = page;
       continue;
     }
 
-    folder.pages.push(entry);
+    folder.pages.push(page);
   }
 
+  sortFolderTree(root);
   return root;
 }
 
-function createFolderNode(name: string, pathSegments: string[]): VaultFolderNode {
+function createFolderNode(path: string, depth: number): VaultFolderNode {
   return {
-    name,
-    pathSegments,
-    folders: [],
+    path,
+    depth,
+    children: [],
     pages: [],
+    assetCount: 0,
   };
 }
 
-function ensureFolder(root: VaultFolderNode, pathSegments: string[]): VaultFolderNode {
+function ensureFolder(root: VaultFolderNode, pathSegments: readonly string[]): VaultFolderNode {
   let current = root;
 
-  for (const segment of pathSegments) {
-    let next = current.folders.find((folder) => folder.name === segment);
+  for (let index = 0; index < pathSegments.length; index += 1) {
+    const segment = pathSegments[index];
+    const nextPath = current.path ? `${current.path}/${segment}` : segment;
+    let next = current.children.find((child) => child.path === nextPath);
+
     if (!next) {
-      next = createFolderNode(segment, [...current.pathSegments, segment]);
-      current.folders.push(next);
+      next = createFolderNode(nextPath, current.depth + 1);
+      current.children.push(next);
     }
 
     current = next;
@@ -47,20 +58,38 @@ function ensureFolder(root: VaultFolderNode, pathSegments: string[]): VaultFolde
   return current;
 }
 
-function isNavigableMarkdownEntry(entry: unknown): entry is VaultPageSummary {
-  if (!entry || typeof entry !== "object") {
-    return false;
+function sortFolderTree(node: VaultFolderNode): void {
+  node.children.sort((left, right) => left.path.localeCompare(right.path));
+  node.pages.sort(comparePages);
+
+  for (const child of node.children) {
+    sortFolderTree(child);
+  }
+}
+
+function comparePages(left: VaultPageSummary, right: VaultPageSummary): number {
+  const leftDate = left.date ?? "";
+  const rightDate = right.date ?? "";
+
+  if (leftDate !== rightDate) {
+    return rightDate.localeCompare(leftDate);
   }
 
-  const candidate = entry as Partial<VaultPageSummary>;
-  if (typeof candidate.vaultPath !== "string" || !candidate.vaultPath.toLowerCase().endsWith(".md")) {
-    return false;
+  const titleOrder = left.title.localeCompare(right.title);
+  if (titleOrder !== 0) {
+    return titleOrder;
   }
 
-  if (!Array.isArray(candidate.pathSegments) || candidate.pathSegments.length === 0) {
-    return false;
-  }
+  return left.vaultPath.localeCompare(right.vaultPath);
+}
 
-  const lastSegment = candidate.pathSegments[candidate.pathSegments.length - 1];
-  return typeof lastSegment === "string" && lastSegment.toLowerCase().endsWith(".md");
+function toVaultPageSummary(entry: VaultTreePageEntry): VaultPageSummary {
+  return {
+    title: entry.title,
+    urlPath: entry.urlPath,
+    vaultPath: entry.vaultPath,
+    summary: entry.summary,
+    date: entry.date,
+    tags: entry.tags,
+  };
 }

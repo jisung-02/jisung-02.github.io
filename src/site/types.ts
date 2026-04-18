@@ -9,25 +9,42 @@ export interface FrontMatter {
   [key: string]: string | string[] | boolean | undefined;
 }
 
-export interface VaultPageSummary {
+export interface VaultTreePageEntry {
+  kind: "page";
   title: string;
   vaultPath: string;
   pathSegments: string[];
   isIndex: boolean;
-  section: ContentSection;
-  summary: string;
-  slug: string;
   urlPath: string;
-  sourcePath: string;
+  summary: string;
   date?: string;
+  tags: string[];
+}
+
+export interface VaultTreeAssetEntry {
+  kind: "asset";
+  vaultPath: string;
+  pathSegments: string[];
+}
+
+export type VaultTreeEntry = VaultTreePageEntry | VaultTreeAssetEntry;
+
+export interface VaultPageSummary {
+  title: string;
+  urlPath: string;
+  vaultPath: string;
+  summary: string;
+  date?: string;
+  tags: string[];
 }
 
 export interface VaultFolderNode {
-  name: string;
-  pathSegments: string[];
-  folders: VaultFolderNode[];
+  path: string;
+  depth: number;
+  children: VaultFolderNode[];
   pages: VaultPageSummary[];
   indexPage?: VaultPageSummary;
+  assetCount: number;
 }
 
 export interface ParsedMarkdown {
@@ -35,6 +52,7 @@ export interface ParsedMarkdown {
   vaultPath: string;
   pathSegments: string[];
   isIndex: boolean;
+  tags: string[];
   frontMatter: FrontMatter;
   body: string;
   summary: string;

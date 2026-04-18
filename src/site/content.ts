@@ -33,10 +33,11 @@ export async function loadMarkdownFile(
 
   const relativePath = path.relative(contentRoot, filePath);
   const vaultPath = normalizeVaultPath(relativePath);
-  const pathSegments = vaultPath.split("/");
+  const pathSegments = vaultPath.split("/").slice(0, -1);
   const relativePathWithoutExtension = relativePath.replace(/\.md$/, "");
   const isIndex = path.basename(relativePath) === "_index.md";
   const title = resolveTitle(frontMatter.title, relativePathWithoutExtension);
+  const tags = resolveTags(frontMatter.tags);
 
   const section = resolveSection(relativePathWithoutExtension);
   const slug = resolveSlug(relativePathWithoutExtension);
@@ -50,6 +51,7 @@ export async function loadMarkdownFile(
     vaultPath,
     pathSegments,
     isIndex,
+    tags,
     frontMatter,
     body,
     summary,
@@ -66,8 +68,8 @@ export async function loadAllMarkdown(contentRoot: string): Promise<ParsedMarkdo
   const loaded = await Promise.all(files.map((file) => loadMarkdownFile(file, contentRoot)));
 
   return loaded.sort((left, right) => {
-    const leftDate = left.frontMatter.date ?? "";
-    const rightDate = right.frontMatter.date ?? "";
+    const leftDate = left.date ?? "";
+    const rightDate = right.date ?? "";
 
     return rightDate.localeCompare(leftDate);
   });
@@ -84,7 +86,11 @@ function resolveSection(relativePathWithoutExtension: string): ContentSection {
 }
 
 function resolveSlug(relativePathWithoutExtension: string): string {
-  if (relativePathWithoutExtension.endsWith(`${path.sep}index`) || relativePathWithoutExtension.endsWith(`${path.sep}_index`)) {
+  if (relativePathWithoutExtension === "_index") {
+    return "index";
+  }
+
+  if (relativePathWithoutExtension.endsWith(`${path.sep}_index`)) {
     return path.basename(path.dirname(relativePathWithoutExtension));
   }
 
@@ -94,12 +100,12 @@ function resolveSlug(relativePathWithoutExtension: string): string {
 function resolveUrlPath(relativePathWithoutExtension: string): string {
   const normalized = relativePathWithoutExtension.split(path.sep).join("/");
 
-  if (normalized.endsWith("/index")) {
-    return `/${normalized.slice(0, -"/index".length)}/`;
-  }
-
   if (normalized.endsWith("/_index")) {
     return `/${normalized.slice(0, -"/_index".length)}/`;
+  }
+
+  if (normalized === "_index") {
+    return "/";
   }
 
   return `/${normalized}/`;
@@ -124,6 +130,14 @@ function resolveSummary(description: unknown, body: string): string {
 
   const plain = stripMarkdown(body);
   return plain.slice(0, 160).trim();
+}
+
+function resolveTags(tags: unknown): string[] {
+  if (!Array.isArray(tags)) {
+    return [];
+  }
+
+  return tags.filter((tag): tag is string => typeof tag === "string");
 }
 
 function stripMarkdown(markdown: string): string {

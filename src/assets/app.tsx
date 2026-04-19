@@ -1,9 +1,11 @@
 import { type KeyboardEvent as ReactKeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import type { SearchIndexEntry } from "../site/types.js";
+import { normalizeSiteRoot, resolveSiteUrl } from "./site-url.js";
 
 interface FinderProps {
   indexUrl: string;
+  siteRoot: string;
 }
 
 const SECTION_LABELS: Record<"all" | SearchIndexEntry["section"], string> = {
@@ -21,7 +23,7 @@ const MAX_RECENT_URLS = 5;
 const PAGE_ENTER_DURATION_MS = 380;
 const PAGE_LEAVE_DURATION_MS = 210;
 
-function Finder({ indexUrl }: FinderProps): JSX.Element {
+function Finder({ indexUrl, siteRoot }: FinderProps): JSX.Element {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [entries, setEntries] = useState<SearchIndexEntry[]>([]);
@@ -30,7 +32,7 @@ function Finder({ indexUrl }: FinderProps): JSX.Element {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [recentUrls, setRecentUrls] = useState<string[]>(() => readRecentUrls());
+  const [recentUrls, setRecentUrls] = useState<string[]>(() => readRecentUrls(siteRoot));
 
   useEffect(() => {
     let active = true;
@@ -44,7 +46,7 @@ function Finder({ indexUrl }: FinderProps): JSX.Element {
         }
 
         const payload = (await response.json()) as unknown;
-        const normalized = normalizeEntries(payload);
+        const normalized = normalizeEntries(payload, siteRoot);
 
         if (active) {
           setEntries(normalized);
@@ -265,17 +267,17 @@ function Finder({ indexUrl }: FinderProps): JSX.Element {
   );
 }
 
-function normalizeEntries(payload: unknown): SearchIndexEntry[] {
+function normalizeEntries(payload: unknown, siteRoot: string): SearchIndexEntry[] {
   if (!Array.isArray(payload)) {
     return [];
   }
 
   return payload
-    .map((candidate) => normalizeEntry(candidate))
+    .map((candidate) => normalizeEntry(candidate, siteRoot))
     .filter((candidate): candidate is SearchIndexEntry => Boolean(candidate));
 }
 
-function normalizeEntry(candidate: unknown): SearchIndexEntry | null {
+function normalizeEntry(candidate: unknown, siteRoot: string): SearchIndexEntry | null {
   if (!candidate || typeof candidate !== "object") {
     return null;
   }
@@ -304,7 +306,7 @@ function normalizeEntry(candidate: unknown): SearchIndexEntry | null {
     sectionLabel: sectionLabel || section,
     tags,
     date,
-    url,
+    url: resolveSiteUrl(siteRoot, url),
   };
 }
 
@@ -369,7 +371,7 @@ function renderHighlighted(text: string, query: string): JSX.Element | string {
   );
 }
 
-function readRecentUrls(): string[] {
+function readRecentUrls(siteRoot: string): string[] {
   try {
     const payload = window.localStorage.getItem(RECENT_STORAGE_KEY);
     if (!payload) {
@@ -381,7 +383,13 @@ function readRecentUrls(): string[] {
       return [];
     }
 
-    return parsed.filter((item): item is string => typeof item === "string");
+    return [
+      ...new Set(
+        parsed
+          .filter((item): item is string => typeof item === "string")
+          .map((item) => resolveSiteUrl(siteRoot, item)),
+      ),
+    ];
   } catch {
     return [];
   }
@@ -614,8 +622,9 @@ function bootstrapReactFinder(): void {
   }
 
   const indexUrl = rootElement.dataset.indexUrl ?? "assets/search-index.json";
+  const siteRoot = normalizeSiteRoot(rootElement.dataset.siteRoot ?? "/");
   const root = createRoot(rootElement);
-  root.render(<Finder indexUrl={indexUrl} />);
+  root.render(<Finder indexUrl={indexUrl} siteRoot={siteRoot} />);
 }
 
 function bootstrapApp(): void {

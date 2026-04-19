@@ -148,6 +148,11 @@ async function assertRenderedEditorialShell(distDirectory: string): Promise<void
   );
   assert.match(
     homeHtml,
+    /data-site-root=(?:"\/blog\/"|\/blog\/)/,
+    "expected the finder mount to expose the site root for client-side links",
+  );
+  assert.match(
+    homeHtml,
     /<aside class="?home-rail"?[\s\S]*?Scratchpad/,
     "expected the home page to render a secondary scratchpad rail",
   );

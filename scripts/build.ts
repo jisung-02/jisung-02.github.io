@@ -156,6 +156,11 @@ async function assertRenderedEditorialShell(distDirectory: string): Promise<void
     /<aside class="?home-rail"?[\s\S]*?Scratchpad/,
     "expected the home page to render a secondary scratchpad rail",
   );
+  assert.doesNotMatch(
+    homeHtml,
+    /클라우드, 인프라, 실행 기록을 다시 읽기 좋게 정리한 개발자 노트입니다\./,
+    "expected the site header summary copy to be removed",
+  );
 
   const postsHtml = await readFile(path.join(distDirectory, "posts", "index.html"), "utf8");
   assert.match(

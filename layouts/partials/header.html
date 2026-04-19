@@ -1,29 +1,21 @@
 {{- $page := .Page -}}
-{{- $vaultNav := .VaultNav -}}
 <header class="site-header">
-  <div class="container site-header__inner">
-    <a class="site-header__brand fx-underline {{ if $page.IsHome }}is-active{{ end }}" href="{{ site.Home.RelPermalink }}">
-      <span class="site-header__label">
-        <span class="site-header__name">Jisung</span>
-        <small class="site-header__sub">notes archive</small>
-      </span>
-    </a>
-
-    <div class="site-header__actions">
-      <nav class="vault-nav" aria-label="홈, 태그, 폴더 네비게이션">
-        <div class="vault-nav__top">
-          {{ $isHome := $page.IsHome }}
-          <a href="{{ site.Home.RelPermalink }}" class="vault-nav__link fx-underline {{ if $isHome }}is-active{{ end }}">Home</a>
-          {{ $isTags := or (eq $page.Kind "taxonomy") (eq $page.Kind "taxonomyTerm") }}
-          <a href="{{ "tags/" | relURL }}" class="vault-nav__link fx-underline {{ if $isTags }}is-active{{ end }}">Tags</a>
-        </div>
-        {{ with $vaultNav }}
-          {{ with .topLevelFolders }}
-            {{ partial "vault-nav.html" (dict "Page" $page "Children" .) }}
-          {{ end }}
-        {{ end }}
-      </nav>
-      <span id="local-clock" class="site-header__clock" data-label="Seoul" data-timezone="Asia/Seoul"></span>
+  <div class="site-header__inner">
+    <div class="site-header__brand">
+      <a class="site-header__brand-link fx-underline {{ if $page.IsHome }}is-active{{ end }}" href="{{ site.Home.RelPermalink }}">
+        <span class="site-header__name">Jisung Notes</span>
+      </a>
+      <p class="site-header__summary">클라우드, 인프라, 실행 기록을 다시 읽기 좋게 정리한 개발자 노트입니다.</p>
     </div>
+
+    <nav class="site-header__nav" aria-label="주요 탐색">
+      <a class="site-header__nav-link{{ if $page.IsHome }} is-active{{ end }}" href="{{ site.Home.RelPermalink }}">Home</a>
+      <a class="site-header__nav-link{{ if eq $page.Section "posts" }} is-active{{ end }}" href="{{ "posts/" | relURL }}">Posts</a>
+      <a class="site-header__nav-link{{ if eq $page.Section "projects" }} is-active{{ end }}" href="{{ "projects/" | relURL }}">Projects</a>
+      <a class="site-header__nav-link{{ if or (eq $page.Kind "taxonomy") (eq $page.Kind "taxonomyTerm") }} is-active{{ end }}" href="{{ "tags/" | relURL }}">Tags</a>
+      <a class="site-header__nav-link{{ if eq $page.Section "profile" }} is-active{{ end }}" href="{{ "profile/" | relURL }}">Profile</a>
+      <a class="site-header__nav-link{{ if eq $page.Section "scratchpad" }} is-active{{ end }}" href="{{ "scratchpad/" | relURL }}">Scratchpad</a>
+      <span id="local-clock" class="site-header__clock" data-label="Seoul" data-timezone="Asia/Seoul"></span>
+    </nav>
   </div>
 </header>

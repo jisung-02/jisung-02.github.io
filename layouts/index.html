@@ -1,56 +1,50 @@
 {{ define "main" }}
-  {{ $streamPages := where site.RegularPages "Section" "in" (slice "posts" "projects") }}
-  {{ $recentStream := first 12 ($streamPages.ByDate.Reverse) }}
+  {{ $featurePool := where site.RegularPages "Section" "in" (slice "posts" "projects") }}
+  {{ $sorted := $featurePool.ByDate.Reverse }}
+  {{ $stream := slice }}
+  {{ if gt (len $sorted) 1 }}
+    {{ $stream = first 6 (after 1 $sorted) }}
+  {{ end }}
+  {{ $scratchpadPool := where site.RegularPages "Section" "eq" "scratchpad" }}
+  {{ $scratchpad := first 4 ($scratchpadPool.ByDate.Reverse) }}
 
-  <article class="home-flow">
-    <header class="flow-intro reveal">
-      <p class="flow-intro__eyebrow">Notes Archive</p>
-      <h1>작게 만들고, 오래 꺼내 쓰는 기록을 남깁니다.</h1>
-      <p>
-        프로젝트 실행 로그와 학습 노트를 압축해, 다음 작업에 바로 재사용할 수 있게 정리합니다.
-      </p>
-      <p class="flow-intro__now">
-        지금은
-        <span
-          id="now-rotator"
-          data-now-phrases="프로젝트 런북을 정리하는 중,주간 리뷰 루프를 다듬는 중,데모 시나리오를 정리하는 중"
-        >
-          프로젝트 런북을 정리하는 중
-        </span>
-      </p>
-    </header>
-
-    {{ if gt (len $recentStream) 0 }}
-      <section class="flow-stream" aria-label="최근 업데이트">
-        {{ range $index, $page := $recentStream }}
-          {{ $drift := cond (eq (mod $index 2) 0) "0.03" "-0.02" }}
-          <article class="flow-item reveal" data-drift data-drift-speed="{{ $drift }}">
-            <p class="flow-item__meta">
-              {{ if $page.Date }}{{ $page.Date.Format "2006-01-02" }} · {{ end }}{{ $page.Section | humanize }}
-            </p>
-            <h2><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h2>
-            {{ with ($page.Description | default $page.Summary) }}
-              <p>{{ . | plainify | truncate 140 }}</p>
-            {{ end }}
-            {{ with $page.Params.tags }}
-              <p class="flow-item__tags">
-                {{ range first 3 . }}
-                  <a href="{{ printf "tags/%s/" (. | urlize) | relURL }}">#{{ . }}</a>
-                {{ end }}
-              </p>
-            {{ end }}
-          </article>
-        {{ end }}
-      </section>
+  <section class="home-feature reveal">
+    <p class="home-feature__kicker">Featured article</p>
+    {{ if gt (len $sorted) 0 }}
+      {{ $featured := index $sorted 0 }}
+      <h1><a href="{{ $featured.RelPermalink }}">{{ $featured.Title }}</a></h1>
+      <p class="home-feature__deck">{{ ($featured.Description | default $featured.Summary) | plainify | truncate 180 }}</p>
+      <p class="home-feature__meta">{{ $featured.Date.Format "2006-01-02" }} · {{ $featured.Section | humanize }} · {{ $featured.ReadingTime }} min read</p>
     {{ else }}
-      <p class="empty-state reveal">표시할 콘텐츠가 아직 없습니다.</p>
+      <h1>대표로 보여줄 문서가 아직 없습니다.</h1>
+      <p class="home-feature__deck">posts와 projects가 추가되면 여기서 먼저 소개합니다.</p>
     {{ end }}
+  </section>
 
-    <nav class="flow-links reveal" aria-label="바로가기">
-      <a href="{{ "posts/" | relURL }}">All posts</a>
-      <a href="{{ "projects/" | relURL }}">All projects</a>
-      <a href="{{ "about/" | relURL }}">About</a>
-      <a href="{{ "profile/" | relURL }}">Profile</a>
-    </nav>
-  </article>
+  <div class="home-layout">
+    <section class="archive-stream" aria-label="최근 문서">
+      {{ range $stream }}
+        {{ partial "editorial-entry-card.html" . }}
+      {{ else }}
+        <p class="empty-state">추가로 보여줄 문서가 아직 없습니다.</p>
+      {{ end }}
+    </section>
+
+    <aside class="home-rail" aria-label="보조 탐색">
+      <section class="home-rail__block">
+        <h2>Browse</h2>
+        {{ partial "vault-nav.html" (dict "Page" . "Children" (index hugo.Data.generated "vault-navigation").topLevelFolders) }}
+      </section>
+      <section class="home-rail__block">
+        <h2>Scratchpad</h2>
+        <ul class="home-rail__list">
+          {{ range $scratchpad }}
+            <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+          {{ else }}
+            <li>표시할 scratchpad가 아직 없습니다.</li>
+          {{ end }}
+        </ul>
+      </section>
+    </aside>
+  </div>
 {{ end }}

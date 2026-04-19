@@ -135,32 +135,36 @@ async function assertRenderedEditorialShell(distDirectory: string): Promise<void
     siteFrameIndex < siteProgressIndex && siteProgressIndex < siteHeaderIndex,
     "expected the site frame to wrap the progress bar before the header in the home page shell",
   );
+  assert.match(homeHtml, /<a class=vault-nav__link href=\/blog\/about\/>About<\/a>/, "expected the home rail to include an About link");
   assert.match(
     homeHtml,
-    /<nav class=vault-nav aria-label="홈, 태그, 폴더 네비게이션">[\s\S]*?<a class="vault-nav__link fx-underline" href=\/blog\/about\/>About<\/a>/,
-    "expected the About folder link to render with the /blog/ base path and authored label",
+    /<a class=vault-nav__link href=\/blog\/scratchpad\/>Scratchpad<\/a>/,
+    "expected the home rail to include a Scratchpad link",
   );
   assert.match(
     homeHtml,
-    new RegExp(
-      [
-        '<nav class=vault-nav aria-label="홈, 태그, 폴더 네비게이션">[\\s\\S]*?',
-        '<a class="vault-nav__link fx-underline" href=\\/blog\\/scratchpad\\/>Scratchpad<\\/a>',
-      ].join(""),
-    ),
-    "expected the Scratchpad folder link to render with a humanized fallback label",
+    /<section class="[^"]*home-feature[^"]*">/,
+    "expected the home page to render the new featured-entry section",
+  );
+  assert.match(
+    homeHtml,
+    /<aside class="?home-rail"?[\s\S]*?Scratchpad/,
+    "expected the home page to render a secondary scratchpad rail",
   );
 
   const postsHtml = await readFile(path.join(distDirectory, "posts", "index.html"), "utf8");
+  assert.match(postsHtml, /<a class="site-header__nav-link is-active" href=\/blog\/posts\/>Posts<\/a>/, "expected the header to keep Posts active on posts pages");
   assert.match(
     postsHtml,
-    new RegExp(
-      [
-        '<nav class=vault-nav aria-label="홈, 태그, 폴더 네비게이션">[\\s\\S]*?',
-        '<a class="vault-nav__link fx-underline is-active" href=\\/blog\\/posts\\/>Posts<\\/a>',
-      ].join(""),
-    ),
-    "expected the Posts folder link to stay active on posts pages",
+    /<section class="?archive-stream"? aria-label="?문서 목록"?>/,
+    "expected archive list pages to render the editorial archive stream",
+  );
+
+  const tagsIndexHtml = await readFile(path.join(distDirectory, "tags", "index.html"), "utf8");
+  assert.match(
+    tagsIndexHtml,
+    /<section class="?archive-grid archive-grid--tags"? aria-label="?태그 목록"?>/,
+    "expected the tag index to render the archive tag grid",
   );
 
   const editorialArticleHtml = await readFile(path.join(distDirectory, "posts", "hello-world", "index.html"), "utf8");

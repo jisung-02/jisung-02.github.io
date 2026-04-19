@@ -1,23 +1,13 @@
 {{ define "main" }}
-  <header class="page-head reveal">
-    <p class="page-head__eyebrow">Tag</p>
+  <header class="archive-intro reveal">
+    <p class="archive-intro__kicker">Tag</p>
     <h1>#{{ .Title }}</h1>
-    <p class="page-head__meta">관련 문서 {{ len .Pages }}개</p>
+    <p class="archive-intro__body">관련 문서 {{ len .Pages }}개를 같은 흐름으로 모아봤습니다.</p>
   </header>
 
-  <section class="flow-stream flow-stream--list" aria-label="태그 문서 목록">
-    {{ range $index, $page := .Pages.ByDate.Reverse }}
-      {{ $drift := cond (eq (mod $index 2) 0) "0.02" "-0.015" }}
-      <article class="flow-item reveal" data-drift data-drift-speed="{{ $drift }}">
-        <p class="flow-item__meta">
-          {{ if $page.Date }}{{ $page.Date.Format "2006-01-02" }} · {{ end }}{{ $page.Section | humanize }}
-          · {{ $page.ReadingTime }} min
-        </p>
-        <h2><a href="{{ $page.RelPermalink }}">{{ $page.Title }}</a></h2>
-        {{ with ($page.Description | default $page.Summary) }}
-          <p>{{ . | plainify | truncate 160 }}</p>
-        {{ end }}
-      </article>
+  <section class="archive-stream" aria-label="문서 목록">
+    {{ range .Pages.ByDate.Reverse }}
+      {{ partial "editorial-entry-card.html" . }}
     {{ end }}
   </section>
 {{ end }}

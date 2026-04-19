@@ -142,15 +142,69 @@ async function assertRenderedEditorialShell(distDirectory: string): Promise<void
   );
   assert.match(
     homeHtml,
-    /<nav class=vault-nav aria-label="홈, 태그, 폴더 네비게이션">[\s\S]*?<a class="vault-nav__link fx-underline" href=\/blog\/scratchpad\/>Scratchpad<\/a>/,
+    new RegExp(
+      [
+        '<nav class=vault-nav aria-label="홈, 태그, 폴더 네비게이션">[\\s\\S]*?',
+        '<a class="vault-nav__link fx-underline" href=\\/blog\\/scratchpad\\/>Scratchpad<\\/a>',
+      ].join(""),
+    ),
     "expected the Scratchpad folder link to render with a humanized fallback label",
   );
 
   const postsHtml = await readFile(path.join(distDirectory, "posts", "index.html"), "utf8");
   assert.match(
     postsHtml,
-    /<nav class=vault-nav aria-label="홈, 태그, 폴더 네비게이션">[\s\S]*?<a class="vault-nav__link fx-underline is-active" href=\/blog\/posts\/>Posts<\/a>/,
+    new RegExp(
+      [
+        '<nav class=vault-nav aria-label="홈, 태그, 폴더 네비게이션">[\\s\\S]*?',
+        '<a class="vault-nav__link fx-underline is-active" href=\\/blog\\/posts\\/>Posts<\\/a>',
+      ].join(""),
+    ),
     "expected the Posts folder link to stay active on posts pages",
+  );
+
+  const editorialArticleHtml = await readFile(path.join(distDirectory, "posts", "hello-world", "index.html"), "utf8");
+  assert.match(
+    editorialArticleHtml,
+    /<article class="article article--editorial">/,
+    "expected editorial article pages to render the new single-column article wrapper",
+  );
+  assert.match(
+    editorialArticleHtml,
+    /<p class="?article-deck"?>/,
+    "expected editorial article pages to render a standfirst deck",
+  );
+  assert.doesNotMatch(
+    editorialArticleHtml,
+    /section-atmosphere/,
+    "expected editorial article pages to remove the old atmosphere image block",
+  );
+  assert.doesNotMatch(
+    editorialArticleHtml,
+    /article-nav/,
+    "expected editorial article pages to remove the old article navigation block",
+  );
+
+  const editorialProjectHtml = await readFile(path.join(distDirectory, "projects", "sample-project", "index.html"), "utf8");
+  assert.match(
+    editorialProjectHtml,
+    /<article class="article article--editorial">/,
+    "expected editorial project pages to reuse the editorial article wrapper",
+  );
+  assert.match(
+    editorialProjectHtml,
+    /<p class="?article-deck"?>/,
+    "expected editorial project pages to render a standfirst deck",
+  );
+  assert.doesNotMatch(
+    editorialProjectHtml,
+    /section-atmosphere/,
+    "expected editorial project pages to remove the old atmosphere image block",
+  );
+  assert.doesNotMatch(
+    editorialProjectHtml,
+    /article-nav/,
+    "expected editorial project pages to remove the old article navigation block",
   );
 }
 

@@ -1,44 +1,50 @@
 {{ define "main" }}
-  {{ $showAtmosphere := or (eq .Section "posts") (eq .Section "projects") }}
-  {{ $atmosphereImage := "" }}
-  {{ $atmosphereAlt := "" }}
-  {{ if eq .Section "posts" }}
-    {{ $atmosphereImage = "images/library-posts.jpg" }}
-    {{ $atmosphereAlt = "창가와 서가가 이어진 조용한 도서관 내부" }}
-  {{ else if eq .Section "projects" }}
-    {{ $atmosphereImage = "images/library-projects.jpg" }}
-    {{ $atmosphereAlt = "나무 책상과 긴 서가가 배치된 열람실 풍경" }}
-  {{ end }}
+  {{ $sameSection := where site.RegularPages "Section" "eq" .Section }}
+  {{ $related := first 3 (where $sameSection "RelPermalink" "ne" .RelPermalink) }}
 
-  <article class="article article--flow">
-    <header class="page-head reveal">
-      <p class="page-head__eyebrow">{{ .Section | humanize }}</p>
+  <article class="article article--editorial">
+    <header class="article-hero page-head reveal">
+      <p class="article-kicker page-head__eyebrow">{{ .Section | humanize }}</p>
       <h1>{{ .Title }}</h1>
-      <p class="page-head__meta">
-        {{ if .Date }}{{ .Date.Format "2006-01-02" }} · {{ end }}{{ .ReadingTime }} min read · {{ .WordCount }} words
+      {{ with (.Description | default .Summary) }}
+        <p class="article-deck">{{ . | plainify | truncate 180 }}</p>
+      {{ end }}
+      <p class="article-meta page-head__meta" aria-label="문서 메타데이터">
+        {{ if .Date }}<span>{{ .Date.Format "2006-01-02" }}</span><span aria-hidden="true"> · </span>{{ end }}
+        <span>{{ .ReadingTime }} min read</span>
+        <span aria-hidden="true"> · </span>
+        <span>{{ .WordCount }} words</span>
       </p>
       {{ with .Params.tags }}
-        <p class="flow-item__tags">
+        <ul class="article-tags flow-item__tags" aria-label="태그">
           {{ range . }}
-            <a href="{{ printf "tags/%s/" (. | urlize) | relURL }}">#{{ . }}</a>
+            <li><a href="{{ printf "tags/%s/" (. | urlize) | relURL }}">#{{ . }}</a></li>
           {{ end }}
-        </p>
+        </ul>
       {{ end }}
     </header>
 
-    {{ if and $showAtmosphere $atmosphereImage }}
-      <figure class="section-atmosphere section-atmosphere--article reveal">
-        <img src="{{ $atmosphereImage | relURL }}" alt="{{ $atmosphereAlt }}" loading="lazy" decoding="async" />
-      </figure>
-    {{ end }}
-
-    <section class="prose prose--flow reveal">
+    <section class="article-body prose" aria-label="본문">
       {{ .Content }}
     </section>
 
-    <nav class="article-nav reveal" aria-label="문서 이동">
-      <a href="{{ printf "%s/" .Section | relURL }}">{{ .Section | humanize }} 목록</a>
-      <a href="{{ site.Home.RelPermalink }}">홈으로</a>
-    </nav>
+    {{ if gt (len $related) 0 }}
+      <section class="article-related" aria-label="다음 읽을거리">
+        <h2>Read next</h2>
+        <ul class="flow-stream flow-stream--list">
+          {{ range $related }}
+            <li class="flow-item">
+              <p class="flow-item__meta">
+                {{ .Section | humanize }}{{ if .Date }} · {{ .Date.Format "2006-01-02" }}{{ end }}
+              </p>
+              <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+              {{ with (.Description | default .Summary) }}
+                <p>{{ . | plainify | truncate 120 }}</p>
+              {{ end }}
+            </li>
+          {{ end }}
+        </ul>
+      </section>
+    {{ end }}
   </article>
 {{ end }}

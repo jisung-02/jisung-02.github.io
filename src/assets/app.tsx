@@ -1,6 +1,5 @@
 import { type KeyboardEvent as ReactKeyboardEvent, useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
-import { initAquarium } from "./aquarium/index.js";
 import type { SearchIndexEntry } from "../site/types.js";
 
 interface FinderProps {
@@ -680,7 +679,7 @@ function setupFlowDrift(): void {
   window.addEventListener("resize", requestUpdate);
 }
 
-function setupMotionAndReveal(): void {
+function setupEditorialEffects(): void {
   setupScrollProgress();
   setupRevealObserver();
   setupNowRotator();
@@ -702,9 +701,8 @@ function bootstrapApp(): void {
   document.documentElement.classList.add("js");
   setupPageTransitions();
   setupLocalClock();
-  setupMotionAndReveal();
+  setupEditorialEffects();
   bootstrapReactFinder();
-  initAquarium();
 }
 
 if (document.readyState === "loading") {

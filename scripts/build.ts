@@ -65,7 +65,7 @@ async function main(): Promise<void> {
     throw new Error(`Hugo build failed. Ensure \`hugo\` is installed and available in PATH. ${message}`);
   }
 
-  await assertRenderedHeaderNavigation(path.join(rootDirectory, "dist"));
+  await assertRenderedEditorialShell(path.join(rootDirectory, "dist"));
 
   console.log("build ok: dist generated");
 }
@@ -83,8 +83,58 @@ async function writeGeneratedJson(filePath: string, payload: unknown): Promise<v
   await writeFile(filePath, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
 }
 
-async function assertRenderedHeaderNavigation(distDirectory: string): Promise<void> {
+function normalizeOpeningBodyTag(bodyTag: string): string {
+  const attributeSource = bodyTag.replace(/^<body\b/, "").replace(/>$/, "");
+  const attributes = Array.from(
+    attributeSource.matchAll(/\s([^\s=/>]+)(?:=(?:"([^"]*)"|'([^']*)'|([^\s>]+)))?/g),
+  ).map((match) => {
+    const [, name, doubleQuotedValue, singleQuotedValue, unquotedValue] = match;
+    const value = doubleQuotedValue ?? singleQuotedValue ?? unquotedValue ?? "";
+    return `${name}="${value}"`;
+  });
+
+  return `<body ${attributes.join(" ")}>`;
+}
+
+function findMarkerIndex(source: string, pattern: RegExp): number {
+  return source.search(pattern);
+}
+
+async function assertRenderedEditorialShell(distDirectory: string): Promise<void> {
   const homeHtml = await readFile(path.join(distDirectory, "index.html"), "utf8");
+  const homeBodyTag = homeHtml.match(/<body\b[^>]*>/)?.[0];
+  const siteFrameIndex = findMarkerIndex(homeHtml, /<div class="?site-frame"?>/);
+  const siteProgressIndex = findMarkerIndex(homeHtml, /<div class="?site-progress"? aria-hidden="?true"?><\/div>/);
+  const siteHeaderIndex = findMarkerIndex(homeHtml, /<header class="?site-header"?>/);
+
+  assert.ok(homeBodyTag, "expected the home page to render a body tag");
+  assert.doesNotMatch(
+    homeHtml,
+    /aquarium-layout/,
+    "expected the home page to drop the aquarium layout wrapper",
+  );
+  assert.doesNotMatch(
+    homeHtml,
+    /aquarium-canvas/,
+    "expected the home page to drop the aquarium canvas",
+  );
+  assert.doesNotMatch(
+    homeHtml,
+    /pretext-overlay/,
+    "expected the home page to drop the pretext overlay canvas",
+  );
+  assert.equal(
+    normalizeOpeningBodyTag(homeBodyTag),
+    '<body class="site-body" data-section="" data-kind="home">',
+    "expected the home page body to use the exact editorial shell markup",
+  );
+  assert.notStrictEqual(siteFrameIndex, -1, "expected the home page shell to include the site frame");
+  assert.notStrictEqual(siteProgressIndex, -1, "expected the home page shell to include the site progress bar");
+  assert.notStrictEqual(siteHeaderIndex, -1, "expected the home page shell to include the site header");
+  assert.ok(
+    siteFrameIndex < siteProgressIndex && siteProgressIndex < siteHeaderIndex,
+    "expected the site frame to wrap the progress bar before the header in the home page shell",
+  );
   assert.match(
     homeHtml,
     /<nav class=vault-nav aria-label="홈, 태그, 폴더 네비게이션">[\s\S]*?<a class="vault-nav__link fx-underline" href=\/blog\/about\/>About<\/a>/,

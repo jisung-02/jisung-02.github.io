@@ -153,7 +153,11 @@ async function assertRenderedEditorialShell(distDirectory: string): Promise<void
   );
 
   const postsHtml = await readFile(path.join(distDirectory, "posts", "index.html"), "utf8");
-  assert.match(postsHtml, /<a class="site-header__nav-link is-active" href=\/blog\/posts\/>Posts<\/a>/, "expected the header to keep Posts active on posts pages");
+  assert.match(
+    postsHtml,
+    /<a class="site-header__nav-link is-active" href=\/blog\/posts\/>Posts<\/a>/,
+    "expected the header to keep Posts active on posts pages",
+  );
   assert.match(
     postsHtml,
     /<section class="?archive-stream"? aria-label="?문서 목록"?>/,

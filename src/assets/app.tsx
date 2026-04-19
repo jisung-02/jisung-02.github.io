@@ -7,19 +7,17 @@ interface FinderProps {
 }
 
 const SECTION_LABELS: Record<"all" | SearchIndexEntry["section"], string> = {
-  all: "all",
-  about: "about",
-  posts: "posts",
-  profile: "profile",
-  projects: "projects",
-  unknown: "other",
+  all: "All",
+  about: "About",
+  posts: "Posts",
+  profile: "Profile",
+  projects: "Projects",
+  unknown: "Notes",
 };
 
 const RECENT_STORAGE_KEY = "portfolio_recent_urls";
 const MAX_RESULTS = 8;
 const MAX_RECENT_URLS = 5;
-const NOW_ROTATE_INTERVAL_MS = 2800;
-const FLOW_DRIFT_MAX_OFFSET = 12;
 const PAGE_ENTER_DURATION_MS = 380;
 const PAGE_LEAVE_DURATION_MS = 210;
 
@@ -173,10 +171,10 @@ function Finder({ indexUrl }: FinderProps): JSX.Element {
   return (
     <section className="finder" aria-label="빠른 탐색기">
       <div className="finder__head">
-        <h2 className="finder__title">Navigator</h2>
+        <h2 className="finder__title">Archive search</h2>
         <span className="finder__count">{entries.length} entries</span>
       </div>
-      <p className="finder__subtitle">"/"로 즉시 검색 · 화살표 키로 이동 · Enter로 열기</p>
+      <p className="finder__subtitle">Search posts, projects, and notes without leaving the page.</p>
 
       <div className="finder__controls">
         <input
@@ -201,11 +199,11 @@ function Finder({ indexUrl }: FinderProps): JSX.Element {
           value={sectionFilter}
           onChange={(event) => setSectionFilter(event.target.value as "all" | SearchIndexEntry["section"])}
         >
-          <option value="all">all</option>
-          <option value="posts">posts</option>
-          <option value="projects">projects</option>
-          <option value="about">about</option>
-          <option value="profile">profile</option>
+          <option value="all">All sections</option>
+          <option value="posts">Posts</option>
+          <option value="projects">Projects</option>
+          <option value="about">About</option>
+          <option value="profile">Profile</option>
         </select>
       </div>
 
@@ -571,39 +569,6 @@ function setupRevealObserver(): void {
   targets.forEach((target) => observer.observe(target));
 }
 
-function setupNowRotator(): void {
-  if (prefersReducedMotion()) {
-    return;
-  }
-
-  const target = document.getElementById("now-rotator");
-  if (!target) {
-    return;
-  }
-
-  const phrases =
-    target.dataset.nowPhrases
-      ?.split(",")
-      .map((item) => item.trim())
-      .filter((item) => item.length > 0) ?? [];
-
-  if (phrases.length < 2) {
-    return;
-  }
-
-  let index = 0;
-
-  window.setInterval(() => {
-    index = (index + 1) % phrases.length;
-    target.classList.add("is-swapping");
-
-    window.setTimeout(() => {
-      target.textContent = phrases[index] ?? phrases[0] ?? "building";
-      target.classList.remove("is-swapping");
-    }, 160);
-  }, NOW_ROTATE_INTERVAL_MS);
-}
-
 function setupLocalClock(): void {
   const target = document.getElementById("local-clock");
   if (!target) {
@@ -637,53 +602,9 @@ function setupLocalClock(): void {
   window.setInterval(updateClock, 30_000);
 }
 
-function setupFlowDrift(): void {
-  if (prefersReducedMotion()) {
-    return;
-  }
-
-  const items = Array.from(document.querySelectorAll<HTMLElement>("[data-drift]"));
-  if (items.length === 0) {
-    return;
-  }
-
-  let ticking = false;
-
-  const update = (): void => {
-    const viewportCenter = window.innerHeight * 0.5;
-
-    items.forEach((item) => {
-      const speed = Number(item.dataset.driftSpeed ?? "0");
-      const rect = item.getBoundingClientRect();
-      const itemCenter = rect.top + rect.height * 0.5;
-      const distance = itemCenter - viewportCenter;
-      const offset = Math.max(
-        -FLOW_DRIFT_MAX_OFFSET,
-        Math.min(FLOW_DRIFT_MAX_OFFSET, distance * speed),
-      );
-      item.style.transform = `translateY(${offset.toFixed(2)}px)`;
-    });
-
-    ticking = false;
-  };
-
-  const requestUpdate = (): void => {
-    if (!ticking) {
-      ticking = true;
-      window.requestAnimationFrame(update);
-    }
-  };
-
-  requestUpdate();
-  window.addEventListener("scroll", requestUpdate, { passive: true });
-  window.addEventListener("resize", requestUpdate);
-}
-
 function setupEditorialEffects(): void {
   setupScrollProgress();
   setupRevealObserver();
-  setupNowRotator();
-  setupFlowDrift();
 }
 
 function bootstrapReactFinder(): void {

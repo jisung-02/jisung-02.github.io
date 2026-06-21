@@ -1,0 +1,42 @@
+---
+import 'katex/dist/katex.min.css';
+import '../styles/global.css';
+interface Props { title: string; description?: string }
+const { title, description } = Astro.props;
+---
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="alternate" type="application/rss+xml" title="myblog" href="/rss.xml" />
+    <script is:inline>
+      const t = localStorage.getItem('theme') ??
+        (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = t;
+    </script>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="site-header">
+        <a class="brand" href="/">jisung-02</a>
+        <nav class="site-nav">
+          <a href="/tags">태그</a>
+          <a href="/about">소개</a>
+          <button id="theme-toggle" aria-label="테마 전환">테마</button>
+        </nav>
+      </header>
+      <main><slot /></main>
+      <footer class="site-footer">© 2026 jisung-02 · <a href="/rss.xml">RSS</a></footer>
+    </div>
+    <script is:inline>
+      document.getElementById('theme-toggle').addEventListener('click', () => {
+        const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = next;
+        localStorage.setItem('theme', next);
+      });
+    </script>
+  </body>
+</html>

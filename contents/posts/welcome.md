@@ -22,3 +22,7 @@ def hello():
 $$
 \sum_{i=1}^{n} i = \frac{n(n+1)}{2}
 $$
+
+## 이미지
+
+![샘플](../attachments/sample.png)

@@ -64,3 +64,18 @@ a.marker:hover, .marker.active { background-size: 100% 0.4em; text-decoration: n
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+
+/* post: marginalia rail (signature layout) */
+.post { display: block; }
+.post-body { animation: rise 150ms ease both; }
+@keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.post-body :is(h2, h3) { margin-top: 2rem; }
+.rail { color: var(--muted); margin-bottom: 1.5rem; }
+.rail .tags { margin-top: 0.5rem; }
+
+@media (min-width: 1024px) {
+  .post { display: grid; grid-template-columns: 12rem 1fr; gap: 2.5rem; align-items: start; }
+  .rail { position: sticky; top: 2rem; text-align: right; margin-bottom: 0; }
+  .rail .tags { justify-content: flex-end; }
+  body:has(.post) .wrap { max-width: 56rem; }
+}

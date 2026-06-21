@@ -15,8 +15,24 @@ const { Content } = await render(post);
 const fmt = (d: Date) => d.toISOString().slice(0, 10);
 const catSegs = categoryPath(post.data.category);
 const catCrumbs = catSegs.map((seg, i) => ({ seg, href: `/categories/${catSegs.slice(0, i + 1).join('/')}` }));
+const url = new URL(`/posts/${post.id}/`, Astro.site).href;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: post.data.description ?? undefined,
+  datePublished: post.data.date.toISOString(),
+  dateModified: (post.data.updated ?? post.data.date).toISOString(),
+  author: { '@type': 'Person', name: 'jisung-02' },
+  publisher: { '@type': 'Person', name: 'jisung-02' },
+  mainEntityOfPage: url,
+  url,
+  inLanguage: 'ko-KR',
+  ...(post.data.tags.length ? { keywords: post.data.tags.join(', ') } : {}),
+  ...(catSegs.length ? { articleSection: catSegs[catSegs.length - 1] } : {}),
+};
 ---
-<BaseLayout title={post.data.title} description={post.data.description}>
+<BaseLayout title={post.data.title} description={post.data.description} ogType="article" jsonLd={jsonLd}>
   <article class="post">
     <aside class="rail">
       {catCrumbs.length > 0 && (

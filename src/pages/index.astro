@@ -6,8 +6,24 @@ import { isVisible, sortByDate } from '../lib/posts';
 const all = await getCollection('posts');
 const posts = sortByDate(all.filter((p) => isVisible(p.data, import.meta.env.PROD)));
 const fmt = (d: Date) => d.toISOString().slice(0, 10);
+const site = Astro.site?.href;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: 'jisung-02',
+  description: '학부생의 CS 학습 정리 노트 — 기계학습·운영체제·네트워크·클라우드 인프라 등.',
+  url: site,
+  inLanguage: 'ko-KR',
+  author: { '@type': 'Person', name: 'jisung-02', url: site },
+  blogPost: posts.slice(0, 20).map((p) => ({
+    '@type': 'BlogPosting',
+    headline: p.data.title,
+    url: site ? new URL(`/posts/${p.id}/`, site).href : undefined,
+    datePublished: p.data.date.toISOString(),
+  })),
+};
 ---
-<BaseLayout title="jisung-02">
+<BaseLayout title="jisung-02" jsonLd={jsonLd}>
   <header class="masthead">
     <p class="eyebrow">Lab Notebook</p>
     <h1>jisung-02</h1>

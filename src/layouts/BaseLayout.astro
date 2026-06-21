@@ -1,8 +1,18 @@
 ---
 import 'katex/dist/katex.min.css';
 import '../styles/global.css';
-interface Props { title: string; description?: string }
-const { title, description } = Astro.props;
+interface Props {
+  title: string;
+  description?: string;
+  ogType?: string;
+  jsonLd?: unknown;
+}
+const SITE_NAME = 'jisung-02';
+const SITE_DESC =
+  '학부생의 CS 학습 정리 노트 — 기계학습·운영체제·네트워크·클라우드 인프라 등을 정리합니다.';
+const { title, description, ogType = 'website', jsonLd } = Astro.props;
+const desc = description ?? SITE_DESC;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const year = new Date().getFullYear();
 ---
 <!doctype html>
@@ -11,8 +21,24 @@ const year = new Date().getFullYear();
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
-    {description && <meta name="description" content={description} />}
-    <link rel="alternate" type="application/rss+xml" title="myblog" href="/rss.xml" />
+    <meta name="description" content={desc} />
+    <link rel="canonical" href={canonical} />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#FCFCFA" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#16161A" media="(prefers-color-scheme: dark)" />
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:locale" content="ko_KR" />
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={desc} />
+    {jsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />}
+    <link rel="alternate" type="application/rss+xml" title="jisung-02" href="/rss.xml" />
     <script is:inline>
       try {
         const t = localStorage.getItem('theme') ??

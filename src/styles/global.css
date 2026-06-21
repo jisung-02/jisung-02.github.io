@@ -1,11 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap');
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/variable/pretendardvariable-dynamic-subset.css');
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=JetBrains+Mono:wght@400;600&display=swap');
 
 :root {
   --paper: #FCFCFA; --ink: #1A1A1F; --muted: #6B6B76;
   --rule: #E6E6E1; --accent: #2F54EB; --marker: rgba(120,224,164,0.45);
   --margin-line: #E7C3BE; --grid: rgba(26,26,31,0.035);
   --display: "Gowun Batang", serif;
-  --body: "IBM Plex Sans KR", system-ui, sans-serif;
+  --body: "Pretendard Variable", -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", sans-serif;
   --mono: "JetBrains Mono", monospace;
 }
 [data-theme="dark"] {
@@ -124,7 +125,9 @@ a.marker:hover, .marker.active { background-size: 100% 0.4em; text-decoration: n
 .post { display: block; }
 .post-body { animation: rise 150ms ease both; }
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-.post-body :is(h2, h3) { margin-top: 2rem; }
+.post-body :is(h2, h3) { margin-top: 2rem; font-family: var(--body); font-weight: 700; letter-spacing: -0.01em; }
+.post-body h2 { font-size: 1.45rem; }
+.post-body h3 { font-size: 1.18rem; }
 .rail { color: var(--muted); margin-bottom: 1.5rem; }
 .rail .tags { margin-top: 0.5rem; }
 

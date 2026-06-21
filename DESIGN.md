@@ -28,12 +28,13 @@
 | `--grid` | `rgba(255,255,255,0.04)` |
 
 ## 타이포그래피
-- 출처: Google Fonts 1곳(`@import` 1줄).
-- **Display**(사이트 제목·글 제목): `"Gowun Batang", serif` — 국문 세리프, 절제해서 제목에만.
-- **Body**(본문·UI): `"IBM Plex Sans KR", system-ui, sans-serif`.
-- **Mono**(코드): `"JetBrains Mono", monospace`.
-- 스케일(rem): h1 2.0 / h2 1.5 / h3 1.2 / body 1.0 / small 0.85.
-- 본문 측정폭(measure): 최대 `68ch`. 행간 1.7.
+- 출처: Pretendard(jsDelivr 가변·동적 서브셋) + Google Fonts(Gowun Batang·JetBrains Mono).
+- **Display**(사이트 제목·글 제목·목록 제목·브레드크럼): `"Gowun Batang", serif` — 국문 세리프, 노트 정체성. "marquee" 제목에만.
+- **Body**(본문·UI): `"Pretendard Variable", -apple-system, system-ui, sans-serif` — 한국 개발 블로그 표준, 화면 가독성.
+- **글 안 소제목**(`.post-body` h2/h3): Body(Pretendard) 700, 자간 -0.01em — 코드 많은 글의 스캔성. 세리프는 글 *제목*까지만.
+- **Mono**(코드·날짜·개수): `"JetBrains Mono", monospace`.
+- 스케일(rem): h1 2.0 / h2 1.5 / h3 1.2 / body 1.075 / small 0.85.
+- 본문 측정폭(measure): 최대 `72ch`. 행간 1.75.
 
 ## 레이아웃 & 시그니처
 - **시그니처 = 노트 여백선(margin rule)**: 학생 노트의 빨간 세로 여백선(`--margin-line`, 1px). 날짜를 이 선에 **오른쪽 정렬로 매달아** 인덱스·글 페이지 양쪽에 동일하게 적용 → 두 화면이 같은 시각 언어를 공유한다. 선은 `linear-gradient` 1px 세로 배경으로 그린다(요소 보더 아님).

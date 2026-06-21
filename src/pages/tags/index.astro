@@ -1,0 +1,15 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { isVisible, collectTags } from '../../lib/posts';
+
+const all = await getCollection('posts');
+const posts = all.filter((p) => isVisible(p.data, import.meta.env.PROD));
+const tags = collectTags(posts);
+---
+<BaseLayout title="태그 · jisung-02">
+  <h1>태그</h1>
+  <ul class="tags">
+    {tags.map((t) => <li><a class="marker" href={`/tags/${t.tag}`}>#{t.tag} ({t.count})</a></li>)}
+  </ul>
+</BaseLayout>

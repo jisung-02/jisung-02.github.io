@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { isVisible, sortByDate, collectTags } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const all = await getCollection('posts');
+  const posts = all.filter((p) => isVisible(p.data, import.meta.env.PROD));
+  return collectTags(posts).map((t) => ({
+    params: { tag: t.tag },
+    props: { tag: t.tag, posts: sortByDate(posts.filter((p) => p.data.tags.includes(t.tag))) },
+  }));
+}
+
+const { tag, posts } = Astro.props;
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+<BaseLayout title={`#${tag} · jisung-02`}>
+  <h1>#{tag}</h1>
+  <ul class="post-list">
+    {posts.map((p) => (
+      <li>
+        <div class="meta">{fmt(p.data.date)}</div>
+        <a class="title marker" href={`/posts/${p.id}`}>{p.data.title}</a>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

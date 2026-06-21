@@ -2,6 +2,7 @@
 title: "PaperClip"
 date: 2026-03-30
 publish: true
+category: "개인공부/개발도구"
 tags: ["도구", "메모"]
 description: "PaperClip 설치 메모"
 ---

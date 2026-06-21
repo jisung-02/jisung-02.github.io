@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { isVisible, sortByDate, collectCategories, postInCategory } from '../../lib/posts';
+
+export async function getStaticPaths() {
+  const all = await getCollection('posts');
+  const posts = all.filter((p) => isVisible(p.data, import.meta.env.PROD));
+  const tree = collectCategories(posts);
+  const paths = [];
+  for (const c of tree) {
+    paths.push({
+      params: { path: c.parent },
+      props: {
+        parent: c.parent,
+        child: null,
+        posts: sortByDate(posts.filter((p) => postInCategory(p.data, c.parent))),
+      },
+    });
+    for (const ch of c.children) {
+      paths.push({
+        params: { path: `${c.parent}/${ch.child}` },
+        props: {
+          parent: c.parent,
+          child: ch.child,
+          posts: sortByDate(posts.filter((p) => postInCategory(p.data, c.parent, ch.child))),
+        },
+      });
+    }
+  }
+  return paths;
+}
+
+const { parent, child, posts } = Astro.props;
+const fmt = (d: Date) => d.toISOString().slice(0, 10);
+---
+<BaseLayout title={`${child ?? parent} · jisung-02`}>
+  <p class="eyebrow">Category</p>
+  <h1 class="breadcrumb">
+    <a href={`/categories/${parent}`}>{parent}</a>
+    {child && <><span class="sep">›</span>{child}</>}
+  </h1>
+  <ul class="post-list">
+    {posts.map((p) => (
+      <li>
+        <div class="meta">{fmt(p.data.date)}</div>
+        <a class="title marker" href={`/posts/${p.id}`}>{p.data.title}</a>
+        {p.data.description && <p>{p.data.description}</p>}
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

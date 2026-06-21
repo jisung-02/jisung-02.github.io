@@ -2,6 +2,7 @@
 title: "내가 무엇을 모르는지 알아보았다"
 date: 2026-03-30
 publish: true
+category: "학교수업/소프트웨어공학"
 tags: ["소프트웨어공학", "정리"]
 description: "SWEBOK을 기준으로 내가 모르던 소프트웨어 공학 개념들을 짚어본 정리"
 ---

@@ -2,6 +2,7 @@
 title: "기술 트렌드 팔로업"
 date: 2026-03-30
 publish: true
+category: "개인공부/기술트렌드"
 tags: ["트렌드"]
 description: "AI·인프라 등 최근 기술 트렌드 팔로업 메모"
 ---

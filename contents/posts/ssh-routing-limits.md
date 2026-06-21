@@ -2,6 +2,7 @@
 title: "SSH 라우팅 한계 분석"
 date: 2026-03-30
 publish: true
+category: "학교수업/풀스택네트워킹"
 tags: ["네트워크", "ssh"]
 description: "하나의 소켓 주소에 여러 서비스를 올릴 수 없는 SSH의 한계와 우회법"
 ---

@@ -2,6 +2,7 @@
 title: "개발자의 글쓰기"
 date: 2026-04-27
 publish: true
+category: "개인공부/글쓰기"
 tags: ["글쓰기", "정리"]
 description: "《개발자의 글쓰기》를 읽고 정리한 정확성·간결성·가독성 노트"
 ---

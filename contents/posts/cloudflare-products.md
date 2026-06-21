@@ -2,6 +2,7 @@
 title: "Cloudflare 제품군 정리"
 date: 2026-04-01
 publish: true
+category: "학교수업/풀스택네트워킹"
 tags: ["클라우드", "네트워크"]
 description: "Cloudflare 제품군을 카테고리별로 한 줄씩 정리"
 ---

@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { isVisible } from '../../lib/posts';
+import { isVisible, parseCategory } from '../../lib/posts';
 
 export async function getStaticPaths() {
   const all = await getCollection('posts');
@@ -13,10 +13,17 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const fmt = (d: Date) => d.toISOString().slice(0, 10);
+const cat = parseCategory(post.data.category);
 ---
 <BaseLayout title={post.data.title} description={post.data.description}>
   <article class="post">
     <aside class="rail">
+      {cat && (
+        <div class="meta rail-cat">
+          <a href={`/categories/${cat.parent}`}>{cat.parent}</a>
+          {cat.child && <><span class="sep">›</span><a href={`/categories/${cat.parent}/${cat.child}`}>{cat.child}</a></>}
+        </div>
+      )}
       <div class="meta">{fmt(post.data.date)}</div>
       {post.data.updated && <div class="meta">수정 {fmt(post.data.updated)}</div>}
       {post.data.tags.length > 0 && (

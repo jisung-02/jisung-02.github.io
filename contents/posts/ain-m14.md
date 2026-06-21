@@ -1,0 +1,128 @@
+---
+title: "AI for Network Security: Message Authentication & Key Management"
+date: 2026-06-20
+publish: true
+category: "학교공부/AI네트워킹"
+tags: ["AI네트워킹"]
+description: "인증은 다음을 반드시 검증할 수 있어야 한다."
+---
+
+> AI 네트워킹 **중간** 범위 — 노션 강의 노트를 옵시디언용으로 정리한 노트.
+> [← 전체 목차](/posts/ain-overview/)
+
+## Authentication 요구사항
+인증은 다음을 반드시 검증할 수 있어야 한다.
+1. **Message came from apparent source** — 메시지가 명시된 출처/작성자로부터 왔는지.
+2. **Contents have not been altered** — 내용이 변경되지 않았는지.
+3. **Sent at a certain time or sequence** — (경우에 따라) 특정 시간/순서로 전송되었는지.
+- 능동적 공격(데이터 및 트랜잭션 위조, falsification)에 대한 보호가 목적.
+
+## Message Authentication 구현 3가지
+- **(1) Conventional Encryption 기반**: 송신자·수신자만 키 공유. 암호화 자체로 인증 수행(`M → Encrypt(K) → C`, 복호화 성공 = 인증 성공).
+- **(2) Encryption 없이 인증**: 메시지는 평문, 대신 **authentication tag**를 추가 → `(M, Tag)`.
+- **(3) MAC (Message Authentication Code)**: 메시지와 키의 함수로 계산. `MAC = F(K, M)` (K = 공유 비밀 키, M = 메시지).
+  - 송신: `MAC = F(K, M)` → `(M, MAC)` 전송 / 수신: `MAC' = F(K, M)` 계산 후 비교.
+  - 핵심: 암호화 없이도 "secret key + function"으로 인증 가능.
+
+## One-way Hash Function
+- 개념: 메시지를 고정 길이 fingerprint로 변환 (`M → H(M)`).
+- 특징: 역산 불가능, 작은 입력 변화 → 큰 출력 변화.
+- secret value 활용: 해시 전에 비밀값을 추가 `H(K || M)` → MAC의 초기 형태.
+
+### Secure Hash Function 조건
+1. 임의 길이 입력 허용
+2. 고정 길이 출력
+3. 계산이 쉬움
+4. **Preimage resistance** (역산 불가)
+5. **Second preimage resistance** (같은 해시 갖는 다른 입력 찾기 어려움)
+6. **Collision resistance** (충돌쌍 찾기 어려움)
+
+| 속성 | 의미 |
+| --- | --- |
+| Preimage | 역산 불가 |
+| Collision | 같은 hash 찾기 어려움 |
+
+### Simple Hash Function (XOR)
+- 정의: `C_i = b_i1 ⊕ b_i2 ⊕ ... ⊕ b_im` (비트별 XOR 기반).
+- 문제점: 선형성 → 충돌 쉽게 발생, cryptographic hash로 부적합.
+
+## 해시 알고리즘 (SHA-1, MD5)
+### SHA-1
+- 구조: 입력 → padding → 512-bit block 분할 → 반복 처리. 출력: **160-bit digest**.
+- 내부: 4 stage × 20 step = **80 step**, chaining value 업데이트. Iterative compression function.
+
+### MD5
+- 출력 128-bit, 512-bit block. 상태 변수 A, B, C, D.
+- 4 round × 16 = **64 step**. 비선형 함수(F, G, H, I) + modular addition + bit rotation.
+- 흐름: padding → block 분할 → 반복 연산 → 상태 누적 → digest.
+
+### Hash 비교
+| 알고리즘 | 출력 | step |
+| --- | --- | --- |
+| SHA-1 | 160-bit | 80 |
+| MD5 | 128-bit | 64 |
+| RIPEMD-160 | 160-bit | 160 |
+
+## HMAC
+- 등장 배경: hash는 빠르고 library가 많음 → MAC으로 활용.
+- 핵심 아이디어: **Hash + Secret Key → MAC**.
+- 구조:
+  - `inner = H((K ⊕ ipad) || M)`
+  - `outer = H((K ⊕ opad) || inner)` → 최종 `HMAC(K, M)`.
+- Why it works: 단순 `H(K || M)`는 **length extension attack**에 취약. HMAC은 두 번 hashing + key mixing(ipad, opad)으로 공격을 방지.
+- 특징: 보안성 높음, 성능 빠름, 표준으로 널리 사용.
+
+### 전체 연결 구조
+```
+Message Authentication
+ ├── Encryption 기반
+ ├── MAC
+ │    └── HMAC (hash 기반 MAC)
+ └── Hash (SHA-1, MD5)
+```
+- 진화 과정: **Encryption → MAC → Hash → HMAC**.
+- 핵심 원리: **Authentication = Hash + Secret**.
+- 설계 패턴: Integrity → Hash / Authentication → MAC·HMAC / 효율성 → HMAC.
+
+## 대칭키 vs 비대칭키 (Public-Key)
+- 대칭키의 근본 문제: 키를 미리 공유해야 함(**key distribution problem**), 누가 보냈는지 증명 어려움(authentication 한계), 키 하나 유출 시 전체 붕괴 → 이를 해결하려 **비대칭키(public/private)** 등장.
+- 구성: plaintext(M), encryption(E)/decryption(D) 알고리즘, public key(Ku), private key(Kr), ciphertext(C).
+  - `C = E(Ku, M)`, `M = D(Kr, C)` → 공개키로 암호화, 개인키로 복호화.
+
+| 기능 | 방법 |
+| --- | --- |
+| 기밀성 | 상대방 public key로 암호화 |
+| 인증 | 내 private key로 서명 |
+
+- **Encryption(기밀성)**: 송신자가 수신자 public key로 암호화 → 오직 수신자만 private key로 복호화.
+- **Authentication(디지털 서명)**: 송신자가 private key로 서명 → 누구나 public key로 검증 → "이 사람 맞다" 증명.
+- 해결하는 문제: Key Distribution(공개키는 그냥 공개하면 됨), Digital Signature 가능(MAC은 못 하는 부인 방지).
+- 요구사항: 키 생성 쉬움 / 암복호화 쉬움 / private key 추론 매우 어려움 / ciphertext→plaintext 복구 어려움. 핵심: 정상 사용 계산은 쉽고, 공격(역산)은 어려움.
+
+## RSA
+- 동작: `C = M^e mod N`, `M = C^d mod N`. 공개키 (e, N), 개인키 (d, p, q).
+- 안전성 근거: 큰 수 `N = p × q`를 p, q로 소인수분해하기 매우 어려움 (**Integer Factorization Problem**).
+- 특징: 매우 널리 사용되나 느림 → 대용량 데이터에는 부적합.
+
+## Diffie-Hellman (키 교환)
+- 목적: 암호화가 아니라 **키를 공유**하는 것. 공개 채널에서 비밀값을 직접 공유하지 않고 같은 공유 키를 계산.
+- 공통 파라미터(공개): 큰 소수 `p`, 생성자 `g`.
+- 각자 비밀값 선택: Alice `x`, Bob `y`.
+- 공개값 교환: Alice→Bob `X = g^x mod p`, Bob→Alice `Y = g^y mod p`.
+- 공유 키 계산: Alice `k = Y^x mod p`, Bob `k = X^y mod p` → 둘 다 `k = g^(xy) mod p`로 동일.
+- 안전성 근거: **Discrete Log Problem (이산 로그 문제)**.
+- 단점: 인증 없음 → MITM 공격 가능. 실제로는 DH + 인증(RSA, certificate)을 함께 사용.
+
+## 실무 관점 (현대 시스템)
+1. Diffie-Hellman → 세션 키 생성
+2. RSA / Signature → 상대 인증
+3. 이후 대칭키로 통신(빠름)
+- 이유: 비대칭키는 느리고 대칭키는 빠름.
+
+## ✅ 핵심 정리 (시험 포인트)
+- 메시지 인증 3방식: 대칭키 암호화 기반 / 평문+인증 태그 / MAC(`F(K,M)`). 핵심 원리는 "secret key + function".
+- Secure Hash 3대 조건: Preimage·Second preimage·Collision resistance. SHA-1=160bit/80step, MD5=128bit/64step.
+- HMAC = Hash 기반 MAC. `H((K⊕opad)||H((K⊕ipad)||M))`, 두 번 해싱으로 length extension attack 방지.
+- 비대칭키: 공개키 암호화=기밀성, 개인키 서명=인증/부인방지. 대칭키의 key distribution 문제를 해결.
+- RSA는 소인수분해 난제(암호화·서명), Diffie-Hellman은 이산로그 난제(키 교환) 기반 — 역할이 다름.
+- DH는 인증이 없어 MITM에 취약 → 실제로는 인증과 결합하고, 통신 본문은 빠른 대칭키로 처리.

@@ -1,0 +1,42 @@
+---
+title: "풀스택서비스네트워킹 강의 정리"
+date: 2026-06-21
+publish: true
+category: "학교공부/풀스택 서비스 네트워킹"
+tags: ["풀스택 서비스 네트워킹"]
+description: "경희대학교 풀스택서비스네트워킹(이성원 교수님) 수업의 Notion 강의 노트를 정리한 Obsidian Vault입니다."
+---
+
+경희대학교 **풀스택서비스네트워킹**(이성원 교수님) 수업의 Notion 강의 노트를 정리한 Obsidian Vault입니다.
+관통하는 축: **OSI 계층 → 소켓 → 메시징/애플리케이션 프로토콜의 진화**. 아래로 갈수록 상위 계층·최신 프로토콜.
+
+> - 강의 노트: `강의/` (L01~L10 + 기타)
+> - 종합 요약: `_summary/` (시험용 압축본)
+> - 원본 Notion 덤프: `_notion_notes/` (무손실 백업)
+> - 생성 PDF: `PDF/`
+
+## 📝 종합 요약 (시험용)
+- [풀스택서비스네트워킹 요약](/posts/net-풀스택서비스네트워킹-요약/) — 전체 강의 통합 압축본 (프로토콜 진화 축)
+
+## 📚 강의 목록 (강의/)
+
+| # | 노트 | 주제 |
+|---|---|---|
+| L01 | [L01 OSI 아키텍처 개요](/posts/net-l01/) | OSI 7계층 · 캡슐화 · 계층 모델 |
+| L02 | [L02 OSI L1-L3](/posts/net-l02/) | 물리·데이터링크·네트워크 · IP 주소·서브넷 |
+| L03 | [L03 OSI L4 전송계층](/posts/net-l03/) | TCP/UDP · 포트·소켓주소 · handshake · 혼잡제어 |
+| L04 | [L04 소켓](/posts/net-l04/) | Berkeley Socket API · TCP/UDP Echo · 멀티스레드 서버 |
+| L05 | [L05 ZeroMQ](/posts/net-l05/) | brokerless 메시징 · 4대 패턴 · bind/connect |
+| L06 | [L06 HTTP 1.1](/posts/net-l06/) | 요청/응답 · 메서드·상태코드 · HTTP/1.1의 4대 한계 |
+| L07 | [L07 gRPC](/posts/net-l07/) | RPC·stub · Protobuf · HTTP/2 · 4가지 스트리밍 |
+| L08 | [L08 HTTP 2](/posts/net-l08/) | 바이너리 프레이밍 · 멀티플렉싱 · HPACK · 서버푸시 |
+| L09 | [L09 WebRTC](/posts/net-l09/) | P2P · ICE/STUN/TURN/NAT · SDP · Simulcast |
+| L10 | [L10 QUIC HTTP3](/posts/net-l10/) | UDP 기반 QUIC · HOL 제거 · 0-RTT · HTTP/3 |
+| — | [기타](/posts/net-기타/) | *(원본 미완 — 빈 페이지)* |
+
+## ⚠️ 원본 미완 노트
+- [기타](/posts/net-기타/) — Notion 원본에 본문이 없어 비워 둠.
+
+## 사용 안내
+- 이 폴더(`풀스택서비스네트워킹_정리`)를 Obsidian에서 **Open folder as vault** 로 엽니다.
+- 수식은 LaTeX(`$...$`)로 작성되어 있어 Obsidian 수식 렌더링이 켜져 있어야 보입니다.

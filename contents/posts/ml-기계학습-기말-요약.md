@@ -1,0 +1,75 @@
+---
+title: "기계학습 — 기말 핵심 요약"
+date: 2026-06-20
+publish: true
+category: "학교공부/기계학습"
+tags: ["기계학습", "기말"]
+description: "경희대 기계학습(이원희 교수님) 기말 범위(Lecture 15~25) 압축본."
+---
+
+경희대 **기계학습**(이원희 교수님) 기말 범위(Lecture 15~25) 압축본.
+관통하는 축: **목적함수+옵티마이저 → 정규화 → 분류 → SVM → 앙상블 → 평가/PCA**.
+[← 전체 목차](/posts/ml-overview/)
+
+---
+
+## L15 최적화와 선형회귀
+- **학습 알고리즘 = 모델 클래스 + 목적함수 + 옵티마이저**. 옵티마이저는 $\min_{f\in\mathcal{M}}J(f)$.
+- 미분 → 편미분 → 그래디언트(최대 증가 방향) → 경사하강은 **반대 방향**으로 이동.
+- MSE 편미분 $(f_\theta(x)-y)x_j$, OLS 정규방정식 $\theta^*=(X^\top X)^{-1}X^\top y$.
+- **NLLS**: $\phi(x)$로 입력엔 비선형, $\theta$엔 선형(여전히 선형회귀로 풀림).
+
+## L16 Ridge & Lasso 정규화
+- **i.i.d. 가정**, 일반화·OOD, 홀드아웃셋으로 일반화 추정.
+- 과적합/과소적합 진단: 훈련 vs 홀드아웃 성능 비교.
+- **Ridge(L2)**: $\theta^*=(X^\top X+\lambda I)^{-1}X^\top y$ — $\lambda I$가 역행렬 보장, 계수 축소(dense).
+- **Lasso(L1)**: $|w|$의 0에서 꺾임(미분 불가) → **sparsity**(특징 선택 효과).
+
+## L17 분류 알고리즘
+- 최소제곱을 분류에 못 쓰는 이유 → **log-odds 선형 가정** → 로지스틱(시그모이드) 유도.
+- 베르누이 우도 → **최대우도 = 크로스엔트로피(log-loss)** 최소화.
+- **결정 경계 $\theta^\top x=0$ 은 선형**(확률은 비선형이지만 경계는 선형).
+- **Softmax** = 시그모이드의 K-클래스 일반화.
+
+## L18-19 구현
+- *(원본 Notion 미완)* L15~L17을 코드로: 예측 → 손실 → 그래디언트 → 업데이트 루프.
+- OLS vs 경사하강 비교, $\phi(x)$ 특징변환, 정규화·로지스틱/소프트맥스 구현 관점.
+
+## L20 SVM
+- 함수적 마진 → **기하적 마진**($\|\theta\|$ 정규화로 스케일 불변).
+- 마진 폭 $=\frac{2}{\|\theta\|}$ → 마진 최대화 = $\frac12\|\theta\|^2$ 최소화(**볼록 QP**).
+- 라그랑지안 → **Dual**($\theta=\sum\lambda_i y_i x_i$): 데이터가 **내적 형태로만** 등장 → 커널 복선.
+- **KKT complementary slackness** → 서포트 벡터만 남음(sparsity).
+
+## L21 SVM 2 (Soft Margin + Kernel)
+- **Soft margin**: 슬랙 $\xi_i$ ($=0$ 정상 / $0<\xi<1$ 마진 내부 / $>1$ 오분류), $C$ = trade-off.
+- **Kernel Trick**: Dual의 내적만 $K(x,x')$로 치환 → $\phi$ 직접 계산 안 함. RBF = 무한 차원.
+- **Mercer 조건**(커널 행렬 PSD). 다항커널 $\langle x,y\rangle^2$ 전개로 $\phi$ 복원 가능.
+- Soft SVM 서포트 벡터 3분류: $\lambda=0$ / $0<\lambda<C$ / $\lambda=C$.
+
+## L22 트리·포레스트·앙상블
+- 트리 = 이진 질문 연쇄 → **축평행 공간 분할**. 분류=다수결, 회귀=평균.
+- 불순도: **Gini / Cross-Entropy**(분류), **MSE / MAE**(회귀).
+- 트리 단점 = **높은 분산** → 가지치기 + 앙상블.
+- **Bagging vs Random Forest**: RF는 분기마다 **특징 무작위 선택** 추가 → 트리 상관↓. `max_features`(분류 $\sqrt{n}$ / 회귀 $\approx n/3$).
+
+## L23 과적합과 과소적합
+- i.i.d. 가정, 훈련 오차는 **낙관적 편향** 추정. 목표는 일반화.
+- 과소적합 = **High Bias**, 과적합 = **High Variance** (Bias-Variance Tradeoff).
+- **분해**: $E[(y-\hat y)^2]=\text{Bias}^2+\text{Variance}+\sigma^2$ (교차항=0).
+- 앙상블이 통하는 이유 = **Variance 감소**(Random Forest 근거).
+
+## L24 모델 평가지표
+- **혼동행렬** TP/FN/FP/TN → Accuracy, Recall(=TPR), Precision, TNR, Balanced Acc.
+- Threshold 이동 → **PR Curve/AP**, **ROC/AUC**. AUC = 양성을 음성보다 높게 매길 확률.
+- 암기: **불균형이면 Accuracy 금지**, FN 비싸면 Recall, FP 비싸면 Precision, 랭킹은 AUC.
+
+## L25 PCA
+- *(원본 Notion 미완 — 강의 표준으로 보충)* 비지도 차원축소.
+- 파이프라인: **평균 중심화 → 공분산 $\Sigma$ → 고유분해 $\Sigma v_i=\lambda_i v_i$ → 큰 고유값 순 주성분 선택 → 투영 $Z=\tilde X W$**.
+- L08 SVD와 동치: 데이터 행렬의 특이벡터 = 공분산 고유벡터.
+
+---
+
+### 한 줄 정리
+> **목적함수+옵티마이저로 회귀(L15) → 정규화로 일반화(L16) → 분류는 크로스엔트로피(L17) → 마진+커널의 SVM(L20~21) → 분산 줄이는 앙상블(L22~23) → 평가지표·PCA로 마무리(L24~25).**

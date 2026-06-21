@@ -93,6 +93,7 @@ a.marker:hover, .marker.active { background-size: 100% 0.4em; text-decoration: n
 
 /* 게시글 좌측 카테고리 인덱스 */
 .index-layout { display: block; }
+.index-main { min-width: 0; } /* 그리드 트랙이 넓은 콘텐츠로 늘어나지 않게 */
 .index-main h1 { margin-top: 0; }
 .cat-index { margin-bottom: 2rem; }
 .cat-tree, .cat-tree ul { list-style: none; padding: 0; margin: 0; }
@@ -123,7 +124,7 @@ a.marker:hover, .marker.active { background-size: 100% 0.4em; text-decoration: n
 
 /* post: marginalia rail (signature layout) */
 .post { display: block; }
-.post-body { animation: rise 150ms ease both; }
+.post-body { animation: rise 150ms ease both; min-width: 0; overflow-wrap: break-word; }
 @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 .post-body :is(h2, h3) { margin-top: 2rem; font-family: var(--body); font-weight: 700; letter-spacing: -0.01em; }
 .post-body h2 { font-size: 1.45rem; }

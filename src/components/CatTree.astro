@@ -1,0 +1,19 @@
+---
+import type { CatNode } from '../lib/posts';
+
+interface Props { nodes: CatNode[]; activePath?: string[] }
+const { nodes, activePath = [] } = Astro.props;
+
+const isActive = (p: string[]) =>
+  p.length === activePath.length && p.every((s, i) => activePath[i] === s);
+---
+<ul class="cat-tree">
+  {nodes.map((n) => (
+    <li>
+      <a class:list={['cat-link', { active: isActive(n.path) }]} href={`/categories/${n.path.join('/')}`}>
+        {n.name} <span class="count">{n.count}</span>
+      </a>
+      {n.children.length > 0 && <Astro.self nodes={n.children} activePath={activePath} />}
+    </li>
+  ))}
+</ul>

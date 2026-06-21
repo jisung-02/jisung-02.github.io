@@ -3,9 +3,10 @@ import {
   isVisible,
   sortByDate,
   collectTags,
-  parseCategory,
-  postInCategory,
-  collectCategories,
+  categoryPath,
+  buildCategoryTree,
+  flattenCategoryNodes,
+  postsUnder,
 } from './posts';
 
 describe('isVisible', () => {
@@ -26,51 +27,55 @@ describe('sortByDate', () => {
   });
 });
 
-describe('parseCategory', () => {
-  it('parses 2 levels, ignores deeper, handles empty', () => {
-    expect(parseCategory('학교수업/풀스택네트워킹')).toEqual({
-      parent: '학교수업',
-      child: '풀스택네트워킹',
-    });
-    expect(parseCategory('학교수업')).toEqual({ parent: '학교수업', child: undefined });
-    expect(parseCategory('a/b/c')).toEqual({ parent: 'a', child: 'b' });
-    expect(parseCategory(undefined)).toBeNull();
-  });
-});
-
-describe('postInCategory', () => {
-  it('matches parent (incl. children) and specific child', () => {
-    const p = { category: '학교수업/풀스택네트워킹' };
-    expect(postInCategory(p, '학교수업')).toBe(true);
-    expect(postInCategory(p, '학교수업', '풀스택네트워킹')).toBe(true);
-    expect(postInCategory(p, '학교수업', '소프트웨어공학')).toBe(false);
-    expect(postInCategory(p, '개인공부')).toBe(false);
-  });
-});
-
-describe('collectCategories', () => {
-  it('builds a 2-level tree with counts, Korean collation', () => {
-    const posts = [
-      { data: { category: '학교수업/풀스택네트워킹' } },
-      { data: { category: '학교수업/소프트웨어공학' } },
-      { data: { category: '개인공부/Go' } },
-      { data: { category: undefined } },
-    ];
-    expect(collectCategories(posts)).toEqual([
-      {
-        parent: '개인공부',
-        count: 1,
-        children: [{ child: 'Go', count: 1 }],
-      },
-      {
-        parent: '학교수업',
-        count: 2,
-        children: [
-          { child: '소프트웨어공학', count: 1 },
-          { child: '풀스택네트워킹', count: 1 },
-        ],
-      },
+describe('categoryPath', () => {
+  it('splits a multi-level path, trims, handles empty', () => {
+    expect(categoryPath('개인공부/클라우드·인프라/OpenStack')).toEqual([
+      '개인공부',
+      '클라우드·인프라',
+      'OpenStack',
     ]);
+    expect(categoryPath('개인공부')).toEqual(['개인공부']);
+    expect(categoryPath(undefined)).toEqual([]);
+  });
+});
+
+describe('buildCategoryTree', () => {
+  const posts = [
+    { data: { category: '개인공부/클라우드·인프라/OpenStack' } },
+    { data: { category: '개인공부/클라우드·인프라/Cloudflare' } },
+    { data: { category: '개인공부/시스템·네트워크' } },
+    { data: { category: undefined } },
+  ];
+
+  it('nests by path with subtree counts, only populated branches', () => {
+    const tree = buildCategoryTree(posts);
+    expect(tree).toHaveLength(1); // 개인공부
+    const root = tree[0];
+    expect(root.name).toBe('개인공부');
+    expect(root.count).toBe(3);
+    // CATEGORY_ORDER: 시스템·네트워크 before 클라우드·인프라
+    expect(root.children.map((c) => c.name)).toEqual(['시스템·네트워크', '클라우드·인프라']);
+    const cloud = root.children[1];
+    expect(cloud.count).toBe(2);
+    expect(cloud.path).toEqual(['개인공부', '클라우드·인프라']);
+    expect(cloud.children.map((c) => c.name)).toEqual(['OpenStack', 'Cloudflare']);
+  });
+
+  it('flattenCategoryNodes yields every node', () => {
+    const flat = flattenCategoryNodes(buildCategoryTree(posts));
+    expect(flat.map((n) => n.path.join('/'))).toEqual([
+      '개인공부',
+      '개인공부/시스템·네트워크',
+      '개인공부/클라우드·인프라',
+      '개인공부/클라우드·인프라/OpenStack',
+      '개인공부/클라우드·인프라/Cloudflare',
+    ]);
+  });
+
+  it('postsUnder matches a node and its whole subtree', () => {
+    expect(postsUnder(posts, ['개인공부']).length).toBe(3);
+    expect(postsUnder(posts, ['개인공부', '클라우드·인프라']).length).toBe(2);
+    expect(postsUnder(posts, ['개인공부', '클라우드·인프라', 'OpenStack']).length).toBe(1);
   });
 });
 

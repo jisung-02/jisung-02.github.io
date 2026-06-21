@@ -1,36 +1,23 @@
 ---
 import { getCollection } from 'astro:content';
-import { isVisible, collectCategories } from '../lib/posts';
+import { isVisible, buildCategoryTree } from '../lib/posts';
+import CatTree from './CatTree.astro';
 
-interface Props { activeParent?: string | null; activeChild?: string | null }
-const { activeParent = null, activeChild = null } = Astro.props;
+interface Props { activePath?: string[] }
+const { activePath = [] } = Astro.props;
 
 const all = await getCollection('posts');
-const tree = collectCategories(all.filter((p) => isVisible(p.data, import.meta.env.PROD)));
+const tree = buildCategoryTree(all.filter((p) => isVisible(p.data, import.meta.env.PROD)));
+const total = tree.reduce((s, n) => s + n.count, 0);
 ---
 <aside class="cat-index">
   <p class="eyebrow">Index</p>
-  <ul class="cat-tree">
+  <ul class="cat-tree cat-all">
     <li>
-      <a class={`cat-parent${!activeParent ? ' active' : ''}`} href="/posts">전체</a>
+      <a class:list={['cat-link', { active: activePath.length === 0 }]} href="/posts">
+        전체 <span class="count">{total}</span>
+      </a>
     </li>
-    {tree.map((c) => (
-      <li>
-        <a class={`cat-parent${activeParent === c.parent && !activeChild ? ' active' : ''}`} href={`/categories/${c.parent}`}>
-          {c.parent} <span class="count">{c.count}</span>
-        </a>
-        {c.children.length > 0 && (
-          <ul>
-            {c.children.map((ch) => (
-              <li>
-                <a class={`cat-child${activeParent === c.parent && activeChild === ch.child ? ' active' : ''}`} href={`/categories/${c.parent}/${ch.child}`}>
-                  {ch.child} <span class="count">{ch.count}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        )}
-      </li>
-    ))}
   </ul>
+  <CatTree nodes={tree} activePath={activePath} />
 </aside>

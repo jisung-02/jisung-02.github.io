@@ -2,7 +2,7 @@
 title: "의존성 역전"
 date: 2026-04-05
 publish: true
-category: "개인공부/객체지향"
+category: "개인공부/컴퓨터공학 기초/의존성·설계 원칙"
 tags: ["설계", "OOP"]
 description: "의존성 역전 원칙(DIP)을 언어별 배치까지 정리"
 ---

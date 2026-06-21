@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { isVisible, parseCategory } from '../../lib/posts';
+import { isVisible, categoryPath } from '../../lib/posts';
 
 export async function getStaticPaths() {
   const all = await getCollection('posts');
@@ -13,15 +13,20 @@ export async function getStaticPaths() {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const fmt = (d: Date) => d.toISOString().slice(0, 10);
-const cat = parseCategory(post.data.category);
+const catSegs = categoryPath(post.data.category);
+const catCrumbs = catSegs.map((seg, i) => ({ seg, href: `/categories/${catSegs.slice(0, i + 1).join('/')}` }));
 ---
 <BaseLayout title={post.data.title} description={post.data.description}>
   <article class="post">
     <aside class="rail">
-      {cat && (
+      {catCrumbs.length > 0 && (
         <div class="meta rail-cat">
-          <a href={`/categories/${cat.parent}`}>{cat.parent}</a>
-          {cat.child && <><span class="sep">›</span><a href={`/categories/${cat.parent}/${cat.child}`}>{cat.child}</a></>}
+          {catCrumbs.map((c, i) => (
+            <>
+              {i > 0 && <span class="sep">›</span>}
+              <a href={c.href}>{c.seg}</a>
+            </>
+          ))}
         </div>
       )}
       <div class="meta">{fmt(post.data.date)}</div>

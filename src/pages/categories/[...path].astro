@@ -2,46 +2,34 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CategoryIndex from '../../components/CategoryIndex.astro';
-import { isVisible, sortByDate, collectCategories, postInCategory } from '../../lib/posts';
+import { isVisible, sortByDate, buildCategoryTree, flattenCategoryNodes, postsUnder } from '../../lib/posts';
 
 export async function getStaticPaths() {
   const all = await getCollection('posts');
   const posts = all.filter((p) => isVisible(p.data, import.meta.env.PROD));
-  const tree = collectCategories(posts);
-  const paths = [];
-  for (const c of tree) {
-    paths.push({
-      params: { path: c.parent },
-      props: {
-        parent: c.parent,
-        child: null,
-        posts: sortByDate(posts.filter((p) => postInCategory(p.data, c.parent))),
-      },
-    });
-    for (const ch of c.children) {
-      paths.push({
-        params: { path: `${c.parent}/${ch.child}` },
-        props: {
-          parent: c.parent,
-          child: ch.child,
-          posts: sortByDate(posts.filter((p) => postInCategory(p.data, c.parent, ch.child))),
-        },
-      });
-    }
-  }
-  return paths;
+  const nodes = flattenCategoryNodes(buildCategoryTree(posts));
+  return nodes.map((n) => ({
+    params: { path: n.path.join('/') },
+    props: { path: n.path, posts: sortByDate(postsUnder(posts, n.path)) },
+  }));
 }
 
-const { parent, child, posts } = Astro.props;
+const { path, posts } = Astro.props;
 const fmt = (d: Date) => d.toISOString().slice(0, 10);
+// 브레드크럼: 각 세그먼트를 누적 경로 링크로
+const crumbs = path.map((seg, i) => ({ seg, href: `/categories/${path.slice(0, i + 1).join('/')}` }));
 ---
-<BaseLayout title={`${child ?? parent} · jisung-02`}>
+<BaseLayout title={`${path[path.length - 1]} · jisung-02`}>
   <div class="index-layout">
-    <CategoryIndex activeParent={parent} activeChild={child} />
+    <CategoryIndex activePath={path} />
     <div class="index-main">
       <h1 class="breadcrumb">
-        <a href={`/categories/${parent}`}>{parent}</a>
-        {child && <><span class="sep">›</span>{child}</>}
+        {crumbs.map((c, i) => (
+          <>
+            {i > 0 && <span class="sep">›</span>}
+            {i === crumbs.length - 1 ? <span>{c.seg}</span> : <a href={c.href}>{c.seg}</a>}
+          </>
+        ))}
       </h1>
       <ul class="post-list">
         {posts.map((p) => (

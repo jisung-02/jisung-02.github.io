@@ -2,7 +2,7 @@
 title: "UTM 가상머신 설치 가이드 (Mac)"
 date: 2026-03-30
 publish: true
-category: "개인공부/클라우드·인프라/UTM·가상화"
+category: "클라우드·인프라/UTM·가상화"
 tags: ["가상머신", "Mac"]
 description: "Mac에서 UTM으로 Ubuntu 가상머신을 설치하는 과정 정리"
 ---

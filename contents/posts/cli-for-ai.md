@@ -2,7 +2,7 @@
 title: "AI를 위한 CLI"
 date: 2026-04-05
 publish: true
-category: "개인공부/개발도구·생산성"
+category: "개발도구·생산성"
 tags: ["AI", "도구"]
 description: "AI 에이전트 친화적인 CLI를 만들기 위한 개선 순서 메모"
 ---

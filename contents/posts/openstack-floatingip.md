@@ -2,7 +2,7 @@
 title: "OpenStack FloatingIP와 기타등등"
 date: 2026-04-01
 publish: true
-category: "개인공부/클라우드·인프라/OpenStack"
+category: "클라우드·인프라/OpenStack"
 tags: ["클라우드", "네트워크"]
 description: "FloatingIP 부족 문제와 라우팅 구성 등을 정리한 작업 노트"
 ---

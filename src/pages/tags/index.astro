@@ -8,6 +8,7 @@ const posts = all.filter((p) => isVisible(p.data, import.meta.env.PROD));
 const tags = collectTags(posts);
 ---
 <BaseLayout title="태그 · jisung-02">
+  <p class="eyebrow">Index</p>
   <h1>태그</h1>
   <ul class="tags">
     {tags.map((t) => <li><a class="marker" href={`/tags/${t.tag}`}>#{t.tag} ({t.count})</a></li>)}

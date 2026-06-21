@@ -8,6 +8,12 @@ const posts = sortByDate(all.filter((p) => isVisible(p.data, import.meta.env.PRO
 const fmt = (d: Date) => d.toISOString().slice(0, 10);
 ---
 <BaseLayout title="jisung-02">
+  <header class="masthead">
+    <p class="eyebrow">Lab Notebook</p>
+    <h1>jisung-02</h1>
+    <p class="lede">학부생의 CS 학습 정리 노트. Obsidian으로 쓰고 그대로 발행합니다.</p>
+    <p class="ledger">기록 {posts.length}개 · 최근 갱신 {posts.length > 0 ? fmt(posts[0].data.date) : '—'}</p>
+  </header>
   <ul class="post-list">
     {posts.map((p) => (
       <li>

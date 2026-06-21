@@ -16,6 +16,7 @@ const { tag, posts } = Astro.props;
 const fmt = (d: Date) => d.toISOString().slice(0, 10);
 ---
 <BaseLayout title={`#${tag} · jisung-02`}>
+  <p class="eyebrow">Tag</p>
   <h1>#{tag}</h1>
   <ul class="post-list">
     {posts.map((p) => (

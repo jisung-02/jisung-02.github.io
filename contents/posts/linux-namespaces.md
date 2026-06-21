@@ -81,7 +81,7 @@ description: "커널 수준에서 네트워크 스택을 격리하는 리눅스 
 
 ### 2.3 namespace 간 연결 방법
 
-**(1) veth pair** — 가장 핵심
+**(1) veth pair**— 가장 핵심
 ```
 [netns A] veth0 <----> veth1 [netns B]
 ```
@@ -148,8 +148,8 @@ netns 관점:
 
 ### 3.5 주의할 포인트
 
-**❌ 오해**: "IP만 분리됨"
-**✔ 실제**: 인터페이스 + 포트 + routing + firewall 전부 분리된다
+**오해**: "IP만 분리됨"
+**실제**: 인터페이스 + 포트 + routing + firewall 전부 분리된다
 
 **L7 (Application)은 포함되지 않는다**
 HTTP, gRPC 같은 L7은 영향을 받지 않는다.
@@ -216,8 +216,8 @@ ip netns exec ns1 ip addr
 
 | | 내용 |
 |--|------|
-| **장점** | 커널 레벨 isolation (빠름), 가볍다 (VM 대비), 컨테이너 기반 구조 핵심 |
-| **단점** | 네트워크 연결 직접 구성 필요, 디버깅 어려움 (namespace context 필요), observability 어려움 (특히 TLS/QUIC 환경) |
+| **장점**| 커널 레벨 isolation (빠름), 가볍다 (VM 대비), 컨테이너 기반 구조 핵심 |
+| **단점**| 네트워크 연결 직접 구성 필요, 디버깅 어려움 (namespace context 필요), observability 어려움 (특히 TLS/QUIC 환경) |
 
 **Edge case / 실패 조건**:
 - 네임스페이스 안에서 DNS 없음 → 외부 통신 실패
@@ -363,10 +363,10 @@ qrouter → snat namespace → external
 ### 7.7 디버깅
 
 ```bash
-# ❌ host에서는 안 보임
+#  host에서는 안 보임
 ip addr
 
-# ✅ namespace 안으로 들어가야 함
+#  namespace 안으로 들어가야 함
 ip netns exec qrouter-xxx ip addr
 ip netns exec qrouter-xxx ip route
 ip netns exec qrouter-xxx iptables -t nat -L

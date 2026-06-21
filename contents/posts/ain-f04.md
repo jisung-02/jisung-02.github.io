@@ -114,7 +114,7 @@ description: "직역"
 > (출처) Chung, Wu-Chun, et al. "Decentralized federated learning with Non-IID data: Challenges, trends, and future opportunities." ACM Computing Surveys 58.8 (2026): 1-41.
 
 **설명**
-- Decentralized 토폴로지: 풀 커넥티드(모든 노드가 서로 연결되어 통신량이 과다), **링(ring)** 형(돌아가며 교환 — 한 노드가 정체되면 전체가 느려진다), **클러스터(cluster)** 형(가깝거나 유사한 노드끼리 묶어 합침 — 장점이 많은 방식)이 있다. 전부 네트워크 관련 이슈다.
+- Decentralized 토폴로지: 풀 커넥티드(모든 노드가 서로 연결되어 통신량이 과다), **링(ring)**형(돌아가며 교환 — 한 노드가 정체되면 전체가 느려진다), **클러스터(cluster)**형(가깝거나 유사한 노드끼리 묶어 합침 — 장점이 많은 방식)이 있다. 전부 네트워크 관련 이슈다.
 
 ## 슬라이드 7
 
@@ -122,7 +122,7 @@ description: "직역"
 
 **직역**
 > **중앙집중 대 탈중앙화(Centralized VS. Decentralized)**
-> ❖ 중앙집중형 FL 대 탈중앙화 FL(Centralized FL VS. Decentralized FL)
+> 중앙집중형 FL 대 탈중앙화 FL(Centralized FL VS. Decentralized FL)
 >
 > (그림) 왼쪽 — 중앙집중 학습(Centralized Training): 중앙 서버(Central Server)가 있고 클라이언트 디바이스(Client device 1~4)들이 서버와 양방향으로 연결됨.
 > 오른쪽 — 탈중앙화 학습(Decentralized Training): 디바이스들이 서로 직접(피어 간) 연결됨.
@@ -511,7 +511,7 @@ description: "직역"
 > - 중간 활성값(intermediate activations)만 공유하여 프라이버시 강화.
 
 **설명**
-- (시험 관련, 반복 강조) 정의: 전체 모델 중 **앞부분(입력 처리 레이어)은 클라이언트가, 나머지는 서버가** 학습한다. 즉 서버도 학습한다 — 연합학습은 서버가 학습하지 않고 aggregation만 한다는 점이 핵심 차이다.
+- (시험 관련, 반복 강조) 정의: 전체 모델 중 **앞부분(입력 처리 레이어)은 클라이언트가, 나머지는 서버가**학습한다. 즉 서버도 학습한다 — 연합학습은 서버가 학습하지 않고 aggregation만 한다는 점이 핵심 차이다.
 - 모델 보유 측면의 차이도 있다: 연합학습은 모든 노드가 전체 모델을 가지고 있어야 하지만, 스플릿은 모델의 레이어(또는 다른 기준)를 잘라서 나눠 가진다. 엣지 디바이스끼리도 스플릿이 가능하다.
 
 ## 슬라이드 26
@@ -535,7 +535,7 @@ description: "직역"
 > (출처) Samikwa, Eric, Antonio Di Maio, and Torsten Braun. "DFL: Dynamic Federated Split Learning in Heterogeneous IoT." IEEE transactions on machine learning in communications and networking (2024).
 
 **설명**
-- 장점: 로컬(노트북)에 비싼 GPU가 없어도 적은 연산만 하고 무거운 부분은 성능 좋은 서버에 맡길 수 있다. 메모리도 적게 필요하다. 많은 노드/GPU 클러스터/CPU를 효율적으로 활용하면서 프라이버시도 보장한다. 이렇게 로드를 나누는 것 자체를 **오프로딩(offloading, 모델 오프로딩)** 관점으로 본다.
+- 장점: 로컬(노트북)에 비싼 GPU가 없어도 적은 연산만 하고 무거운 부분은 성능 좋은 서버에 맡길 수 있다. 메모리도 적게 필요하다. 많은 노드/GPU 클러스터/CPU를 효율적으로 활용하면서 프라이버시도 보장한다. 이렇게 로드를 나누는 것 자체를 **오프로딩(offloading, 모델 오프로딩)**관점으로 본다.
 - 주의: 모델을 많이 자른다고 해서 학습이 더 빨라지는 것은 아니다. 자르는 지점이 늘수록 통신 오버헤드 등이 증가해 오히려 느려질 수 있다 → 이 통신 부담만 해결하면 된다.
 
 ## 슬라이드 27
@@ -597,14 +597,14 @@ description: "직역"
 > 제목: 한계와 해결책(Limitations and Solutions)
 > 내용:
 > - 통신 오버헤드(Communication Overhead):
->   - 클라이언트와 서버 간 잦은 교환.
->   - 해결책: 활성값 압축(activation compression) 기법.
+> - 클라이언트와 서버 간 잦은 교환.
+> - 해결책: 활성값 압축(activation compression) 기법.
 > - 프라이버시 위험(Privacy Risks):
->   - 중간 활성값의 잠재적 노출.
->   - 해결책: 차등 프라이버시와 보안 채널(secure channels).
+> - 중간 활성값의 잠재적 노출.
+> - 해결책: 차등 프라이버시와 보안 채널(secure channels).
 > - 지연 문제(Latency Issues):
->   - 네트워크 의존성으로 인한 시간 증가.
->   - 해결책: 비동기 실행(asynchronous execution).
+> - 네트워크 의존성으로 인한 시간 증가.
+> - 해결책: 비동기 실행(asynchronous execution).
 
 **설명**
 - **통신 오버헤드**: 노드 간 연결이 많아 통신 부담이 크다 → 액티베이션(중간 출력) 자체를 압축해 보내는 방법이 필요하다.
@@ -620,11 +620,11 @@ description: "직역"
 > 제목: 왜 스플릿 러닝을 선택하는가?(Why Choose Split Learning?)
 > 내용:
 > - 클라이언트의 이점(Client Benefits):
->   - 연산 및 저장 부하 감소.
->   - 로컬 데이터 프라이버시 유지.
+> - 연산 및 저장 부하 감소.
+> - 로컬 데이터 프라이버시 유지.
 > - 서버의 이점(Server Benefits):
->   - 무거운 연산 작업 처리.
->   - 중간 활성값을 안전하게 집계.
+> - 무거운 연산 작업 처리.
+> - 중간 활성값을 안전하게 집계.
 > - 전반(Overall): 자원이 제약된(resource-constrained) 환경에 효율적.
 
 ## 슬라이드 31
@@ -682,7 +682,7 @@ description: "직역"
 > - 하이브리드 모델(Hybrid Models): 스플릿 러닝과 연합 학습을 결합한다.
 
 **설명**
-- 개선 방향: 연결 부분(통신)을 줄이고, **비동기(asynchronous)** 처리로 대기를 제거하며, Split+Federated 결합, 다양한 aggregation 방법, 경량화(pruning, knowledge distillation)로 모델을 축약한다.
+- 개선 방향: 연결 부분(통신)을 줄이고, **비동기(asynchronous)**처리로 대기를 제거하며, Split+Federated 결합, 다양한 aggregation 방법, 경량화(pruning, knowledge distillation)로 모델을 축약한다.
 
 ## 슬라이드 34
 

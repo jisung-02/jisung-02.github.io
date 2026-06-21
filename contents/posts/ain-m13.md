@@ -7,7 +7,7 @@ tags: ["AI네트워킹"]
 description: "Security Attack (보안 공격): 정보의 보안을 침해하는 모든 행위. 실제로 시스템에 영향이 발생하며 기밀성/무결성/가용성 등이 깨짐. 예) 패킷…"
 ---
 
-> AI 네트워킹 **중간** 범위 — 노션 강의 노트를 옵시디언용으로 정리한 노트.
+> AI 네트워킹 **중간**범위 — 노션 강의 노트를 옵시디언용으로 정리한 노트.
 > [← 전체 목차](/posts/ain-overview/)
 
 ## 기본 개념 (5대 용어)
@@ -56,7 +56,7 @@ description: "Security Attack (보안 공격): 정보의 보안을 침해하는 
 - **(2) Pervasive Security Mechanisms**: 특정 계층/서비스에 비종속(Layer-independent), 시스템 전반에 적용되는 공통/보조 기능. 예) Trusted Function, Security Label, Event Detection, Security Audit Trail(로그), Security Recovery.
 
 ## 네트워크 접근 보안 모델 (Gatekeeper)
-- 흐름: Opponent → Access Channel → **Gatekeeper** → Information System.
+- 흐름: Opponent → Access Channel → **Gatekeeper**→ Information System.
 - **Gatekeeper Function**이 핵심: 모든 접근을 통제하는 지점.
 - 기능: 인증(Authentication), 접근 제어(Access Control), 필터링.
 
@@ -67,7 +67,7 @@ description: "Security Attack (보안 공격): 정보의 보안을 침해하는 
 - **Policies (정책)**: 운영/관리 규칙. 예) 비밀번호 주기적 변경, 보안 정책 적용.
 - **Physical Controls (물리적 제어)**: 물리적 접근 제한. 예) 출입 통제, 장비 보호.
 
-## ✅ 핵심 정리 (시험 포인트)
+## 핵심 정리 (시험 포인트)
 - 5대 용어 구분: Attack(실행됨) vs Threat(가능성), Mechanism(수단) vs Service(기능).
 - 4대 위협-속성 매핑: Interruption→가용성, Interception→기밀성, Modification→무결성, Fabrication→인증성.
 - Passive(수동)는 기밀성만 깸·탐지 어려움(도청, 트래픽 분석) / Active(능동)는 상태 변경·탐지 가능(위장, 재전송, 변조, DoS).

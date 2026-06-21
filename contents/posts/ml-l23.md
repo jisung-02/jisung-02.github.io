@@ -23,7 +23,7 @@ description: "Overfitting and Underfitting"
 	→ 모델이 **보지 못한(테스트) 데이터**에 대해서도 잘 **일반화**되기를 원함
 
 - **Want “high generalization accuracy” or “low generalization error”**
-	→ **일반화 정확도는 높고**, **일반화 오차는 낮은** 모델을 원함
+	→ **일반화 정확도는 높고**, **일반화 오차는 낮은**모델을 원함
 
 ![](../attachments/ml/L23/slide-02.webp)
 
@@ -31,19 +31,19 @@ description: "Overfitting and Underfitting"
 → 과적합과 과소적합: (기본) 가정들
 
 - **i.i.d. assumption: training and test examples are independent and identically distributed (drawn from the same joint probability distribution, P(X, y))**
-	→ **i.i.d. 가정**: 훈련 데이터와 테스트 데이터는 **서로 독립(independent)** 이고 **동일한 분포(identically distributed)** 에서 뽑힌 샘플이다
-	→ 즉, 같은 **결합확률분포 P(X, y)** 에서 생성됨
+	→ **i.i.d. 가정**: 훈련 데이터와 테스트 데이터는 **서로 독립(independent)**이고 **동일한 분포(identically distributed)**에서 뽑힌 샘플이다
+	→ 즉, 같은 **결합확률분포 P(X, y)**에서 생성됨
 
 - **For some random model that has not been fitted to the training set, we expect the training error is approximately similar to the test error**
-	→ 훈련 데이터에 **아직 맞추지 않은(학습되지 않은)** 임의의 모델에 대해
+	→ 훈련 데이터에 **아직 맞추지 않은(학습되지 않은)**임의의 모델에 대해
 	→ 훈련 오차와 테스트 오차는 **대략 비슷할 것**이라고 기대함
 
 - **For some random model that has been fitted to the training set, we expect the training error is lower than the test error**
-	→ 훈련 데이터에 **맞춰서 학습된** 모델의 경우
+	→ 훈련 데이터에 **맞춰서 학습된**모델의 경우
 	→ **훈련 오차 < 테스트 오차**일 것이라고 기대함
 
 - **The training error or accuracy provides an optimistically biased estimate of the generalization performance**
-	→ 훈련 오차(또는 정확도)는 **일반화 성능을 낙관적으로 편향된(optimistically biased)** 추정치로 제공함
+	→ 훈련 오차(또는 정확도)는 **일반화 성능을 낙관적으로 편향된(optimistically biased)**추정치로 제공함
 
 ![](../attachments/ml/L23/slide-03.webp)
 
@@ -67,26 +67,26 @@ description: "Overfitting and Underfitting"
 **What does that mean?**
 → 그게 무슨 뜻일까?
 
-## **1️⃣ “High bias”가 의미하는 것**
-**Bias(편향)** =
-👉 모델이 **평균적으로 틀리게 예측하는 정도**
+## **1⃣ “High bias”가 의미하는 것**
+**Bias(편향)**=
+ 모델이 **평균적으로 틀리게 예측하는 정도**
 
 - 모델이 너무 단순해서
 	데이터의 **진짜 패턴을 표현할 능력 자체가 부족**
 
 - 훈련 데이터를 아무리 바꿔도
 	예측이 항상 비슷하고, 항상 빗나감
-📌 특징
+ 특징
 
 - 훈련 오차 큼
 - 테스트 오차 큼
 - 예측이 안정적이지만 항상 틀림
-- 👉 **과소적합(underfitting)** 과 연결
+- **과소적합(underfitting)**과 연결
 ***
 
-## **2️⃣ “High variance”가 의미하는 것**
-**Variance(분산)** =
-👉 훈련 데이터가 조금만 바뀌어도
+## **2⃣ “High variance”가 의미하는 것**
+**Variance(분산)**=
+ 훈련 데이터가 조금만 바뀌어도
 **모델 예측이 크게 흔들리는 정도**
 
 - 모델이 너무 복잡해서
@@ -94,40 +94,40 @@ description: "Overfitting and Underfitting"
 
 - 훈련 샘플 하나 바뀌면
 	함수 모양이 확 바뀜
-📌 특징
+ 특징
 
 - 훈련 오차 매우 작음
 - 테스트 오차 큼
 - 예측이 불안정
-- 👉 **과적합(overfitting)** 과 연결
+- **과적합(overfitting)**과 연결
 ***
 
-## **3️⃣ 왜 “Bias–Variance Decomposition” 이 필요한가**
+## **3⃣ 왜 “Bias–Variance Decomposition” 이 필요한가**
 겉으로 보면 오차는 하나입니다.
 \\text\{Error\}
 그런데 이 오차를 분해하면:
 \\text\{Error\} = \\text\{Bias\}\^2 + \\text\{Variance\} + \\text\{Noise\}
 이 분해를 통해 알 수 있는 것:
 
-- ❌ “모델이 틀린다”는 한 가지 이유만 있는 게 아님
-- ✅
+- “모델이 틀린다”는 한 가지 이유만 있는 게 아님
+-
 	- **Bias 문제**: 모델이 너무 단순
 	- **Variance 문제**: 모델이 너무 복잡
 ***
 
-## **4️⃣ Bias–Variance**
+## **4⃣ Bias–Variance**
 
 ## **Tradeoff**
 
 ## **란?**
 
-- 모델을 **단순하게** 만들면
+- 모델을 **단순하게**만들면
 	→ Bias ↑, Variance ↓
 
-- 모델을 **복잡하게** 만들면
+- 모델을 **복잡하게**만들면
 	→ Bias ↓, Variance ↑
-👉 둘을 동시에 낮출 수는 없음
-👉 그래서 **Tradeoff(상충 관계)**
+ 둘을 동시에 낮출 수는 없음
+ 그래서 **Tradeoff(상충 관계)**
 이게 바로 앞에서 본
 
 - 모델 복잡도 vs 테스트 에러 곡선의 정체
@@ -158,7 +158,7 @@ description: "Overfitting and Underfitting"
 
 ![](../attachments/ml/L23/slide-04.webp)
 
-## **1️⃣ Bias–Variance Decomposition (개념 선언 슬라이드)**
+## **1⃣ Bias–Variance Decomposition (개념 선언 슬라이드)**
 **직역**
 
 - **Decomposition of the loss into bias and variance helps us understand machine learning algorithms, concepts are related to underfitting and overfitting.**
@@ -171,7 +171,7 @@ $$
 	→ 왜 앙상블 방법이 단일 모델보다 더 좋은 성능을 보일 수 있는지 설명해준다.
 **설명**
 
-- 우리가 관측하는 **총 오차(loss)** 는 하나처럼 보이지만, 원인은 세 가지:
+- 우리가 관측하는 **총 오차(loss)**는 하나처럼 보이지만, 원인은 세 가지:
 	- **Bias**: 평균적으로 틀리는 정도 (모델 표현력 부족)
 	- **Variance**: 데이터가 바뀔 때 예측이 흔들리는 정도
 	- **Noise**: 데이터 자체의 불가피한 잡음 (줄일 수 없음)
@@ -192,7 +192,7 @@ $$
 	4. **High Bias, High Variance**: 최악
 ***
 
-## **3️⃣ 진짜 함수 **f(x)** (노이즈 없음)**
+## **3⃣ 진짜 함수 **f(x)**(노이즈 없음)**
 **직역**
 
 - **true (in practice unknown) data generating function f(x)**
@@ -203,7 +203,7 @@ $$
 - 우리는 이걸 모르고, 데이터만 관측함
 - Bias–Variance 분석의 기준선이 되는 “진짜 세계”
 
-## **4️⃣ 진짜 함수 + 노이즈**
+## **4⃣ 진짜 함수 + 노이즈**
 **직역**
 
 - **target f(x)**
@@ -214,13 +214,13 @@ $$
 **설명**
 
 - 실제 관측 데이터 = f(x) + \\epsilon
-- 이 **Noise** 는:
+- 이 **Noise**는:
 	- 측정 오차
 	- 환경 변동
 	- 본질적 불확실성
 - 어떤 모델로도 완전히 제거 불가 → 분해식에 **Noise 항이 남음**
 
-## **5️⃣ 여러 훈련 데이터셋 (sampling의 영향)**
+## **5⃣ 여러 훈련 데이터셋 (sampling의 영향)**
 **직역**
 
 - **possible train set 1 / 2 / 3**
@@ -261,13 +261,13 @@ $$
 	- 평균 예측은 훨씬 부드러워짐
 - Bias는 거의 그대로
 - Variance만 크게 감소
-- 👉 **Bagging, Random Forest의 이론적 근거**
+- **Bagging, Random Forest의 이론적 근거**
 
 ![](../attachments/ml/L23/slide-07.webp)
 
-## **1️⃣ Point estimator 개념**
+## **1⃣ Point estimator 개념**
 **직역**
-**Point estimator **\\hat\{\\theta\}** of some parameter **\\theta
+**Point estimator **\\hat\{\\theta\}**of some parameter **\\theta
 → 어떤 모수 \\theta에 대한 **점 추정량 **\\hat\{\\theta\}
 
 - **Approximate value**
@@ -289,10 +289,10 @@ $$
 - 머신러닝에서는:
 	- 파라미터 \\theta를 추정하기도 하고
 	- **함수 전체 **f(x) 를 추정하기도 함
-		→ 둘 다 “estimator”로 취급
+ → 둘 다 “estimator”로 취급
 ***
 
-## **2️⃣ Bias의 정의 (기대값 등장)**
+## **2⃣ Bias의 정의 (기대값 등장)**
 **직역**
 \\text\{Bias\} = E[\\hat\{\\theta\}] - \\theta
 
@@ -304,7 +304,7 @@ $$
 **설명**
 
 - 핵심 포인트:
-	👉 **Bias는 “하나의 모델”을 보는 게 아님**
+ **Bias는 “하나의 모델”을 보는 게 아님**
 
 - 같은 문제에 대해:
 	- 훈련 데이터를 계속 다시 뽑아
@@ -317,7 +317,7 @@ $$
 > Bias = “이 학습 방법은 평균적으로 맞는가?”
 ***
 
-## **3️⃣ Bias와 Variance의 일반적 정의**
+## **3⃣ Bias와 Variance의 일반적 정의**
 **직역**
 $$
 \text{Bias}[\hat{\theta}] = E[\hat{\theta}] - \theta
@@ -340,7 +340,7 @@ $$
 	- \\hat\{\\theta\}가 얼마나 **흔들리는지**
 - 기준점은 항상 E[\\hat\{\\theta\}]
 	(진짜 값이 아님!)
-👉 중요 차이
+ 중요 차이
 
 - **Bias**: 평균 vs 진짜 값
 - **Variance**: 개별 값 vs 평균
@@ -364,7 +364,7 @@ $$
 	$$
 	로 나뉘는지를 **수식으로 증명**하는 단계입니다.
 
-## **1️⃣ 제목**
+## **1⃣ 제목**
 **직역**
 **Bias–Variance Decomposition of the Squared Error**
 → 제곱 오차의 바이어스–분산 분해
@@ -379,7 +379,7 @@ $$
 	로 나뉘는지를 **수식으로 증명**하는 단계입니다.
 ***
 
-## **2️⃣ ML notation 정리 (기호 통일)**
+## **2⃣ ML notation 정리 (기호 통일)**
 **직역**
 
 - y = f(x) : target
@@ -388,14 +388,14 @@ $$
 **설명**
 
 - 이때 중요한 점:
-	- y 는 **고정된 값** (특정 x에서의 진짜 값)
+	- y 는 **고정된 값**(특정 x에서의 진짜 값)
 	- $`\hat{y} 만 확률변수`$
-		- 이유: 훈련 데이터가 랜덤이기 때문
-$`👉 기댓값 E[\cdot] 은`$
+ - 이유: 훈련 데이터가 랜덤이기 때문
+$` 기댓값 E[\cdot] 은`$
 항상 **훈련 데이터 샘플링에 대해 취함**
 ***
 
-## **3️⃣ 핵심 트릭: **$`E[\hat{y}]`$**를 더했다 빼기**
+## **3⃣ 핵심 트릭: **$`E[\hat{y}]`$**를 더했다 빼기**
 **직역**
 $`(y - \hat{y})^2
 = (y - E[\hat{y}] + E[\hat{y}] - \hat{y})^2`$
@@ -405,10 +405,10 @@ $`(y - \hat{y})^2
 - 목적:
 	- 하나는 **Bias 항**
 	- 하나는 **Variance 항**
-		로 나누기 위함
+ 로 나누기 위함
 ***
 
-## **4️⃣ 제곱 전개 (아주 중요)**
+## **4⃣ 제곱 전개 (아주 중요)**
 $`(y - \hat{y})^2
 = (y - E[\hat{y}])^2
 
@@ -417,7 +417,7 @@ $`(y - \hat{y})^2
 이제 항이 **3개**입니다.
 ***
 
-## **5️⃣ 기댓값을 취함**
+## **5⃣ 기댓값을 취함**
 **직역**
 $`E[S] = E[(y - \hat{y})^2]`$
 $`E[(y - \hat{y})^2]
@@ -427,7 +427,7 @@ $`E[(y - \hat{y})^2]
 - 2E[(y - E[\hat{y}])(E[\hat{y}] - \hat{y})]`$
 ***
 
-## **6️⃣ ??? 부분: 교차항이 왜 0인가**
+## **6⃣ ??? 부분: 교차항이 왜 0인가**
 문제의 항:
 
 ### **단계별로 보면**
@@ -450,10 +450,10 @@ $`E[(y - \hat{y})^2]
 
 6. 결국
 	$`(y - E[\hat{y}]) \cdot 0 = 0`$
-✅ **그래서 교차항 전체가 0**
+ **그래서 교차항 전체가 0**
 ***
 
-## **7️⃣ 최종 결과**
+## **7⃣ 최종 결과**
 $`E[(y - \hat{y})^2]
 = (y - E[\hat{y}])^2
 
@@ -472,7 +472,7 @@ E[(y - \hat{y})^2] = \text{Bias}^2 + \text{Variance}
 (Noise 항은 y = f(x) + \\epsilon 을 명시하면 추가됨)
 ***
 
-## **✅ 이 슬라이드의 핵심 요약 (시험 직결)**
+## **이 슬라이드의 핵심 요약 (시험 직결)**
 
 1. **Bias–Variance 분해는 Squared Error에서만 깔끔하게 성립**
 2. 교차항이 0이 되는 이유는
@@ -497,7 +497,7 @@ E[(y - \hat{y})^2] = \text{Bias}^2 + \text{Variance}
 
 ## **설명 (그림 기준으로 정확히 연결)**
 
-### **1️⃣ 모델 복잡도 축에서 벌어지는 일**
+### **1⃣ 모델 복잡도 축에서 벌어지는 일**
 
 - **가로축**: 모델 복잡도
 - **세로축**: 에러
@@ -514,7 +514,7 @@ E[(y - \hat{y})^2] = \text{Bias}^2 + \text{Variance}
 이게 바로 **Bias–Variance Tradeoff**입니다.
 ***
 
-### **2️⃣ 과소적합 = High Bias 영역 (왼쪽)**
+### **2⃣ 과소적합 = High Bias 영역 (왼쪽)**
 
 - 모델이 **너무 단순**
 - 데이터의 구조를 표현하지 못함
@@ -525,10 +525,10 @@ E[(y - \hat{y})^2] = \text{Bias}^2 + \text{Variance}
 - 수식 관점:
 	\\text\{MSE\} = \\text\{Bias\}\^2 + \\text\{Variance\}
 	에서 **Bias² 항이 지배**
-👉 **Underfitting = Bias 문제**
+ **Underfitting = Bias 문제**
 ***
 
-### **3️⃣ 과적합 = High Variance 영역 (오른쪽)**
+### **3⃣ 과적합 = High Variance 영역 (오른쪽)**
 
 - 모델이 **너무 복잡**
 - 노이즈까지 학습
@@ -538,19 +538,19 @@ E[(y - \hat{y})^2] = \text{Bias}^2 + \text{Variance}
 	- 훈련 에러 ↓, 테스트 에러 ↑
 - 수식 관점:
 	- **Variance 항이 지배**
-👉 **Overfitting = Variance 문제**
+ **Overfitting = Variance 문제**
 ***
 
-### **4️⃣ 최적 복잡도 = Bias² + Variance 최소 지점**
+### **4⃣ 최적 복잡도 = Bias² + Variance 최소 지점**
 
 - 그림의 **optimal complexity**
 - Bias와 Variance가 **균형**
 - 테스트(일반화) 에러 최소
-👉 “훈련 에러 최소”가 아니라
-👉 **“MSE 최소”가 목표**
+ “훈련 에러 최소”가 아니라
+ **“MSE 최소”가 목표**
 ***
 
-### **5️⃣ 왜 MSE로 모든 게 정리되는가**
+### **5⃣ 왜 MSE로 모든 게 정리되는가**
 앞에서 증명한 결과:
 E[(y-\\hat\{y\})\^2] = \\text\{Bias\}\^2 + \\text\{Variance\} \\;(+\\text\{Noise\})
 따라서:
@@ -579,8 +579,8 @@ E[(y-\\hat\{y\})\^2] = \\text\{Bias\}\^2 + \\text\{Variance\} \\;(+\\text\{Noise
 	**일반화 성능 (generalization performance)**
 그래서 우리는
 
-- 훈련 정확도가 높은 모델 ❌
-- **테스트 오차가 낮은 모델 ⭕**
+- 훈련 정확도가 높은 모델
+- **테스트 오차가 낮은 모델 **
 을 원합니다.
 ***
 
@@ -601,7 +601,7 @@ E[(y-\\hat\{y\})\^2] = \\text\{Bias\}\^2 + \\text\{Variance\} \\;(+\\text\{Noise
 - 결과:
 	- 훈련 에러 매우 작음
 	- 테스트 에러 큼
-👉 **둘 다 일반화 실패**
+ **둘 다 일반화 실패**
 ***
 
 # **3. 모델 복잡도 관점에서 본 핵심 그림**
@@ -615,7 +615,7 @@ E[(y-\\hat\{y\})\^2] = \\text\{Bias\}\^2 + \\text\{Variance\} \\;(+\\text\{Noise
 - 왼쪽: 과소적합 영역
 - 오른쪽: 과적합 영역
 - 가운데: **optimal complexity (최적 복잡도)**
-❗ 따라서
+ 따라서
 
 > 훈련 에러 최소 ≠ 좋은 모델
 
@@ -693,7 +693,7 @@ E[(y - \\hat\{y\})\^2]<br>= \\text\{Bias\}\^2 + \\text\{Variance\} \\; (+ \\text
 
 - Bias ↑
 - Variance ↓
-👉 **둘을 동시에 낮출 수는 없음**
+ **둘을 동시에 낮출 수는 없음**
 그래서:
 
 - 너무 단순 → Bias 지배 → 과소적합
@@ -729,7 +729,7 @@ E[(y - \\hat\{y\})\^2]<br>= \\text\{Bias\}\^2 + \\text\{Variance\} \\; (+ \\text
 
 - Bias는 거의 유지
 - **Variance는 크게 감소**
-👉 Bias–Variance 분해가
+ Bias–Variance 분해가
 앙상블 성능의 **이론적 근거**
 ***
 
@@ -748,4 +748,4 @@ E[(y - \\hat\{y\})\^2]<br>= \\text\{Bias\}\^2 + \\text\{Variance\} \\; (+ \\text
 	- 트리 깊이
 	- k-NN의 k
 	- 앙상블
-		같은 **실전 연결**도 정리해 드릴 수 있습니다.
+ 같은 **실전 연결**도 정리해 드릴 수 있습니다.

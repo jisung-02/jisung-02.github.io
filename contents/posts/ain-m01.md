@@ -7,13 +7,13 @@ tags: ["AI네트워킹"]
 description: "정의: AI 기술을 네트워크 시스템에 적용해 성능, 효율성, 관리성을 향상시키는 것."
 ---
 
-> AI 네트워킹 **중간** 범위 — 노션 강의 노트를 옵시디언용으로 정리한 노트.
+> AI 네트워킹 **중간**범위 — 노션 강의 노트를 옵시디언용으로 정리한 노트.
 > [← 전체 목차](/posts/ain-overview/)
 
 ## AI 네트워킹이란 (네트워크를 위한 AI)
 - **정의**: AI 기술을 네트워크 시스템에 적용해 성능, 효율성, 관리성을 향상시키는 것.
 - AI 알고리즘, 머신러닝, 데이터 분석을 통해 네트워크 운영을 **자동화·최적화·보안**적으로 안전하게 하는 분야.
-- AI로 네트워크를 운영하는 것 → **AIOps** (AI Operation).
+- AI로 네트워크를 운영하는 것 → **AIOps**(AI Operation).
 
 ### 네트워크 운영의 주요 요소
 - **성능 (Performance)**: 지연(latency) 감소, 처리량(throughput) 증가, 패킷 손실 감소.
@@ -37,18 +37,18 @@ description: "정의: AI 기술을 네트워크 시스템에 적용해 성능, �
 ## AI 네트워킹의 핵심 개념 (6가지)
 1. **Automation (자동화)**: 네트워크 설정·모니터링·트러블슈팅 같은 반복 작업을 AI가 자동화. (예: 로그·트래픽을 수집·분석해 자동으로 설정·정책 변경)
 2. **Optimization (최적화)**: 네트워크 데이터를 분석해 성능 최적화, 지연 감소, 대역폭 이용율 향상. (예: 혼잡 회피를 위한 동적 라우팅)
-   - **혼잡 제어 (Congestion control)**: 네트워크 전체의 과부하를 제어.
-   - **흐름 제어 (Flow control)**: 통신 상대의 처리 속도에 맞추는 것.
+ - **혼잡 제어 (Congestion control)**: 네트워크 전체의 과부하를 제어.
+ - **흐름 제어 (Flow control)**: 통신 상대의 처리 속도에 맞추는 것.
 3. **Predictive Analytics (예측)**: 잠재 문제를 발생 전에 미리 예측. (예: 이력 데이터로 하드웨어 오류·병목 예측)
 4. **Security (보안)**: 트래픽 패턴 기반 실시간 공격 탐지·대응. (예: DDoS 식별·완화)
 5. **Self-Healing Network (자가 복구 네트워크)**: 인간 개입 없이 문제를 찾고 수정해 스스로 복구. (예: 연결 실패 시 트래픽 재라우팅)
-6. **Intelligent Traffic Management (지능형 트래픽 관리)**: 트래픽 중요도에 따라 우선순위 지정·관리해 **QoS** 향상.
+6. **Intelligent Traffic Management (지능형 트래픽 관리)**: 트래픽 중요도에 따라 우선순위 지정·관리해 **QoS**향상.
 
 ## AI 네트워킹의 응용 분야
 1. **Enterprise Network (기업용 네트워크)**: Wi-Fi 성능 최적화, 사용자 접속 관리, 안전한 연결 보장. (사람이 많아지면 Wi-Fi 불안정·접근 제어 어려움을 AI로 해결)
 2. **Data Center**: 자원 할당 개선, 에너지 소비 감소, 확장성 향상. (예: AI-powered 냉각 시스템)
 3. **Telecommunication (원거리 통신)**: 5G 고도화, 주파수 할당 관리, 고객 경험 개선.
-   - **네트워크 슬라이싱 (Network Slicing)**: 하나의 5G 인프라를 서비스 특성에 따라 여러 가상 네트워크 슬라이스로 쪼개 사용하는 기술.
+ - **네트워크 슬라이싱 (Network Slicing)**: 하나의 5G 인프라를 서비스 특성에 따라 여러 가상 네트워크 슬라이스로 쪼개 사용하는 기술.
 4. **IoT 네트워크**: 대규모 IoT 환경 관리·보안 강화. (예: 스마트 시티 센서의 AI 기반 이상 탐지)
 5. **Cloud Networking**: 클라우드 자원 할당 최적화, 끊김 없는 연결성 보장. (예: AI 기반 부하 분산)
 6. **Networking for ML (머신러닝을 위한 네트워킹)**: 대규모 AI 모델은 오버헤드가 큰 네트워크로 연결된 수많은 노드에서 실행. (예: 매 라운드 방대한 통신을 사용하는 연합 학습)
@@ -137,7 +137,7 @@ Artificial Intelligence
 - 목표 기반 학습, 장기 보상 최적화.
 
 ### 13. Transformer
-- **Self-Attention** 기반, 순차 데이터 관계 학습.
+- **Self-Attention**기반, 순차 데이터 관계 학습.
 - 긴 거리 의존성 처리 가능, NLP 핵심 모델.
 
 ### 14·15. Federated Learning (연합 학습)
@@ -167,12 +167,12 @@ AI
            └── GAN
 ```
 
-## ✅ 핵심 정리 (시험 포인트)
+## 핵심 정리 (시험 포인트)
 - **AI 네트워킹 = AI를 네트워크에 적용해 성능·효율·운영(관리성)을 향상**시키는 것 → AI로 운영하면 **AIOps**.
 - 핵심 개념 6가지: Automation, Optimization, Predictive Analytics, Security, Self-Healing, Intelligent Traffic Management.
-- **혼잡 제어(네트워크 전체) vs 흐름 제어(상대 처리 속도)** 구분.
+- **혼잡 제어(네트워크 전체) vs 흐름 제어(상대 처리 속도)**구분.
 - 응용 분야: Enterprise, Data Center, Telecom(네트워크 슬라이싱), IoT, Cloud, Networking for ML.
-- 전통 프로그래밍은 사람이 규칙 정의, **ML은 데이터로부터 규칙 학습** / **AI⊃ML⊃DL** (갈수록 데이터 의존·자동화 증가).
+- 전통 프로그래밍은 사람이 규칙 정의, **ML은 데이터로부터 규칙 학습**/ **AI⊃ML⊃DL**(갈수록 데이터 의존·자동화 증가).
 - 딥러닝 핵심 기술 = **Backpropagation + Gradient Descent + Neural Network**, 주요 문제 = **Overfitting**.
 - 학습 방식: Supervised / Unsupervised / Semi-supervised / Self-supervised + Reinforcement.
 - **Federated Learning**: 데이터를 모으지 않고 파라미터만 공유(프라이버시·통신비용 절감) — AI 네트워킹의 핵심 주제.

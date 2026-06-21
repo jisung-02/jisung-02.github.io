@@ -7,7 +7,7 @@ tags: ["AI네트워킹"]
 description: "네트워크 계층은 하위 물리 네트워크들이 패킷을 처리하는 과정을 감독하며, 이 처리를 전달(delivery)이라 한다."
 ---
 
-> AI 네트워킹 **중간** 범위 — 노션 강의 노트를 옵시디언용으로 정리한 노트.
+> AI 네트워킹 **중간**범위 — 노션 강의 노트를 옵시디언용으로 정리한 노트.
 > [← 전체 목차](/posts/ain-overview/)
 
 ## Delivery (패킷의 전달)
@@ -24,11 +24,11 @@ description: "네트워크 계층은 하위 물리 네트워크들이 패킷을 
 ### 포워딩 기법 (저장 방식)
 | 기법 | 설명 | 예 |
 | --- | --- | --- |
-| **Route 방식** | 목적지까지 **전체 경로** 저장 | A → R1 → R2 → B |
-| **Next-hop 방식** | 다음에 갈 **한 단계만** 저장 | A → R1 |
-| **Host-specific 방식** | 목적지 **호스트 단위**로 엔트리 생성 | A→R1, B→R1, C→R1, D→R1 |
-| **Network-specific 방식** | 목적지 **네트워크 단위**로 묶어 처리 | N2 → R1 |
-| **Default 방식 (기본 경로)** | 명시적 경로가 없을 때 사용. "나머지는 전부 여기로" | N2→R1, 그 외 모든 목적지 → R2(default router) |
+| **Route 방식**| 목적지까지 **전체 경로**저장 | A → R1 → R2 → B |
+| **Next-hop 방식**| 다음에 갈 **한 단계만**저장 | A → R1 |
+| **Host-specific 방식**| 목적지 **호스트 단위**로 엔트리 생성 | A→R1, B→R1, C→R1, D→R1 |
+| **Network-specific 방식**| 목적지 **네트워크 단위**로 묶어 처리 | N2 → R1 |
+| **Default 방식 (기본 경로)**| 명시적 경로가 없을 때 사용. "나머지는 전부 여기로" | N2→R1, 그 외 모든 목적지 → R2(default router) |
 
 ### Forwarding 모듈 흐름
 1. 패킷 수신
@@ -39,16 +39,16 @@ description: "네트워크 계층은 하위 물리 네트워크들이 패킷을 
 
 ## 라우팅 테이블 (Routing Table)
 - **Classless(CIDR) 방식에서 최소 4개 컬럼이 필요**:
-  1. **Mask** (/n)
-  2. **Network address** (네트워크 주소)
-  3. **Next-hop address** (다음 홉 주소)
-  4. **Interface** (인터페이스)
+ 1. **Mask**(/n)
+ 2. **Network address**(네트워크 주소)
+ 3. **Next-hop address**(다음 홉 주소)
+ 4. **Interface**(인터페이스)
 
 ### 라우팅 테이블 작성 방법
-1. **Mask 큰 것(= prefix 긴 것)부터 정렬** → 가장 긴 마스크 매칭(Longest mask matching).
+1. **Mask 큰 것(= prefix 긴 것)부터 정렬**→ 가장 긴 마스크 매칭(Longest mask matching).
 2. Network address 기준으로 entry 작성.
 3. **직접 연결(Direct delivery)**이면 next-hop 없음.
-4. 나머지는 **default route(0.0.0.0 / Any 등)** 사용.
+4. 나머지는 **default route(0.0.0.0 / Any 등)**사용.
 
 **예) R1 기준 인터페이스별 엔트리**
 ```
@@ -76,7 +76,7 @@ m3 → 201.4.22.0/24
 
 ## Unicast Routing Protocols (유니캐스트 라우팅 프로토콜)
 - 라우팅 테이블은 **Static**(사람이 수동 입력) 또는 **Dynamic**(인터넷 변화 시 자동 갱신)일 수 있다.
-- **라우팅 프로토콜** = 인터넷의 라우터들이 변화에 대해 서로 알릴 수 있게 하는 규칙·절차의 조합.
+- **라우팅 프로토콜**= 인터넷의 라우터들이 변화에 대해 서로 알릴 수 있게 하는 규칙·절차의 조합.
 
 ### 분류
 ```
@@ -96,7 +96,7 @@ Routing Protocol
 ## RIP — Distance Vector
 - **Distance Vector 핵심**: 각 노드는 모든 목적지까지의 **거리(cost)**와 **다음으로 갈 노드(next)**를 저장한다.
 - 이웃 라우터끼리 정보를 교환하며 갱신(바로 근처 라우터만 직접 확인 가능).
-- **Hop count 제한**: 경로의 hop count(거치는 라우터 개수)가 **15를 넘지 않아야** 함. 너무 많으면 테이블이 길어지고 무한대(도달 불가)로 간주됨.
+- **Hop count 제한**: 경로의 hop count(거치는 라우터 개수)가 **15를 넘지 않아야**함. 너무 많으면 테이블이 길어지고 무한대(도달 불가)로 간주됨.
 
 ## OSPF — Link State
 - 각 노드가 **네트워크 전체 구조를 알고**, 이를 기반으로 **다익스트라(Dijkstra) 알고리즘**으로 최단 경로를 계산한다.
@@ -106,13 +106,13 @@ Routing Protocol
 - 인터넷에서 사용하는 **AS 간(Inter-domain) 라우팅 프로토콜**, **Path Vector 방식**.
 - 목적지까지의 **AS 경로 전체(AS path)를 포함해서 전달**.
 - 종류:
-  - **eBGP (external BGP)**: AS 사이 통신.
-  - **iBGP (internal BGP)**: AS 내부에서 BGP 정보 공유.
+ - **eBGP (external BGP)**: AS 사이 통신.
+ - **iBGP (internal BGP)**: AS 내부에서 BGP 정보 공유.
 
-## ✅ 핵심 정리 (시험 포인트)
-- **Direct delivery** = 같은 네트워크(라우터 X), **Indirect delivery** = 다른 네트워크(라우터 경유, 마지막 구간은 다시 Direct).
-- **Forwarding** = 라우팅 테이블 조회 → next-hop·interface 결정 → 전송. CIDR 라우팅 테이블 필수 컬럼: Mask / Network / Next-hop / Interface.
+## 핵심 정리 (시험 포인트)
+- **Direct delivery**= 같은 네트워크(라우터 X), **Indirect delivery**= 다른 네트워크(라우터 경유, 마지막 구간은 다시 Direct).
+- **Forwarding**= 라우팅 테이블 조회 → next-hop·interface 결정 → 전송. CIDR 라우팅 테이블 필수 컬럼: Mask / Network / Next-hop / Interface.
 - 테이블은 **prefix 긴 마스크부터 정렬**(Longest mask matching), 직접 연결은 next-hop 없음, 나머지는 default route.
 - **Address aggregation**: 연속·동일 prefix 블록을 묶어 prefix 축소(/26 ×4 → /24).
 - **Intra-domain**: RIP(Distance Vector, hop count ≤ 15), OSPF(Link State, Dijkstra로 최단경로). **Inter-domain**: BGP(Path Vector, AS 경로 전체 전달).
-- **AS** = 단일 관리 주체 네트워크 집합. BGP는 eBGP(AS 간)·iBGP(AS 내부)로 구분.
+- **AS**= 단일 관리 주체 네트워크 집합. BGP는 eBGP(AS 간)·iBGP(AS 내부)로 구분.

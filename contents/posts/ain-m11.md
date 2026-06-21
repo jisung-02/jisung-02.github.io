@@ -7,7 +7,7 @@ tags: ["AI네트워킹"]
 description: "TCP는 응용 프로그램의 바이트 스트림을 받아 세그먼트(segment) 단위로 만들어 전송하고, 수신 측에서 다시 스트림으로 복원한다."
 ---
 
-> AI 네트워킹 **중간** 범위 — 노션 강의 노트를 옵시디언용으로 정리한 노트.
+> AI 네트워킹 **중간**범위 — 노션 강의 노트를 옵시디언용으로 정리한 노트.
 > [← 전체 목차](/posts/ain-overview/)
 
 ## TCP: Stream Delivery (스트림 전달)
@@ -41,7 +41,7 @@ TCP는 응용 프로그램의 바이트 스트림을 받아 세그먼트(segment
 - TCP는 각 세그먼트에 헤더를 추가하고, 전송을 위해 IP 계층으로 전달한다.
 
 ## TCP의 4대 기능
-1. **Numbering System (번호 시스템)** — 모든 byte에 고유 번호를 부여하고, 세그먼트는 첫 byte 번호를 대표값으로 사용한다.
+1. **Numbering System (번호 시스템)**— 모든 byte에 고유 번호를 부여하고, 세그먼트는 첫 byte 번호를 대표값으로 사용한다.
 2. **Flow Control (흐름 제어)**
 3. **Error Control (에러 제어)**
 4. **Congestion Control (혼잡 제어)**
@@ -59,8 +59,8 @@ TCP는 응용 프로그램의 바이트 스트림을 받아 세그먼트(segment
 
 | 프로토콜 | 역할 |
 | --- | --- |
-| **TCP** | 연결 관리 + 신뢰성 제공 |
-| **IP** | 데이터 전달 (best effort) |
+| **TCP**| 연결 관리 + 신뢰성 제공 |
+| **IP**| 데이터 전달 (best effort) |
 
 ## 연결 설정 (3-way handshake)
 - Client (active open) → **SYN**
@@ -90,11 +90,11 @@ TCP는 응용 프로그램의 바이트 스트림을 받아 세그먼트(segment
 
 ## Error Control (에러 제어)
 - TCP는 신뢰성 있는 전송 계층 프로토콜이다.
-- 데이터 스트림 전체를 **순서대로, 오류 없이, 손실이나 중복 없이** 전달한다.
+- 데이터 스트림 전체를 **순서대로, 오류 없이, 손실이나 중복 없이**전달한다.
 - 에러 제어는 세 가지 도구로 이루어진다:
-	1. **Checksum** → 데이터가 깨졌는지 확인
-	2. **Acknowledgement (ACK)** → 수신 확인
-	3. **Time-out** → 손실 복구; 타임아웃 안에 ACK가 안 오면 재전송
+	1. **Checksum**→ 데이터가 깨졌는지 확인
+	2. **Acknowledgement (ACK)**→ 수신 확인
+	3. **Time-out**→ 손실 복구; 타임아웃 안에 ACK가 안 오면 재전송
 
 ## Flow Control (흐름 제어)
 - 수신자가 감당 가능한 속도로만 보내기 위한 메커니즘.
@@ -116,12 +116,12 @@ TCP는 응용 프로그램의 바이트 스트림을 받아 세그먼트(segment
 - **Multiplicative Decrease (승산 감소)**: 혼잡 발생 시 윈도우를 **비율로 감소**시킨다.
 
 ## RED (Random Early Detection)
-- 라우터가 큐가 가득 차기 **전에** 패킷을 **확률적으로 미리 드롭**하여 네트워크 혼잡을 방지하는 기법.
+- 라우터가 큐가 가득 차기 **전에**패킷을 **확률적으로 미리 드롭**하여 네트워크 혼잡을 방지하는 기법.
 - L3(네트워크 계층) 기법이다.
 - 교수님 코멘트: TCP는 (자체적으로) 혼잡을 제어하니, RED 단에서 **UDP**를 제어해 주면 어떨까.
 
-## ✅ 핵심 정리 (시험 포인트)
-- TCP는 **버퍼 기반 + 연결 지향 + 신뢰성** 전송 프로토콜이며, 바이트 스트림을 세그먼트로 나눠 전송한다.
+## 핵심 정리 (시험 포인트)
+- TCP는 **버퍼 기반 + 연결 지향 + 신뢰성**전송 프로토콜이며, 바이트 스트림을 세그먼트로 나눠 전송한다.
 - **Numbering**: 모든 byte에 번호, sequence number = 세그먼트 첫 byte 번호 → flow/error control의 기반.
 - 연결 설정은 **3-way handshake (SYN → SYN+ACK → ACK)**, 종료는 **FIN → FIN+ACK → ACK**, Half-Close 가능.
 - **Error Control 3요소**: Checksum, ACK, Time-out(재전송).

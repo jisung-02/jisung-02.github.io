@@ -106,15 +106,15 @@ description: "직역"
 > GPU 중심 데이터 센터 네트워크를 분석하고 최적화하기 위한 기술 로드맵 정의.
 >
 > - **통신 병목 식별 (Identify Communication Bottlenecks)**
->   대규모 GPU 클러스터의 비효율을 짚어낸다.
+> 대규모 GPU 클러스터의 비효율을 짚어낸다.
 > - **DCN 토폴로지 이해 (Understand DCN Topologies)**
->   비교 분석: Leaf-Spine 대 Fat-Tree 구조.
+> 비교 분석: Leaf-Spine 대 Fat-Tree 구조.
 > - **4가지 핵심 도전과제 분석 (Analyze 4 Key Challenges)**
->   인캐스트(Incast), 테일 레이턴시(Tail Latency), 대역폭(Bandwidth), CPU 오버헤드(CPU Overhead).
+> 인캐스트(Incast), 테일 레이턴시(Tail Latency), 대역폭(Bandwidth), CPU 오버헤드(CPU Overhead).
 > - **기술적 해법 탐색 (Explore Technical Solutions)**
->   NVLink 4.0, RDMA/RoCE, NCCL 프리미티브(primitives).
+> NVLink 4.0, RDMA/RoCE, NCCL 프리미티브(primitives).
 > - **계층적 FL과 연결 (Connect to Hierarchical FL)**
->   분석 결과를 HFL 아키텍처 프레임워크에 적용.
+> 분석 결과를 HFL 아키텍처 프레임워크에 적용.
 
 ## 슬라이드 6
 
@@ -133,8 +133,8 @@ description: "직역"
 > 원시 데이터(Raw data)는 절대 클라이언트를 떠나지 않는다 — 오직 모델 업데이트(model updates)만 전송된다.
 >
 > (범례)
-> - ----  브로드캐스트 (전역 모델) (Broadcast (global model))
-> - ——  업로드 (로컬 그래디언트) (Upload (local gradients))
+> - ---- 브로드캐스트 (전역 모델) (Broadcast (global model))
+> - —— 업로드 (로컬 그래디언트) (Upload (local gradients))
 
 ## 슬라이드 7
 
@@ -209,7 +209,7 @@ description: "직역"
 > **7× 속도 향상 (7× SPEEDUP)**
 >
 > (슬라이드 주석)
-> ** ZeRO Stage 3 : MS사의 Deepspeed (lib)
+> **ZeRO Stage 3 : MS사의 Deepspeed (lib)
 > - 파라미터 분할(Partitioning): 모델의 파라미터 자체까지 GPU 간에 쪼개어 저장(Sharding)
 > - 동적 통신: 각 GPU는 학습 과정 중 필요한 순간에만 다른 GPU들과 통신하여 전체 모델 파라미터를 재구성(Gather) 하고, 연산이 끝나면 즉시 메모리에서 삭제하여 공간을 확보
 >
@@ -335,8 +335,8 @@ description: "직역"
 > 2. 클러스터가 하나의 패킷을 기다리며 전체 연산이 멈춤(stalling).
 >
 > **측정된 영향 (MEASURED IMPACT)**
-> - **3–10×** : 유효 스루풋(effective throughput)의 감소
-> - **40 min** : 1시간 학습 작업당 손실되는 시간
+> - **3–10×**: 유효 스루풋(effective throughput)의 감소
+> - **40 min**: 1시간 학습 작업당 손실되는 시간
 >
 > **표준 해법 (STANDARD SOLUTIONS)**: PFC | DCQCN | RDMA
 > - PFC: Priority Flow Control (protocol) (우선순위 흐름 제어)
@@ -364,7 +364,7 @@ description: "직역"
 > (막대 그래프)
 > - GPU 001 (정상)
 > - GPU 002 (정상)
-> - GPU 003 ⚠ 스트래글러 (STRAGGLER) — 짧고 붉음
+> - GPU 003 스트래글러 (STRAGGLER) — 짧고 붉음
 > - GPU 004 (정상)
 >
 > **대역폭 병목 (Bandwidth Bottleneck)**
@@ -430,7 +430,7 @@ description: "직역"
 > | NVLink 5.0 | Blackwell B200 | 1,800 GB/s | 2024 |
 >
 > (다이어그램) With NVLink 4.0: GPU 1 ↔ GPU 2, NVLink 900 GB/s, NVSwitch Hub
-> ✓ PCIe 우회 (Bypasses PCIe) ✓ 직접 GPU-대-GPU (Direct GPU-to-GPU)
+> PCIe 우회 (Bypasses PCIe) 직접 GPU-대-GPU (Direct GPU-to-GPU)
 >
 > NVSwitch 풀메시(full-mesh): 4개 칩이 8개 GPU를 모두 900 GB/s로 동시 연결 — 7.2 TB/s 총합.
 > 20 GB All-Reduce: NVSwitch 사용 시 ~22 ms 대 미사용 시 ~150 ms — 7배 빠름.
@@ -481,9 +481,9 @@ description: "직역"
 > NVIDIA 집합 통신 라이브러리 (NVIDIA Collective Communications Library)
 > 토폴로지 인식(Topology-aware): NVLink, PCIe, InfiniBand, RoCE를 자동 감지하고 최적 경로를 선택한다.
 >
-> - **LEVEL 01 — 인트라노드 (NVLink) (Intra-Node (NVLink))** : 900 GB/s, 단일 노드 내 GPU-대-GPU
-> - **LEVEL 02 — 브리지 (RDMA/RoCE) (Bridge (RDMA/RoCE))** : 인터커넥트(Inter-Connect), 제로카피 메모리 접근
-> - **LEVEL 03 — 인터노드 (이더넷) (Inter-Node (Ethernet))** : 400 Gbps, 클러스터 간 동기화
+> - **LEVEL 01 — 인트라노드 (NVLink) (Intra-Node (NVLink))**: 900 GB/s, 단일 노드 내 GPU-대-GPU
+> - **LEVEL 02 — 브리지 (RDMA/RoCE) (Bridge (RDMA/RoCE))**: 인터커넥트(Inter-Connect), 제로카피 메모리 접근
+> - **LEVEL 03 — 인터노드 (이더넷) (Inter-Node (Ethernet))**: 400 Gbps, 클러스터 간 동기화
 >
 > (우측 다이어그램)
 > - 400G Ethernet: 고속 인터노드 서버 패브릭 (High-speed inter-node server fabric)

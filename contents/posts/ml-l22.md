@@ -25,7 +25,7 @@ description: "비선형 관계를 잘 학습함"
 	→ *왜 이런 예측이 나왔는지* 설명하기 쉽습니다.
 
 - **앙상블 모델의 기반**
-	랜덤 포레스트, 그래디언트 부스팅, XGBoost는 모두 **결정트리를 기본 단위 모델(base learner)** 로 사용합니다.
+	랜덤 포레스트, 그래디언트 부스팅, XGBoost는 모두 **결정트리를 기본 단위 모델(base learner)**로 사용합니다.
 	즉, 트리를 이해하면 이 강의 뒤에 나오는 고급 모델들을 이해하기가 훨씬 수월해집니다.
 
 - **산업에서 많이 쓰이는 이유**
@@ -46,8 +46,8 @@ description: "비선형 관계를 잘 학습함"
 	→ 특정 질문에 대한 **답에 따라 다음에 물을 질문이 달라진다.**
 
 4. **Usually, for classification we have continuous features and so the questions are thresholds on single features.**
-	→ 보통 분류 문제에서는 **연속형 특징**을 사용하므로, 질문은 **하나의 특징에 대한 임계값(threshold)** 형태가 된다.
-	
+	→ 보통 분류 문제에서는 **연속형 특징**을 사용하므로, 질문은 **하나의 특징에 대한 임계값(threshold)**형태가 된다.
+
 # 예시
 
 ![](../attachments/ml/L22/slide-03.webp)
@@ -56,7 +56,7 @@ description: "비선형 관계를 잘 학습함"
 - counts = [50, 50] → [클래스0 개수, 클래스1 개수] → 아직 분기하기 전 존재하는 클래스의 개수
 **설명**
 
-- 이 데이터는 **비선형 구조(two-moons)** 를 가짐
+- 이 데이터는 **비선형 구조(two-moons)**를 가짐
 - 하나의 직선(선형 모델)로는 잘 분리하기 어려움
 - 그래서 **결정트리처럼 공간을 나누는 모델**이 필요함
 
@@ -72,7 +72,7 @@ description: "비선형 관계를 잘 학습함"
 - *Minimize impurity*
 	→ 불순도(impurity)를 최소화
 
-		- 아직 각 영역에는 클래스 0과 1이 섞여있는 상태
+ - 아직 각 영역에는 클래스 0과 1이 섞여있는 상태
 - *Root node = Top node*
 	→ 루트 노드 = 맨 위 노드
 
@@ -90,12 +90,12 @@ description: "비선형 관계를 잘 학습함"
 - 결과:
 	- 처음 1번 나눔 → **2개 구획**
 	- 다시 1번씩 나눔 → **4개 구획**
-👉 **트리는 “지역별로 다른 질문”을 허용**
+ **트리는 “지역별로 다른 질문”을 허용**
 (이게 트리가 강력한 이유)
 
 ![](../attachments/ml/L22/slide-05.webp)
 
-## **4️⃣ Building Trees (깊어질수록: depth = 9)**
+## **4⃣ Building Trees (깊어질수록: depth = 9)**
 **직역**
 
 - *This recursive process yields a binary tree of decisions, with each node containing a test.*
@@ -115,16 +115,16 @@ description: "비선형 관계를 잘 학습함"
 
 - **pure vs impurity**
 	- **pure**: 노드 안의 데이터가 **모두 같은 클래스**
-		→ 불순도 = 0
+ → 불순도 = 0
 
 	- **impure**: 여러 클래스가 섞여 있음
-		→ 불순도 > 0
+ → 불순도 > 0
 
 - **왜 불순도를 계산하나?**
 	결정트리는 각 분기에서
 	> “이 질문(임계값)으로 나누면 클래스 섞임이 얼마나 줄어드나?”
 	> 를 정량적으로 판단해야 합니다. 그 척도가
-		**impurity**
+ **impurity**
 
 # 불순도 기준
 
@@ -152,7 +152,7 @@ description: "비선형 관계를 잘 학습함"
 
 1. set 1이 모두 클래스 1 → 불순도 낮음
 2. set2 → 2가 하나 섞여있음 → 불순도 중간
-3. set3 → 여러개가 섞여있음 → 불순도가 높음 
+3. set3 → 여러개가 섞여있음 → 불순도가 높음
 
 ![](../attachments/ml/L22/slide-08.webp)
 
@@ -177,7 +177,7 @@ description: "비선형 관계를 잘 학습함"
 
 ![](../attachments/ml/L22/slide-10.webp)
 
-### **1️⃣ 분류(Classification)**
+### **1⃣ 분류(Classification)**
 
 1. **루트에서 시작**
 	X[j] ≤ threshold ? 같은 질문을 순서대로 평가
@@ -189,12 +189,12 @@ description: "비선형 관계를 잘 학습함"
 	- 리프의 counts = [c0, c1, ...] 확인
 	- **가장 많은 클래스**가 예측값
 	- (확률이 필요하면 counts / 합계)
-👉 그림의 색 영역은 “그 리프가 담당하는 공간”을 의미합니다.
+ 그림의 색 영역은 “그 리프가 담당하는 공간”을 의미합니다.
 ***
 
-### **2️⃣ 회귀(Regression)**
+### **2⃣ 회귀(Regression)**
 
-1. **분기 과정은 동일** (질문/순회 방식 동일)
+1. **분기 과정은 동일**(질문/순회 방식 동일)
 2. **리프 도착 후 출력만 다름**
 	- 분류: 다수 클래스
 	- **회귀: 리프에 있는 타깃들의 평균값**
@@ -210,7 +210,7 @@ $$
 $$
 → 투표(voting) 대신, **리프(leaf)에 속한 타깃들의 평균**을 예측값으로 사용한다.
 
-- **Impurity Criteria for Regression** (회귀에서의 불순도 기준)
+- **Impurity Criteria for Regression**(회귀에서의 불순도 기준)
 	**Mean Squared Error (MSE)**
 	$`H(X_m)=\frac{1}{N_m}\sum_{i\in N_m}(y_i-\bar y_m)^2`$
 	**Mean Absolute Error (MAE)**
@@ -221,7 +221,7 @@ $$
 ![](../attachments/ml/L22/slide-12.webp)
 
 - 사전 가지치기: 트리를 **키우는 도중에 크기를 제한**
-	1. max_depth → 
+	1. max_depth →
 	2. max_leaf_nodes
 	3. min_samples_split
 	4. min_impurity_decrease
@@ -271,10 +271,10 @@ $$
 - 모델 B: 1
 - 모델 C: 1
 	→ 결과: **1**
-📌 특징
+ 특징
 
 - 단순
-- 확률 정보 사용 ❌
+- 확률 정보 사용
 
 ### **Soft Voting (Probability Voting)**
 **직역**
@@ -288,7 +288,7 @@ $$
 - 모델 C: P(1)=0.4
 	→ 평균 = 0.566
 	→ 결과: **1**
-📌 특징
+ 특징
 
 - 정보 더 풍부
 - 확률이 잘 보정된 모델일수록 효과 큼
@@ -296,38 +296,38 @@ $$
 
 ## 랜덤 포레스트
 
-- **Ensembles** are methods that combine multiple machine learning models to create more powerful models.
+- **Ensembles**are methods that combine multiple machine learning models to create more powerful models.
 	→ 앙상블은 여러 모델을 결합해 더 강력한 모델을 만드는 방법이다.
 
-- **A main drawback of decision trees** is that they tend to overfit the training data.
+- **A main drawback of decision trees**is that they tend to overfit the training data.
 	→ 결정트리는 학습 데이터에 과적합되기 쉽다.
 
 - **A random forest can be considered as an ensemble of decision trees.**
 	→ 랜덤 포레스트는 결정트리들의 앙상블이다.
 
-- **Injecting randomness** into the tree building ensures each tree is different.
+- **Injecting randomness**into the tree building ensures each tree is different.
 	→ 트리 생성 과정에 무작위성을 넣어 각 트리를 다르게 만든다.
 
-- **Average multiple (deep) decision trees** to reduce high variance and improve generalization.
+- **Average multiple (deep) decision trees**to reduce high variance and improve generalization.
 	→ 분산이 큰 (깊은) 트리 여러 개를 평균내어 일반화 성능을 높이고 과적합을 줄인다.
 
 ## **설명 (왜 랜덤 포레스트인가?)**
 
 - **결정트리의 문제**: 분산(variance)이 큼 → 데이터 조금만 바뀌어도 결과가 크게 변함
 - **해결 아이디어**:
-	1. 트리를 **여러 개** 만든다
-	2. 각 트리를 **서로 다르게** 만든다
+	1. 트리를 **여러 개**만든다
+	2. 각 트리를 **서로 다르게**만든다
 	3. 결과를 **평균/투표**한다
-👉 결과: **분산 감소 → 일반화 성능 향상**
+ 결과: **분산 감소 → 일반화 성능 향상**
 
 ## **Random Forest Algorithm (알고리즘 단계)**
 **직역**
 
 1. **Bootstrap sample**을 크기 n으로 뽑는다
-	→ 학습 데이터에서 **복원추출(with replacement)** 로 n개 선택
+	→ 학습 데이터에서 **복원추출(with replacement)**로 n개 선택
 
 2. 부트스트랩 샘플로 **결정트리 하나를 성장**시킨다. 각 노드에서:
-	- (a) **특징 **d**개를 무작위로 선택** (without replacement, random subset)
+	- (a) **특징 **d**개를 무작위로 선택**(without replacement, random subset)
 	- (b) 그중 **가장 좋은 분기**(정보이득 최대 등)를 선택
 3. **1–2를 **k**번 반복**한다. (트리 k개 생성)
 4. 각 트리의 예측을 **집계**하여
@@ -350,7 +350,7 @@ $$
 	→ 분류·회귀 모두에 적용 가능
 
 - **You want to make sure that you built similar but slightly different models.**
-	→ 모델들은 **비슷하지만 완전히 같지 않게** 만들어야 한다.
+	→ 모델들은 **비슷하지만 완전히 같지 않게**만들어야 한다.
 
 - **Do more than just change the random seed.**
 	→ 랜덤 시드만 바꾸는 것보다 더 강한 차이를 만든다.
@@ -364,7 +364,7 @@ $$
 
 ## **설명 (핵심 아이디어)**
 
-### **1️⃣ Bagging이 뭐냐면**
+### **1⃣ Bagging이 뭐냐면**
 
 > 같은 학습 알고리즘을 여러 번 돌리되,
 
@@ -377,17 +377,17 @@ $$
 - 이들의 평균/투표 → **분산 감소**
 ***
 
-### **2️⃣ Bootstrap(부트스트랩)의 의미**
+### **2⃣ Bootstrap(부트스트랩)의 의미**
 
 - 원본 데이터가 N개면
 - **복원추출로 **N**개**를 다시 뽑아 하나의 학습셋 생성
 - 특징:
 	- 어떤 샘플은 **여러 번 등장**
 	- 어떤 샘플은 **아예 안 나올 수 있음**
-👉 이 차이가 모델을 서로 다르게 만든다.
+ 이 차이가 모델을 서로 다르게 만든다.
 ***
 
-### **3️⃣ 왜 “duplicates possible”가 중요?**
+### **3⃣ 왜 “duplicates possible”가 중요?**
 
 - 중복 때문에 각 모델이
 	- **데이터의 강조점이 달라짐**
@@ -397,20 +397,20 @@ $$
 	- 모델 간 **상관관계 감소**
 ***
 
-### **4️⃣ Aggregation(병합)은 어떻게?**
+### **4⃣ Aggregation(병합)은 어떻게?**
 
 - **분류**: 다수결(Hard) 또는 확률 평균(Soft)
 - **회귀**: 평균
-👉 이름 그대로 **Bootstrap + Aggregation**
+ 이름 그대로 **Bootstrap + Aggregation**
 ***
 
-### **5️⃣ Random Forest와의 관계 (정리)**
+### **5⃣ Random Forest와의 관계 (정리)**
 
 - **Bagging**:
 	- 데이터만 무작위 (부트스트랩)
 	- 베이스 모델은 무엇이든 가능
 - **Random Forest**:
-	- Bagging **+** 각 노드에서 **특징 무작위 선택**
+	- Bagging **+**각 노드에서 **특징 무작위 선택**
 	- → 트리 간 상관관계 더 줄임
 ***
 
@@ -422,8 +422,8 @@ $$
 
 > 결과를 합쳐 분산을 줄이는 앙상블 기법
 다음 자연스러운 연결은
-👉 **왜 Random Forest는 Bagging보다 더 강력한가**
-👉 **OOB(out-of-bag) 에러** 입니다.
+ **왜 Random Forest는 Bagging보다 더 강력한가**
+ **OOB(out-of-bag) 에러**입니다.
 
 ![](../attachments/ml/L22/slide-17.webp)
 
@@ -434,11 +434,11 @@ $$
 
 - **For each tree:**
 	- *Pick bootstrap sample of data*
-		→ 각 트리마다 **부트스트랩 샘플(복원추출 데이터)** 을 뽑는다.
+ → 각 트리마다 **부트스트랩 샘플(복원추출 데이터)**을 뽑는다.
 
 - **For each split:**
 	- *Pick random sample of features (random subset)*
-		→ 각 분기마다 **특징의 무작위 부분집합**을 선택한다.
+ → 각 분기마다 **특징의 무작위 부분집합**을 선택한다.
 
 - **More trees are always better**
 	→ 트리가 많을수록 항상 더 좋다.
@@ -453,7 +453,7 @@ $$
 이를 위해 **두 군데**에서 랜덤을 넣습니다.
 ***
 
-### **1️⃣ 트리 단위 랜덤화:**
+### **1⃣ 트리 단위 랜덤화:**
 
 ### **데이터 부트스트랩**
 
@@ -466,7 +466,7 @@ $$
 	- **분산 감소**에 기여
 ***
 
-### **2️⃣ 분기 단위 랜덤화:**
+### **2⃣ 분기 단위 랜덤화:**
 
 ### **특징 서브샘플링**
 
@@ -497,7 +497,7 @@ $$
 - **Random Forest**:
 	- 데이터 랜덤 **+**
 	- **각 분기에서 특징 랜덤**
-👉 결과: **덜 상관된 트리들 → 평균 효과 극대화 → 일반화 성능↑**
+ 결과: **덜 상관된 트리들 → 평균 효과 극대화 → 일반화 성능↑**
 
 ![](../attachments/ml/L22/slide-19.webp)
 
@@ -508,10 +508,10 @@ $$
 	→ 핵심 파라미터: max_features (각 분기에서 고려할 특징 수)
 
 	- **around sqrt(n_features) for classification**
-		→ 분류에서는 보통 전체 특징 수의 **제곱근 정도**
+ → 분류에서는 보통 전체 특징 수의 **제곱근 정도**
 
 	- **around n_features for regression**
-		→ 회귀에서는 보통 **전체 특징 수에 가깝게**
+ → 회귀에서는 보통 **전체 특징 수에 가깝게**
 
 - **n_estimators > 100**
 	→ 트리 개수는 보통 **100개 이상**
@@ -525,7 +525,7 @@ $$
 
 ## **설명 (왜 이게 중요한가)**
 
-### **1️⃣**
+### **1⃣**
 
 ### **max_features**
 
@@ -539,10 +539,10 @@ max_features는 **각 분기에서 볼 수 있는 특징의 수**를 제한해 �
 - **크게 설정**
 	- 각 트리가 강해짐
 	- 상관 ↑, 분산 감소 효과 ↓
-👉 **분류/회귀에서 권장값이 다른 이유**는 이 균형점이 다르기 때문입니다.
+ **분류/회귀에서 권장값이 다른 이유**는 이 균형점이 다르기 때문입니다.
 ***
 
-### **2️⃣ 분류 vs 회귀 권장값 직관**
+### **2⃣ 분류 vs 회귀 권장값 직관**
 
 - **분류 (sqrt(n_features))**
 	- 강한 특징 하나가 모든 분기를 지배하지 않게 함
@@ -552,7 +552,7 @@ max_features는 **각 분기에서 볼 수 있는 특징의 수**를 제한해 �
 	- 바이어스 증가를 피하는 게 중요
 ***
 
-### **3️⃣**
+### **3⃣**
 
 ### **n_estimators**
 
@@ -566,7 +566,7 @@ max_features는 **각 분기에서 볼 수 있는 특징의 수**를 제한해 �
 	- 계산 자원 허용 범위에서 충분히 크게 설정
 ***
 
-### **4️⃣ 사전 가지치기(pre-pruning)는 써야 하나?**
+### **4⃣ 사전 가지치기(pre-pruning)는 써야 하나?**
 
 - 랜덤 포레스트는 **깊은 트리**여도 평균으로 안정화됨
 - 그래서 성능 측면에서는 **필수는 아님**
@@ -574,7 +574,7 @@ max_features는 **각 분기에서 볼 수 있는 특징의 수**를 제한해 �
 	- 모델 크기 ↓
 	- 예측 속도 ↑
 	- 메모리 ↓
-👉 실무에서는 **적당한 가지치기**를 함께 씀
+ 실무에서는 **적당한 가지치기**를 함께 씀
 ***
 
 ## **한눈에 요약 (실무 기본 세팅 감각)**
@@ -605,11 +605,11 @@ max_features는 **각 분기에서 볼 수 있는 특징의 수**를 제한해 �
 ### **핵심 메시지**
 
 - 결정트리는 **비선형 관계**를 잘 잡는다.
-- **전처리 거의 필요 없음** (스케일링, 정규화 불필요).
-- **해석 가능** (질문 경로를 따라가면 설명 가능).
+- **전처리 거의 필요 없음**(스케일링, 정규화 불필요).
+- **해석 가능**(질문 경로를 따라가면 설명 가능).
 - 랜덤 포레스트, 부스팅 등 **고급 모델의 기본 단위**.
 - 산업에서 매우 널리 사용.
-👉 “트리는 단독으로도 좋고, 앙상블의 핵심 부품이다”
+ “트리는 단독으로도 좋고, 앙상블의 핵심 부품이다”
 ***
 
 # **2. 결정트리의 기본 아이디어**
@@ -621,8 +621,8 @@ max_features는 **각 분기에서 볼 수 있는 특징의 수**를 제한해 �
 
 - True / False로 나뉘며,
 - 답에 따라 **다음 질문이 달라짐**.
-- 결국 **리프(leaf)** 에 도달 → 예측.
-👉 트리 = **이진 질문의 연쇄**
+- 결국 **리프(leaf)**에 도달 → 예측.
+ 트리 = **이진 질문의 연쇄**
 ***
 
 # **3. 트리를 어떻게 만드는가 (Building Trees)**
@@ -665,7 +665,7 @@ H = -\\sum_k p_k \\log p_k
 
 - 불확실성(정보량)
 - 수식은 **loss function과 동일**
-👉 **Gini든 Entropy든 목적은 동일**
+ **Gini든 Entropy든 목적은 동일**
 → **불순도를 가장 많이 줄이는 분기 선택**
 ***
 
@@ -674,7 +674,7 @@ H = -\\sum_k p_k \\log p_k
 1. 루트에서 시작
 2. 조건에 따라 좌/우로 이동
 3. 리프 도착
-4. **다수 클래스** 예측
+4. **다수 클래스**예측
 	(확률은 counts 비율)
 ***
 
@@ -694,7 +694,7 @@ H = -\\sum_k p_k \\log p_k
 
 - **MAE**
 	H = \\frac\{1\}\{N\}\\sum \|y_i - \\bar y\|
-👉 회귀 트리 =
+ 회귀 트리 =
 **“공간을 나누고, 각 영역을 평균값으로 대표”**
 ***
 
@@ -714,7 +714,7 @@ H = -\\sum_k p_k \\log p_k
 - max_leaf_nodes
 - min_samples_split
 - min_impurity_decrease
-👉 **실무에서 가장 흔함**
+ **실무에서 가장 흔함**
 
 ## **8-2. Post-pruning (사후 가지치기)**
 
@@ -753,9 +753,9 @@ H = -\\sum_k p_k \\log p_k
 
 ## **10-1. Random Forest Algorithm**
 
-1. **Bootstrap** 데이터 샘플링 (복원추출)
+1. **Bootstrap**데이터 샘플링 (복원추출)
 2. 각 트리 성장
-	- 각 노드에서 **특징 일부만** 사용
+	- 각 노드에서 **특징 일부만**사용
 3. 이를 **k번 반복**
 4. 예측을 **평균/투표**
 ***
@@ -766,8 +766,8 @@ H = -\\sum_k p_k \\log p_k
 	- Bootstrap (Bagging)
 2. **특징 랜덤**
 	- 각 split에서 feature subset
-👉 트리 간 **상관관계 감소**
-👉 앙상블 효과 극대화
+ 트리 간 **상관관계 감소**
+ 앙상블 효과 극대화
 ***
 
 # **11. Bagging (Bootstrap Aggregation)**
@@ -775,7 +775,7 @@ H = -\\sum_k p_k \\log p_k
 - 같은 모델을
 - **서로 다른 부트스트랩 데이터**로 학습
 - 결과를 합침
-👉 Random Forest = **Bagging + Feature Randomness**
+ Random Forest = **Bagging + Feature Randomness**
 ***
 
 # **12. 랜덤 포레스트 튜닝**
@@ -815,7 +815,7 @@ H = -\\sum_k p_k \\log p_k
 ***
 원하시면 다음도 바로 이어서 정리해드릴 수 있습니다:
 
-- ✔️ Random Forest vs Gradient Boosting 차이
-- ✔️ 시험용 핵심 요약 1페이지
-- ✔️ 수식 없이 직관만 다시 정리
-- ✔️ sklearn 코드 흐름 정리
+- Random Forest vs Gradient Boosting 차이
+- 시험용 핵심 요약 1페이지
+- 수식 없이 직관만 다시 정리
+- sklearn 코드 흐름 정리

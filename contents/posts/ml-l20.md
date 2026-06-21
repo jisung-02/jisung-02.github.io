@@ -30,19 +30,19 @@ description: "svm은 각 요소들과 가장 멀리 떨어진 것을 좋은 것�
 → 부가설명
 
 	- 보통 분류 문제에서
-		→ *훈련 데이터 정확도*를 최대화하려고 하면
-		→ **과적합(overfitting)** 이 발생합니다.
+ → *훈련 데이터 정확도*를 최대화하려고 하면
+ → **과적합(overfitting)**이 발생합니다.
 
 	- SVM은 접근 방식이 다릅니다.
-		- **훈련 정확도 자체**가 목표 ❌
-		- **일반화 성능(새 데이터에서 잘 맞는가)** 이 목표 ⭕
+ - **훈련 정확도 자체**가 목표
+ - **일반화 성능(새 데이터에서 잘 맞는가)**이 목표
 	- 그래서 SVM은
-		**결정 경계(decision function)** 를
-		*“얼마나 여유 있게, 안정적으로 분리하느냐”* 기준으로 학습합니다.
+ **결정 경계(decision function)**를
+ *“얼마나 여유 있게, 안정적으로 분리하느냐”* 기준으로 학습합니다.
 
-	- 이 기준이 나중에 나오는 **마진(margin)** 입니다.
+	- 이 기준이 나중에 나오는 **마진(margin)**입니다.
 	- 수학적으로는
-		→ “마진을 최대화하는 문제”
+ → “마진을 최대화하는 문제”
 
 # 분류 마진
 
@@ -63,10 +63,10 @@ description: "svm은 각 요소들과 가장 멀리 떨어진 것을 좋은 것�
 	f_\theta(x) = \theta_0 + \theta_1 \cdot x_1 + \theta_2 \cdot x_2 + \dots + \theta_d \cdot x_d
 	$$
 
-	- 여기서 $`x \in \mathbb{R}^d`$는 특징(feature)들의 벡터이고, 
-	-  $`y \in \{-1, 1\}`$은 타깃이다.
+	- 여기서 $`x \in \mathbb{R}^d`$는 특징(feature)들의 벡터이고,
+	- $`y \in \{-1, 1\}`$은 타깃이다.
 	- $`\theta_j`$ 들은 모델의 파라미터이다.
-	
+
 	이 모델은 다음과 같이 **벡터화된 형태**로 표현할 수 있음
 	$$
 	f_\theta(x) = \theta^T x + \theta_0
@@ -142,12 +142,12 @@ $$
 $$
 → f(x)가 선형 경계 모델로 들어간 것
 
-- 만약 $`y^{(i)} = 1`$이면, 모델 점수 $`f(x^{(i)}) = \theta^T x^{(i)} + \theta_0`$ 가 **양수이고 크면** 마진은 크다.
+- 만약 $`y^{(i)} = 1`$이면, 모델 점수 $`f(x^{(i)}) = \theta^T x^{(i)} + \theta_0`$ 가 **양수이고 크면**마진은 크다.
 	- 1 x 큰 양수 → 큰 마진
-- 따라서 우리는  $`x^{(i)}`$를 **올바르게**, 그리고 **높은 신뢰도로** 분류하고 있다.
-- 만약 $`y^{(i)} = -1`$이면, 모델 점수 $`f(x^{(i)})`$가 **음수이고 절댓값이 크면** 마진은 크다.
+- 따라서 우리는 $`x^{(i)}`$를 **올바르게**, 그리고 **높은 신뢰도로**분류하고 있다.
+- 만약 $`y^{(i)} = -1`$이면, 모델 점수 $`f(x^{(i)})`$가 **음수이고 절댓값이 크면**마진은 크다.
 	- -1 x 절대값이 큰 음수(작은 음수) → 큰 마진
-	- 이 경우에도 우리는 $`x^{(i)}`$ 를 **올바르게**, **높은 신뢰도로** 분류하고 있다.
+	- 이 경우에도 우리는 $`x^{(i)}`$ 를 **올바르게**, **높은 신뢰도로**분류하고 있다.
 ⇒ 따라서 마진이 클수록, 각 입력 점에서의 신뢰도가 높다
 ⇒ 정답 방향으로 점수가 얼마나 큰가를 수식으로 나타낸 것
 
@@ -168,8 +168,8 @@ $$
 
 - 파라미터 $`\theta, \theta_0`$ 를 어떤 스칼라 $`\alpha > 0`$로 스케일하면
 	- 새로운 파라미터 $`\alpha\theta, \alpha\theta_0`$ 를 얻게 된다.
--  $`\alpha\theta, \alpha\theta_0`$ 는 분류 라벨을 **바꾸지 않는다**.
-- 하지만 마진  $`(\alpha\theta^T x^{(i)} + \alpha\theta_0)
+- $`\alpha\theta, \alpha\theta_0`$ 는 분류 라벨을 **바꾸지 않는다**.
+- 하지만 마진 $`(\alpha\theta^T x^{(i)} + \alpha\theta_0)
 = \alpha(\theta^T x^{(i)} + \theta_0)`$ 는 $`\alpha`$ 만큼 **커진다**.
 **⇒ 같은 결정 경계가 스케일에 따라 마진이 달라지는 문제가 생김**
 → 이때 알파는 그냥 파라미터(가중치)가 커지는 상황을 표현한 것
@@ -231,12 +231,12 @@ $$
 
 - 기존의 함수적 마진을 $`||\theta||`$로 정규화
 	- 이는 가중치를 스케일하더라도 임의로 마진을 크게하지 못하게 함
-- 만약 $`y^{(i)} = 1`$이면, 모델 점수 $`f(x^{(i)}) = \theta^T x^{(i)} + \theta_0`$ 가 **양수이고 크면** 마진은 크다.
+- 만약 $`y^{(i)} = 1`$이면, 모델 점수 $`f(x^{(i)}) = \theta^T x^{(i)} + \theta_0`$ 가 **양수이고 크면**마진은 크다.
 	- 1 x 큰 양수 → 큰 마진
-- 따라서 우리는  $`x^{(i)}`$를 **올바르게**, 그리고 **높은 신뢰도로** 분류하고 있다.
-- 만약 $`y^{(i)} = -1`$이면, 모델 점수 $`f(x^{(i)})`$가 **음수이고 절댓값이 크면** 마진은 크다.
+- 따라서 우리는 $`x^{(i)}`$를 **올바르게**, 그리고 **높은 신뢰도로**분류하고 있다.
+- 만약 $`y^{(i)} = -1`$이면, 모델 점수 $`f(x^{(i)})`$가 **음수이고 절댓값이 크면**마진은 크다.
 	- -1 x 절대값이 큰 음수(작은 음수) → 큰 마진
-	- 이 경우에도 우리는 $`x^{(i)}`$ 를 **올바르게**, **높은 신뢰도로** 분류하고 있다.
+	- 이 경우에도 우리는 $`x^{(i)}`$ 를 **올바르게**, **높은 신뢰도로**분류하고 있다.
 ⇒ 이 경향성은 기하학적 마진에서도 동일하게 성립
 
 ### 기하학적 마진은 스케일 불변
@@ -245,12 +245,12 @@ $$
 
 - 현재 $`\theta \rightarrow 2\theta`$ 으로 변한 상황
 	- 변한 것
-		- 가중치
-		- 함수적 마진
+ - 가중치
+ - 함수적 마진
 	- 변하지 않은 것
-		- 결정 경계
-		- 데이터
-		- 기하적 마진
+ - 결정 경계
+ - 데이터
+ - 기하적 마진
 
 ![](../attachments/ml/L20/slide-21.webp)
 
@@ -263,10 +263,10 @@ $$
 
 - 두 개의 점선은 마진 경계:
 	- **Plus-plane**
-		$`\theta^T x + \theta_0 = 1`$
+ $`\theta^T x + \theta_0 = 1`$
 
 	- **Minus-plane**
-		$`\theta^T x + \theta_0 = -1`$
+ $`\theta^T x + \theta_0 = -1`$
 
 ![](../attachments/ml/L20/slide-22.webp)
 
@@ -289,18 +289,18 @@ $$
 
 ## 기하학적 마진의 유도 방식
 
-- x\^+ 는 **plus-plane** 위의 점 → $`\theta^T x^+ + \theta_0 = 1`$
-- x\^- 는 **minus-plane** 위의 점 → $`\theta^T x^- + \theta_0 = -1`$
+- x\^+ 는 **plus-plane**위의 점 → $`\theta^T x^+ + \theta_0 = 1`$
+- x\^- 는 **minus-plane**위의 점 → $`\theta^T x^- + \theta_0 = -1`$
 - 두 점의 관계를 다음과 같이 둔다 → $`x^+ = x^- + \gamma \theta`$
-⇒ 위를 대입하면 
+⇒ 위를 대입하면
 
 	- $`\theta^T(x^- + \gamma\theta) + \theta_0 = 1`$
 	→ 위를 정리하면
 	$`\theta^T x^- + \theta_0 + \gamma \theta^T\theta = 1`$
-→ 이때  $`x^-`$는 minus-plane 위에 있으므로:
+→ 이때 $`x^-`$는 minus-plane 위에 있으므로:
 
 - -$`1 + \gamma \theta^T\theta = 1`$
-⇒  따라서
+⇒ 따라서
 $$
 
 \gamma = \frac{2}{\theta^T\theta}
@@ -330,11 +330,11 @@ $$
 - $`\gamma^{(i)}`$ → 이게 기하학적 마진
 	- $`\theta^T x_0 + \theta_0 = 0`$ 부터 $`x^{(x)}`$까지의 거리이므로
 ⇒ $`x^{(i)}`$ 로부터 $`x^0`$를 얻어내려면
-	$`x_0 = x^{(i)} - \gamma^{(i)}\frac{\theta}{\|\theta\|}`$ ← 이렇게 구함 따라서 
+	$`x_0 = x^{(i)} - \gamma^{(i)}\frac{\theta}{\|\theta\|}`$ ← 이렇게 구함 따라서
 $$
 
 \theta^T x_0 + \theta_0 = 0 \\
-= 
+=
 
 \theta^T\!\left(x^{(i)} - \gamma^{(i)}\frac{\theta}{\|\theta\|}\right) + \theta_0 = 0
 
@@ -369,7 +369,7 @@ y^{(i)}\frac{(x^{(i)})^T\theta + \theta_0}{\|\theta\|} \;\ge\; \gamma
 \quad \text{for all } i
 $$
 
-- 이 제약식은 
+- 이 제약식은
 	- 각 점의 기하적 마진이 감마 이상
 	- 모든 데이터가 결정 경계에서 최소 감마만큼 떨어져 있음을 의미
 
@@ -391,10 +391,10 @@ $$
 	- $`\gamma \rightarrow \alpha\gamma`$
 	⇒ 이 때문에 제약 조건을 하나 더 걸게 됨 → $`\|\theta\| = \frac{1}{\gamma}`$
 
-		- $`\theta`$ 의 크기와 $`\gamma`$를 서로 고정
+ - $`\theta`$ 의 크기와 $`\gamma`$를 서로 고정
 ⇒ 이를 제약식에 대입하면
 	$$
-	
+
 
 y^{(i)}\big((x^{(i)})^T\theta + \theta_0\big)
 \;\ge\;
@@ -404,8 +404,8 @@ y^{(i)}\big((x^{(i)})^T\theta + \theta_0\big)
 
 ![](../attachments/ml/L20/slide-30.webp)
 
-- $`\|\theta\| = \frac{1}{\gamma}`$이라는 제약을 둔다면,  $`\gamma = \frac{1}{\|\theta\|}`$ 임을 알 수 있음
-- 최적화 대상인  → $`\max_{\theta,\;\theta_0,\;\gamma}\;\; \gamma`$  이 식이 ⇒ $`\max_{\theta,\theta_0}\;\; \frac{1}{\|\theta\|}`$ 으로 표현됨
+- $`\|\theta\| = \frac{1}{\gamma}`$이라는 제약을 둔다면, $`\gamma = \frac{1}{\|\theta\|}`$ 임을 알 수 있음
+- 최적화 대상인 → $`\max_{\theta,\;\theta_0,\;\gamma}\;\; \gamma`$ 이 식이 ⇒ $`\max_{\theta,\theta_0}\;\; \frac{1}{\|\theta\|}`$ 으로 표현됨
 	- 제약 조건은 그대로 $`y^{(i)}\big((x^{(i)})^T\theta + \theta_0\big) \ge 1
 \quad \text{for all } i`$
 	⇒ 이 문제의 해는 기존과 동일
@@ -430,7 +430,7 @@ $$
 
 ⇒ 결국 SVM 목적함수는 아래와 같음
 	$$
-	
+
 
 \displaystyle \min \frac{1}{2}\|\theta\|^2 
 	$$
@@ -443,25 +443,25 @@ $$
 \min_{\theta,\theta_0}\;\; \frac{1}{2}\|\theta\|^2
 
 \\
-제약조건: 
+제약조건:
 y^{(i)}\big((x^{(i)})^T\theta + \theta_0\big) \ge 1
 \quad \text{for all } i
 $$
 
 - **결정 변수(Decision variables)**: \\theta 와 \\theta_0
-- **목적 함수(Objective function)** 는 분리 초평면으로부터의 **마진의 역수**로 정의된다.
-- **제약조건(Constraint)** 은 학습 데이터를 **완벽히 분리**하는 조건이다.
-- 목적 함수는 **이차(quadratic)** 이고 제약조건은 **선형(linear)** 이다
+- **목적 함수(Objective function)**는 분리 초평면으로부터의 **마진의 역수**로 정의된다.
+- **제약조건(Constraint)**은 학습 데이터를 **완벽히 분리**하는 조건이다.
+- 목적 함수는 **이차(quadratic)**이고 제약조건은 **선형(linear)**이다
 	→ **이차계획(Quadratic Programming)**
 
 - → **볼록 최적화(convex optimization)**
-	→ **전역 최적해(globally optimal solution)** 가 존재한다.
+	→ **전역 최적해(globally optimal solution)**가 존재한다.
 
-- 학습 데이터가 **선형 분리 가능(linearly separable)** 할 때만 해가 존재한다.
+- 학습 데이터가 **선형 분리 가능(linearly separable)**할 때만 해가 존재한다.
 
 ![](../attachments/ml/L20/slide-34.webp)
 
-## 라그랑주 승수  ← 이거 꼭 다시보기
+## 라그랑주 승수 ← 이거 꼭 다시보기
 
 ### 원래
 원래 문제는 이렇게 생겼습니다:
@@ -472,9 +472,9 @@ $$
 
 - 제약을 계속 체크해야 함
 - 해석·계산이 번거로움
-⇒  **라그랑주는 “위반하면 벌점” 방식으로 제약을 목적함수에 흡수**합니다.
+⇒ **라그랑주는 “위반하면 벌점” 방식으로 제약을 목적함수에 흡수**합니다.
 
-### $`\lambda_i`$** 의 의미 (아주 중요)**
+### $`\lambda_i`$**의 의미 (아주 중요)**
 라그랑주 항:
 $`\lambda_i\big(1 - y_i(\theta^T x_i + \theta_0)\big)`$
 
@@ -484,11 +484,11 @@ $`\lambda_i\big(1 - y_i(\theta^T x_i + \theta_0)\big)`$
 - 제약을 **위반하거나 딱 맞추면**:
 	- $`\lambda_i > 0`$
 	- 목적함수에 직접 영향
-$`👉 \lambda_i > 0 \iff support vector`$
+$` \lambda_i > 0 \iff support vector`$
 
 ![](../attachments/ml/L20/slide-35.webp)
 
-⇒ 
+⇒
 $`y_i(\theta^T x_i + \theta_0)\ge 1`$
 이걸 이렇게 바꿉니다:
 $`\underbrace{1 - y_i(\theta^T x_i + \theta_0)}_{\text{제약 위반량}}`$
@@ -497,7 +497,7 @@ $`\underbrace{1 - y_i(\theta^T x_i + \theta_0)}_{\text{제약 위반량}}`$
 - 이 값이 > 0 이면: 제약 위반
 ⇒ 목적 함수에 벌점 항을 추가하게 됨
 	$$
-	
+
 
 \frac{1}{2}\|\theta\|^2
 +
@@ -508,7 +508,7 @@ $`\underbrace{1 - y_i(\theta^T x_i + \theta_0)}_{\text{제약 위반량}}`$
 <table header-row="true">
 <tr>
 <td>**데이터 상태**</td>
-<td>1-yi()</td>
+<td>1-yi</td>
 <td>**최적 λ**</td>
 </tr>
 <tr>
@@ -534,8 +534,8 @@ $`\underbrace{1 - y_i(\theta^T x_i + \theta_0)}_{\text{제약 위반량}}`$
 $$
 
 y_i(\theta^T x_i+\theta_0)\ge 1
-1-y_i(\theta^T x_i+\theta_0)\le 0 
-로 쓰고, 
+1-y_i(\theta^T x_i+\theta_0)\le 0
+로 쓰고,
 \\
 각 제약마다 벌점 계수 \lambda_i\ge 0 를 붙여: \\
 
@@ -550,7 +550,7 @@ $$
 # **8) “primal에서 dual로” 넘어가는 실제 계산 순서**
 Dual을 만들려면:
 
-### **(1) 먼저 **\\theta,\\theta_0** 에 대해 최소화(미분=0)**
+### **(1) 먼저 **\\theta,\\theta_0**에 대해 최소화(미분=0)**
 $$
 \frac{\partial L}{\partial \theta}=0
 \Rightarrow
@@ -566,7 +566,7 @@ $$
 - **세타 가 데이터의 선형결합으로 표현됨**
 - **라벨 가중합 제약**이 생김
 
-### **(2) 위 결과를 **L** 에 대입해서 **\\theta,\\theta_0** 를 제거**
+### **(2) 위 결과를 **L**에 대입해서 **\\theta,\\theta_0**를 제거**
 그러면 \\lambda 만 남는 목적함수가 됩니다:
 $$
 \max_{\lambda\ge 0}
@@ -603,7 +603,7 @@ $$
 
 - 제약이 있는 최적화 문제에서 진짜 최적해라면 반드시 만족해야하는 4 가지 조건
 
-# **KKT 조건 1️⃣ Stationarity (정지 조건)**
+# **KKT 조건 1⃣ Stationarity (정지 조건)**
 \\nabla_\{\\theta,\\theta_0\} L(\\theta,\\theta_0,\\lambda)=0
 
 ### **뜻 (사람 말)**
@@ -622,10 +622,10 @@ $$
 - 결정 경계의 방향(θ)은 **데이터들의 가중합**
 - 그 가중치가 바로 **λ**
 - 즉, **λ가 0이 아닌 데이터만 θ를 만든다**
-👉 벌써 “서포트 벡터 냄새”가 나죠.
+ 벌써 “서포트 벡터 냄새”가 나죠.
 ***
 
-# **KKT 조건 2️⃣ Primal feasibility (원래 제약 만족)**
+# **KKT 조건 2⃣ Primal feasibility (원래 제약 만족)**
 y_i(\\theta\^T x_i+\\theta_0)-1 \\ge 0
 
 ### **뜻**
@@ -633,13 +633,13 @@ y_i(\\theta\^T x_i+\\theta_0)-1 \\ge 0
 > 모든 데이터는 원래 SVM 제약을 만족해야 한다
 즉,
 
-- 마진 안쪽 ❌
-- 결정 경계 반대편 ❌
+- 마진 안쪽
+- 결정 경계 반대편
 - 하드 마진에서는 **완벽 분리 필수**
 이건 그냥 “문제의 기본 조건”입니다.
 ***
 
-# **KKT 조건 3️⃣ Dual feasibility (λ ≥ 0)**
+# **KKT 조건 3⃣ Dual feasibility (λ ≥ 0)**
 \\lambda_i \\ge 0
 
 ### **뜻**
@@ -651,7 +651,7 @@ y_i(\\theta\^T x_i+\\theta_0)-1 \\ge 0
 이건 규칙 같은 거라 깊게 생각할 필요는 없습니다.
 ***
 
-# **⭐ KKT 조건 4️⃣ Complementary Slackness (여기가 핵심)**
+# **KKT 조건 4⃣ Complementary Slackness (여기가 핵심)**
 $$
 \lambda_i \,[\,y_i(\theta^T x_i+\theta_0)-1\,] = 0
 $$
@@ -690,7 +690,7 @@ $$
 	$$
 	f(x)=\theta^T x+\theta_0
 	$$
-	라는 **점수(score)** 를 만들고,
+	라는 **점수(score)**를 만들고,
 	$$
 	\hat y=\text{sign}(f(x))
 	$$
@@ -754,9 +754,9 @@ $$
 	마진이 \\frac\{2\}\{\\\|\\theta\\\|\} 이니까
 
 	- 마진 최대화
-		$$
-		\max \frac{2}{\|\theta\|}
-		$$
+ $$
+ \max \frac{2}{\|\theta\|}
+ $$
 	은 결국
 
 	- $`\|\theta\|`$ 최소화와 동치입니다.
@@ -766,7 +766,7 @@ $$
 \quad\text{s.t.}\quad
 y_i(\theta^T x_i+\theta_0)\ge 1\ \forall i
 	$$
-	이게 **하드 마진 SVM의 Primal(원문제)** 입니다.
+	이게 **하드 마진 SVM의 Primal(원문제)**입니다.
 
 	- 목적함수: 이차(quadratic)
 	- 제약식: 선형(linear)
@@ -831,7 +831,7 @@ y_i(\theta^T x_i+\theta_0)\ge 1\ \forall i
 	→ 이 점이 경계를 결정 (Support Vector)
 	그래서
 	> $`\lambda_i>0`$
-		**인 점만 서포트 벡터**
+ **인 점만 서포트 벡터**
 	> 나머지는 자동으로 제거됨(λ=0)
 	이게 SVM이 sparse 한 이유입니다.
 ***
@@ -863,7 +863,7 @@ y_i(\theta^T x_i+\theta_0)\ge 1\ \forall i
 ***
 	# **이 강의의 “핵심 5문장” 요약**
 
-	1. SVM은 **마진(최소 거리)** 을 최대화하는 경계를 찾는다.
+	1. SVM은 **마진(최소 거리)**을 최대화하는 경계를 찾는다.
 	2. 마진 최대화는 \\\|\\theta\\\| 최소화로 바뀌고, 그래서 \\min \\frac12\\\|\\theta\\\|\^2가 된다.
 	3. 제약 y_i(\\theta\^T x_i+\\theta_0)\\ge1 때문에 QP(Convex)가 된다.
 	4. 라그랑주/듀얼로 바꾸면 \\theta=\\sum\\lambda_i y_i x_i가 되어 데이터가 내적 형태로만 남는다.

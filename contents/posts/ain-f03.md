@@ -245,8 +245,8 @@ description: "직역"
 >
 > - 워크로드 균형을 위한 전략.
 > - 지연(latency)을 줄이는 기법:
->   - 연산과 통신의 오버랩 (Overlapping computation and communication).
->   - 비동기 실행 (Asynchronous execution).
+> - 연산과 통신의 오버랩 (Overlapping computation and communication).
+> - 비동기 실행 (Asynchronous execution).
 
 ## 슬라이드 14
 
@@ -257,13 +257,13 @@ description: "직역"
 > - 병렬 학습의 도전 과제 (Challenges in Parallel Learning)
 >
 > 1. 동기화 오버헤드 (Synchronization Overheads):
->    - 데이터 병렬화에서의 그래디언트 합산.
+> - 데이터 병렬화에서의 그래디언트 합산.
 > 2. 통신 비용 (Communication Costs):
->    - 노드 간 데이터 전송.
+> - 노드 간 데이터 전송.
 > 3. 로드 밸런싱 (Load Balancing):
->    - 동등한 워크로드 분배 보장.
+> - 동등한 워크로드 분배 보장.
 > 4. 메모리 제약 (Memory Constraints)
->    - 모델 또는 데이터를 분할할 때 각 디바이스의 메모리 한계를 유념할 것.
+> - 모델 또는 데이터를 분할할 때 각 디바이스의 메모리 한계를 유념할 것.
 
 **설명**
 - GPU 메모리 문제: 집의 RTX 3050/3080 같은 GPU로 큰 모델을 돌리면 처음엔 돌다가 중간에 OOM(Out of Memory)으로 죽음 → 다른 GPU와 같이 쓰고 분리하는 작업이 필요해지고 파라미터 이동이 많아져 혼잡(congestion) 발생.
@@ -307,32 +307,32 @@ description: "직역"
 > dist.init_process_group(backend='nccl')
 > # Create the model
 > model = nn.Sequential(
->     nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1),
->     nn.ReLU(),
->     nn.MaxPool2d(kernel_size=2, stride=2),
->     nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1),
->     nn.ReLU(),
->     nn.MaxPool2d(kernel_size=2, stride=2),
->     nn.Flatten(),
->     nn.Linear(64 * 7 * 7, 128),
->     nn.ReLU(),
->     nn.Linear(128, 10)
+> nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1),
+> nn.ReLU,
+> nn.MaxPool2d(kernel_size=2, stride=2),
+> nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1),
+> nn.ReLU,
+> nn.MaxPool2d(kernel_size=2, stride=2),
+> nn.Flatten,
+> nn.Linear(64 * 7 * 7, 128),
+> nn.ReLU,
+> nn.Linear(128, 10)
 > )
 > # Wrap the model in DDP
 > model = DDP(model)
 > # Define loss function and optimizer
-> criterion = nn.CrossEntropyLoss()
-> optimizer = optim.SGD(model.parameters(), lr=0.01)
+> criterion = nn.CrossEntropyLoss
+> optimizer = optim.SGD(model.parameters, lr=0.01)
 > # Training loop
 > for epoch in range(10):
->     for inputs, labels in train_loader:
->         inputs, labels = inputs.to(device), labels.to(device)
->         optimizer.zero_grad()
->         outputs = model(inputs)
->         loss = criterion(outputs, labels)
->         loss.backward()
->         optimizer.step()
->     ……
+> for inputs, labels in train_loader:
+> inputs, labels = inputs.to(device), labels.to(device)
+> optimizer.zero_grad
+> outputs = model(inputs)
+> loss = criterion(outputs, labels)
+> loss.backward
+> optimizer.step
+> ……
 > ```
 
 **설명**
@@ -354,42 +354,42 @@ description: "직역"
 > import torch.nn as nn
 > import torch.optim as optim
 > class ParallelModel(nn.Module):
->     def __init__(self):
->         super(ParallelModel, self).__init__()
->         self.layer1 = nn.Sequential(
->             nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1),
->             nn.ReLU(),
->             nn.MaxPool2d(kernel_size=2, stride=2)
->         ).to('cuda:0')
->         self.layer2 = nn.Sequential(
->             nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1),
->             nn.ReLU(),
->             nn.MaxPool2d(kernel_size=2, stride=2)
->         ).to('cuda:1')
->         self.fc = nn.Sequential(
->             nn.Flatten(),
->             nn.Linear(64 * 7 * 7, 128),
->             nn.ReLU(),
->             nn.Linear(128, 10)
->         ).to('cuda:1')
->     def forward(self, x):
->         x = self.layer1(x)
->         x = x.to('cuda:1')
->         x = self.layer2(x)
->         x = self.fc(x)
->         return x
-> model = ParallelModel()
-> criterion = nn.CrossEntropyLoss().to('cuda:1')
-> optimizer = optim.SGD(model.parameters(), lr=0.01)
+> def __init__(self):
+> super(ParallelModel, self).__init__
+> self.layer1 = nn.Sequential(
+> nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1),
+> nn.ReLU,
+> nn.MaxPool2d(kernel_size=2, stride=2)
+> ).to('cuda:0')
+> self.layer2 = nn.Sequential(
+> nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1),
+> nn.ReLU,
+> nn.MaxPool2d(kernel_size=2, stride=2)
+> ).to('cuda:1')
+> self.fc = nn.Sequential(
+> nn.Flatten,
+> nn.Linear(64 * 7 * 7, 128),
+> nn.ReLU,
+> nn.Linear(128, 10)
+> ).to('cuda:1')
+> def forward(self, x):
+> x = self.layer1(x)
+> x = x.to('cuda:1')
+> x = self.layer2(x)
+> x = self.fc(x)
+> return x
+> model = ParallelModel
+> criterion = nn.CrossEntropyLoss.to('cuda:1')
+> optimizer = optim.SGD(model.parameters, lr=0.01)
 > # Training loop
 > for epoch in range(10):
->     for inputs, labels in train_loader:
->         inputs, labels = inputs.to('cuda:0'), labels.to('cuda:1')
->         optimizer.zero_grad()
->         outputs = model(inputs)
->         loss = criterion(outputs, labels)
->         loss.backward()
->         optimizer.step()
+> for inputs, labels in train_loader:
+> inputs, labels = inputs.to('cuda:0'), labels.to('cuda:1')
+> optimizer.zero_grad
+> outputs = model(inputs)
+> loss = criterion(outputs, labels)
+> loss.backward
+> optimizer.step
 > ```
 > (주: layer1은 cuda:0, layer2와 fc는 cuda:1에 배치되어 서로 다른 GPU에 모델을 나눔)
 
@@ -411,42 +411,42 @@ description: "직역"
 > import torch.nn as nn
 > import torch.optim as optim
 > class PipelineModel(nn.Module):
->     def __init__(self):
->         super(PipelineModel, self).__init__()
->         self.stage1 = nn.Sequential(
->             nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1),
->             nn.ReLU(),
->             nn.MaxPool2d(kernel_size=2, stride=2)
->         ).to('cuda:0')
->         self.stage2 = nn.Sequential(
->             nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1),
->             nn.ReLU(),
->             nn.MaxPool2d(kernel_size=2, stride=2)
->         ).to('cuda:1')
->         self.stage3 = nn.Sequential(
->             nn.Flatten(),
->             nn.Linear(64 * 7 * 7, 128),
->             nn.ReLU(),
->             nn.Linear(128, 10)
->         ).to('cuda:1')
->     def forward(self, x):
->         x = self.stage1(x)
->         x = x.to('cuda:1')
->         x = self.stage2(x)
->         x = self.stage3(x)
->         return x
-> model = PipelineModel()
-> criterion = nn.CrossEntropyLoss().to('cuda:1')
-> optimizer = optim.SGD(model.parameters(), lr=0.01)
+> def __init__(self):
+> super(PipelineModel, self).__init__
+> self.stage1 = nn.Sequential(
+> nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1),
+> nn.ReLU,
+> nn.MaxPool2d(kernel_size=2, stride=2)
+> ).to('cuda:0')
+> self.stage2 = nn.Sequential(
+> nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1),
+> nn.ReLU,
+> nn.MaxPool2d(kernel_size=2, stride=2)
+> ).to('cuda:1')
+> self.stage3 = nn.Sequential(
+> nn.Flatten,
+> nn.Linear(64 * 7 * 7, 128),
+> nn.ReLU,
+> nn.Linear(128, 10)
+> ).to('cuda:1')
+> def forward(self, x):
+> x = self.stage1(x)
+> x = x.to('cuda:1')
+> x = self.stage2(x)
+> x = self.stage3(x)
+> return x
+> model = PipelineModel
+> criterion = nn.CrossEntropyLoss.to('cuda:1')
+> optimizer = optim.SGD(model.parameters, lr=0.01)
 > # Training loop
 > for epoch in range(10):
->     for inputs, labels in train_loader:
->         inputs, labels = inputs.to('cuda:0'), labels.to('cuda:1')
->         optimizer.zero_grad()
->         outputs = model(inputs)
->         loss = criterion(outputs, labels)
->         loss.backward()
->         optimizer.step()
+> for inputs, labels in train_loader:
+> inputs, labels = inputs.to('cuda:0'), labels.to('cuda:1')
+> optimizer.zero_grad
+> outputs = model(inputs)
+> loss = criterion(outputs, labels)
+> loss.backward
+> optimizer.step
 > ```
 
 ## 슬라이드 19
@@ -468,10 +468,10 @@ description: "직역"
 **직역**
 > RNN : LSTM(예제)
 > - LSTM(Long Short-Term Memory): RNN(Recurrent Neural Network)의 한 종류로, RNN의 장기 의존성 문제(long-term dependencies)를 해결하기 위해서 나온 모델
->   - 직전 데이터뿐만 아니라, 좀 더 거시적으로 과거 데이터를 고려하여 미래 데이터를 예측
+> - 직전 데이터뿐만 아니라, 좀 더 거시적으로 과거 데이터를 고려하여 미래 데이터를 예측
 >
 > (다이어그램: 펼쳐진 RNN 체인의 각 셀 "A"가 연결된 그림과, 한 LSTM 셀 내부 구조. 라벨: Output(출력), Cell State / Next (Cell) State, Hidden State / Next Hidden State, Input(입력))
-> ➔ 6개의 파라미터와 4개의 게이트로 구성
+> 6개의 파라미터와 4개의 게이트로 구성
 
 **설명**
 - LSTM 예시는 반복(recurrent)해서 단계별로 진행됨. 이전 것을 가중치 같은 것으로 줄이거나 해서 다음 것에 반영하는 식.
@@ -486,8 +486,8 @@ description: "직역"
 > - 이전 히든 상태: h_{t-1} = 0.5
 > - 이전 셀 상태: C_{t-1} = 0.4
 > - 가중치 및 편향 (예시 값으로 설정)
->   - W_f = 0.7, W_i = 0.6, W_C = 0.9, W_o = 0.5
->   - b_f = 0.1, b_i = 0.2, b_C = 0.3, b_o = 0.4
+> - W_f = 0.7, W_i = 0.6, W_C = 0.9, W_o = 0.5
+> - b_f = 0.1, b_i = 0.2, b_C = 0.3, b_o = 0.4
 >
 > - 셀 상태: 장기 기억 정보, 히든 상태: 단기 기억 정보
 
@@ -499,7 +499,7 @@ description: "직역"
 > - 작은 linear interaction만을 적용시키면서 전체 체인을 계속 구동
 > - 정보가 전혀 바뀌지 않고 그대로만 흐르게 하는 부분
 > - Gate라 불리는 구조에 의해서 정보 추가 or 제거
->   - Gate는 Training을 통해서 어떤 정보를 유지하고 버릴지 학습
+> - Gate는 Training을 통해서 어떤 정보를 유지하고 버릴지 학습
 >
 > (다이어그램: LSTM 셀 내부. 상단 가로선 C_{t-1} → C_t (셀 상태, ⊗ 곱셈·⊕ 덧셈 노드), 하단 h_{t-1}, x_t 입력. 내부 게이트: f_t, i_t, C̃_t(tanh), o_t 와 시그모이드(σ)·tanh 노드, 출력 h_t)
 
@@ -516,10 +516,10 @@ description: "직역"
 >
 > 망각 게이트 (forget gate) 계산:
 > f_t = σ(0.7·(0.5+0.8) + 0.1)
->     = σ(0.7·1.3 + 0.1) = σ(1.01)
+> = σ(0.7·1.3 + 0.1) = σ(1.01)
 > f_t = 1 / (1 + e^(-1.01)) ≈ 0.73
 >
-> (수기 주석) f_t = σ(W_f · [h_{t-1}, x_t] + b_f)  — h_{t-1}은 t-1의 hidden state, x_t는 input, 결과 범위 0~1
+> (수기 주석) f_t = σ(W_f · [h_{t-1}, x_t] + b_f) — h_{t-1}은 t-1의 hidden state, x_t는 input, 결과 범위 0~1
 
 ## 슬라이드 24
 
@@ -528,21 +528,21 @@ description: "직역"
 **직역**
 > - 현재 input에서 어떤 정보를 Cell State에 추가할지 결정
 > - i_t: cell state에 추가할 정보의 비율
->   - 1이면 모두 추가, 0이면 추가 X
+> - 1이면 모두 추가, 0이면 추가 X
 > - C_t: 새로운 정보 후보값(-1 ~ +1)
->   - tanh를 사용하는 이유? -> 너무 큰 값을 반영하면 cell state가 과도하게 변화될 수 있음
->   - 안정적 학습을 목표로 함
+> - tanh를 사용하는 이유? -> 너무 큰 값을 반영하면 cell state가 과도하게 변화될 수 있음
+> - 안정적 학습을 목표로 함
 >
 > 입력 게이트 (input gate) 계산:
 > i_t = σ(W_i · [h_{t-1}, x_t] + b_i)
->     = σ(0.6·(0.5+0.8) + 0.2)
->     = σ(0.6·1.3 + 0.2) = σ(0.98)
->     = 1 / (1 + e^(-0.98)) ≈ 0.73
+> = σ(0.6·(0.5+0.8) + 0.2)
+> = σ(0.6·1.3 + 0.2) = σ(0.98)
+> = 1 / (1 + e^(-0.98)) ≈ 0.73
 >
 > C̃_t = tanh(W_C · [h_{t-1}, x_t] + b_C)
->     = tanh(0.9·(0.5+0.8) + 0.3)
->     = tanh(0.9·1.3 + 0.3) = tanh(1.47)
->     ≈ 0.9
+> = tanh(0.9·(0.5+0.8) + 0.3)
+> = tanh(0.9·1.3 + 0.3) = tanh(1.47)
+> ≈ 0.9
 
 ## 슬라이드 25
 
@@ -553,8 +553,8 @@ description: "직역"
 >
 > 셀 상태 갱신 계산:
 > C_t = f_t · C_{t-1} + i_t · C̃_t
->     = (0.73 · 0.4) + (0.73 · 0.9)
->     = 0.292 + 0.657 = 0.949
+> = (0.73 · 0.4) + (0.73 · 0.9)
+> = 0.292 + 0.657 = 0.949
 >
 > C_t = f_t * C_{t-1} + i_t * C̃_t
 
@@ -568,13 +568,13 @@ description: "직역"
 >
 > 출력 게이트 (output gate) 계산:
 > o_t = σ(W_o · [h_{t-1}, x_t] + b_o)
->     = σ(0.5·(0.5+0.8) + 0.4)
->     = σ(0.5·1.3 + 0.4) = σ(1.05)
->     ≈ 0.74
+> = σ(0.5·(0.5+0.8) + 0.4)
+> = σ(0.5·1.3 + 0.4) = σ(1.05)
+> ≈ 0.74
 >
 > h_t = o_t · tanh(C_t)
->     = 0.74 · tanh(0.949)
->     ≈ 0.74 · 0.74 = 0.55
+> = 0.74 · tanh(0.949)
+> ≈ 0.74 · 0.74 = 0.55
 >
 > o_t = σ(W_o [h_{t-1}, x_t] + b_o)
 > h_t = o_t * tanh(C_t)
@@ -599,32 +599,32 @@ description: "직역"
 > from torch.nn.parallel import DataParallel
 > # Define an RNN model
 > class RNNModel(nn.Module):
->     def __init__(self, input_size, hidden_size, output_size, num_layers=2):
->         super(RNNModel, self).__init__()
->         self.hidden_size = hidden_size
->         self.num_layers = num_layers
->         self.rnn = nn.RNN(input_size, hidden_size, num_layers, batch_first=True)
->         self.fc = nn.Linear(hidden_size, output_size)
->     def forward(self, x):
->         h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(x.device)
->         out, _ = self.rnn(x, h0)
->         out = self.fc(out[:, -1, :])
->         return out
+> def __init__(self, input_size, hidden_size, output_size, num_layers=2):
+> super(RNNModel, self).__init__
+> self.hidden_size = hidden_size
+> self.num_layers = num_layers
+> self.rnn = nn.RNN(input_size, hidden_size, num_layers, batch_first=True)
+> self.fc = nn.Linear(hidden_size, output_size)
+> def forward(self, x):
+> h0 = torch.zeros(self.num_layers, x.size(0), self.hidden_size).to(x.device)
+> out, _ = self.rnn(x, h0)
+> out = self.fc(out[:, -1, :])
+> return out
 > # Wrap the model in DataParallel
 > model = RNNModel(input_size=10, hidden_size=20, output_size=1).to('cuda')
 > model = DataParallel(model)
 > # Define loss and optimizer
-> criterion = nn.MSELoss()
-> optimizer = optim.Adam(model.parameters(), lr=0.001)
+> criterion = nn.MSELoss
+> optimizer = optim.Adam(model.parameters, lr=0.001)
 > # Training loop
 > for epoch in range(10):
->     for inputs, labels in train_loader:
->         inputs, labels = inputs.to('cuda'), labels.to('cuda')
->         optimizer.zero_grad()
->         outputs = model(inputs)
->         loss = criterion(outputs, labels)
->         loss.backward()
->         optimizer.step()
+> for inputs, labels in train_loader:
+> inputs, labels = inputs.to('cuda'), labels.to('cuda')
+> optimizer.zero_grad
+> outputs = model(inputs)
+> loss = criterion(outputs, labels)
+> loss.backward
+> optimizer.step
 > ```
 
 **설명**
@@ -646,34 +646,34 @@ description: "직역"
 > import torch.nn as nn
 > import torch.optim as optim
 > class ParallelRNNModel(nn.Module):
->     def __init__(self, input_size, hidden_size, output_size, num_layers=2):
->         super(ParallelRNNModel, self).__init__()
->         self.hidden_size = hidden_size
->         self.num_layers = num_layers
->         self.rnn1 = nn.RNN(input_size, hidden_size, num_layers // 2, batch_first=True).to('cuda:0')
->         self.rnn2 = nn.RNN(hidden_size, hidden_size, num_layers // 2, batch_first=True).to('cuda:1')
->         self.fc = nn.Linear(hidden_size, output_size).to('cuda:1')
->     def forward(self, x):
->         h0_1 = torch.zeros(self.num_layers // 2, x.size(0), self.hidden_size).to('cuda:0')
->         h0_2 = torch.zeros(self.num_layers // 2, x.size(0), self.hidden_size).to('cuda:1')
->         x = x.to('cuda:0')
->         out, _ = self.rnn1(x, h0_1)
->         out = out.to('cuda:1')
->         out, _ = self.rnn2(out, h0_2)
->         out = self.fc(out[:, -1, :])
->         return out
+> def __init__(self, input_size, hidden_size, output_size, num_layers=2):
+> super(ParallelRNNModel, self).__init__
+> self.hidden_size = hidden_size
+> self.num_layers = num_layers
+> self.rnn1 = nn.RNN(input_size, hidden_size, num_layers // 2, batch_first=True).to('cuda:0')
+> self.rnn2 = nn.RNN(hidden_size, hidden_size, num_layers // 2, batch_first=True).to('cuda:1')
+> self.fc = nn.Linear(hidden_size, output_size).to('cuda:1')
+> def forward(self, x):
+> h0_1 = torch.zeros(self.num_layers // 2, x.size(0), self.hidden_size).to('cuda:0')
+> h0_2 = torch.zeros(self.num_layers // 2, x.size(0), self.hidden_size).to('cuda:1')
+> x = x.to('cuda:0')
+> out, _ = self.rnn1(x, h0_1)
+> out = out.to('cuda:1')
+> out, _ = self.rnn2(out, h0_2)
+> out = self.fc(out[:, -1, :])
+> return out
 > model = ParallelRNNModel(input_size=10, hidden_size=20, output_size=1)
-> criterion = nn.MSELoss().to('cuda:1')
-> optimizer = optim.Adam(model.parameters(), lr=0.001)
+> criterion = nn.MSELoss.to('cuda:1')
+> optimizer = optim.Adam(model.parameters, lr=0.001)
 > # Training loop
 > for epoch in range(10):
->     for inputs, labels in train_loader:
->         inputs, labels = inputs.to('cuda:0'), labels.to('cuda:1')
->         optimizer.zero_grad()
->         outputs = model(inputs)
->         loss = criterion(outputs, labels)
->         loss.backward()
->         optimizer.step()
+> for inputs, labels in train_loader:
+> inputs, labels = inputs.to('cuda:0'), labels.to('cuda:1')
+> optimizer.zero_grad
+> outputs = model(inputs)
+> loss = criterion(outputs, labels)
+> loss.backward
+> optimizer.step
 > ```
 
 ## 슬라이드 29
@@ -687,8 +687,8 @@ description: "직역"
 > 하이브리드 병렬화는 데이터 병렬화와 모델 병렬화를 결합한다.
 >
 > - 예를 들어:
->   - 데이터 병렬화를 사용해 배치를 GPU들에 걸쳐 분할한다.
->   - 모델 병렬화를 사용해 RNN 레이어들을 GPU들에 걸쳐 분할한다.
+> - 데이터 병렬화를 사용해 배치를 GPU들에 걸쳐 분할한다.
+> - 모델 병렬화를 사용해 RNN 레이어들을 GPU들에 걸쳐 분할한다.
 >
 > * 최적화된 라이브러리 사용 (Using Optimized Libraries)
 > 많은 딥러닝 프레임워크가 RNN 병렬화를 위한 내장 지원을 제공한다:
@@ -817,8 +817,8 @@ description: "직역"
 **직역**
 > 02 트랜스포머의 병렬화: 단어 임베딩 (Parallelization of Transformer : Word embedding)
 > 데이터셋 → 단어를 숫자로 (Word to numbers)
-> 영어(Eng.): [0, 1, 2]  →  I love learning.
-> 한국어(Kor.): [0, 1]  →  저는 배워요
+> 영어(Eng.): [0, 1, 2] → I love learning.
+> 한국어(Kor.): [0, 1] → 저는 배워요
 >
 > (가중치 행렬: w_{0,1} w_{0,2} w_{0,3} w_{0,4} / w_{1,1}…w_{1,4} / w_{2,1}…w_{2,4} — 각 단어 인덱스에 대응하는 임베딩 행)
 > W: 가중치 (초기에는 무작위) (W: Weights (randomly in initial))
@@ -913,8 +913,8 @@ description: "직역"
 > "I"에 대한 Q, K, V 계산 (Computing Queries (Q), Keys (K), and Values (V) for "I"):
 > 입력 [0.5, 0.2, 0.8, 0.1]을 WQ(1)과 곱함:
 > Q = (0.5×0.1+0.2×0.3+0.8×0.5+0.1×0.7, 0.5×0.2+0.2×0.4+0.8×0.6+0.1×0.8)
->   = (0.05+0.06+0.4+0.07, 0.1+0.08+0.48+0.08)
->   = (0.58, 0.74)
+> = (0.05+0.06+0.4+0.07, 0.1+0.08+0.48+0.08)
+> = (0.58, 0.74)
 > 마찬가지로 K와 V를 계산한다. 모든 단어에 적용하면:
 >
 > | 단어(Word) | Query (Q) | Key (K) | Value (V) |
@@ -958,8 +958,8 @@ description: "직역"
 > "I"에 대해, 그 어텐션 가중치를 대응하는 Value(V)에 곱한다.
 > Score = V · (Q_I · K_W)
 > New Value_I = (0.25×[0.62,0.79]) + (0.30×[0.97,1.23]) + (0.45×[1.21,1.56])
->             = [0.155, 0.197] + [0.291, 0.369] + [0.544, 0.702]
->             = [0.99, 1.27]
+> = [0.155, 0.197] + [0.291, 0.369] + [0.544, 0.702]
+> = [0.99, 1.27]
 > 모든 단어에 대해 이렇게 하면 Head 1의 출력 벡터를 얻는다.
 
 ## 슬라이드 42
@@ -976,10 +976,10 @@ description: "직역"
 > 모든 헤드의 출력을 하나의 벡터로 연결한다(concatenate):
 > 그런 다음, 트랜스포머의 다음 레이어를 위해 준비되도록 마지막 선형 변환(학습된 가중치)을 한 번 적용한다.
 >
-> | 단어 | Head 1 출력(2D) | Head 2 출력(2D) |  | 단어 | 최종 출력(4D) |
-> | "I" | [0.99, 1.27] | [0.88, 1.11] |  | "I" | [0.99, 1.27, 0.88, 1.11] |
-> | "love" | [1.02, 1.32] | [0.91, 1.14] |  | "love" | [1.02, 1.32, 0.91, 1.14] |
-> | "learning" | [1.09, 1.38] | [1.00, 1.22] |  | "learning" | [1.09, 1.38, 1.00, 1.22] |
+> | 단어 | Head 1 출력(2D) | Head 2 출력(2D) | | 단어 | 최종 출력(4D) |
+> | "I" | [0.99, 1.27] | [0.88, 1.11] | | "I" | [0.99, 1.27, 0.88, 1.11] |
+> | "love" | [1.02, 1.32] | [0.91, 1.14] | | "love" | [1.02, 1.32, 0.91, 1.14] |
+> | "learning" | [1.09, 1.38] | [1.00, 1.22] | | "learning" | [1.09, 1.38, 1.00, 1.22] |
 
 **설명**
 - HEAD가 2개면 한 문장을 처리할 때 같은 과정을 2번 돎(서로 다른 학습 가중치 사용). 이렇게 헤드/레이어 반복 횟수는 모델마다 다른데, GPT-3는 96번 반복함.
@@ -991,19 +991,19 @@ description: "직역"
 **직역**
 > 02 트랜스포머의 병렬화: 인코더의 레이어에서 레이어로 (Parallelization of Transformer : Layers to Layers for Encoder)
 > - Add & Norm (잔차 연결 + 레이어 정규화)
->   - 멀티헤드 어텐션 출력이 원래 입력 임베딩에 더해진다 (잔차 연결).
->   - 학습을 안정화하기 위해 레이어 정규화가 적용된다.
+> - 멀티헤드 어텐션 출력이 원래 입력 임베딩에 더해진다 (잔차 연결).
+> - 학습을 안정화하기 위해 레이어 정규화가 적용된다.
 > - 피드포워드 네트워크 (FFN)
->   - 각 단어(토큰)는 2층 완전연결 네트워크를 통해 독립적으로 처리된다:
->     - 첫 번째 선형 레이어가 차원을 확장한다 (예: 4 → 8).
->     - ReLU 활성화가 적용된다.
->     - 두 번째 선형 레이어가 차원을 다시 압축한다 (예: 8 → 4).
+> - 각 단어(토큰)는 2층 완전연결 네트워크를 통해 독립적으로 처리된다:
+> - 첫 번째 선형 레이어가 차원을 확장한다 (예: 4 → 8).
+> - ReLU 활성화가 적용된다.
+> - 두 번째 선형 레이어가 차원을 다시 압축한다 (예: 8 → 4).
 > - Add & Norm (다시!)
->   - FFN 출력이 이전 출력(어텐션 후)에 다시 더해진다.
->   - 또 한 번의 레이어 정규화가 적용된다.
+> - FFN 출력이 이전 출력(어텐션 후)에 다시 더해진다.
+> - 또 한 번의 레이어 정규화가 적용된다.
 > - N개 레이어 반복
->   - 인코더는 여러 레이어로 구성된다 (예: 원래 트랜스포머에서 6개 레이어).
->   - 각 레이어는 단어 표현을 정제한다.
+> - 인코더는 여러 레이어로 구성된다 (예: 원래 트랜스포머에서 6개 레이어).
+> - 각 레이어는 단어 표현을 정제한다.
 
 ## 슬라이드 44
 
@@ -1015,19 +1015,19 @@ description: "직역"
 > 마스킹된 멀티헤드 어텐션 (Masked Multi-Head Attention)
 > - 디코더의 첫 번째 레이어는 마스킹된 멀티헤드 셀프 어텐션이다.
 > - 왜 마스킹하는가?
->   - 학습 중에, 각 단어가 타깃 문장의 미래 단어를 보지 못하게 막는다.
->   - 이로써 모델이 앞을 "미리 알고" 예측하는 대신, 한 번에 한 단어씩 예측하도록 학습한다.
+> - 학습 중에, 각 단어가 타깃 문장의 미래 단어를 보지 못하게 막는다.
+> - 이로써 모델이 앞을 "미리 알고" 예측하는 대신, 한 번에 한 단어씩 예측하도록 학습한다.
 > - 예시:
->   - 디코더가 "나는"을 생성 중이라면, 아직 "기계를 사랑해"를 보면 안 된다.
->   - 이것은 미래 토큰을 가리는 삼각형 마스크(triangular mask)로 수행된다.
+> - 디코더가 "나는"을 생성 중이라면, 아직 "기계를 사랑해"를 보면 안 된다.
+> - 이것은 미래 토큰을 가리는 삼각형 마스크(triangular mask)로 수행된다.
 >
 > 멀티헤드 어텐션 (인코더 출력과 함께) (Multi-Head Attention (With Encoder Output))
 > - 이 레이어는 다음을 받는다:
->   - Query (Q) → 디코더의 처리된 임베딩.
->   - Key (K), Value (V) → 인코더의 출력 표현.
+> - Query (Q) → 디코더의 처리된 임베딩.
+> - Key (K), Value (V) → 인코더의 출력 표현.
 > - 이는 디코더가 출력을 생성하는 동안 인코더의 관련 단어에 집중하도록 돕는다.
 > - 예시:
->   - 단어 "나는"은 인코더의 "I"에 더 집중해야 하고, "기계를"은 "machine"에 더 집중해야 한다.
+> - 단어 "나는"은 인코더의 "I"에 더 집중해야 하고, "기계를"은 "machine"에 더 집중해야 한다.
 
 ## 슬라이드 45
 
@@ -1102,21 +1102,21 @@ description: "직역"
 > roberta_tok = RobertaTokenizer.from_pretrained(PRETRAINED_MODEL_NAME)
 > # Create the Multi GPU Classifier
 > class MultiGPUClassifier(torch.nn.Module):
->     def __init__(self, roberta_model):
->         super(MultiGPUClassifier, self).__init__()
->         # Embedding Layer --> cuda : 0
->         self.embedding = roberta_model.roberta.embeddings.to('cuda:0')
->         # Encoder Layer --> cuda : 1
->         self.encoder = roberta_model.roberta.encoder.to('cuda:1')
->         # Classifier --> cuda : 1
->         self.classifier = roberta_model.classifier.to('cuda:1')
->     def forward(self, input_ids, token_type_ids=None, attention_mask=None, labels=None):
->         # Pass the input_ids to cuda:0 since embedding layer in cuda:0
->         emb_out = self.embedding(input_ids.to('cuda:0'))
->         # Move the outputs of embedding layer to cuda:1 as input to encoder layer
->         enc_out = self.encoder(emb_out.to('cuda:1'))
->         classifier_out = self.classifier(enc_out[0])
->         return classifier_out
+> def __init__(self, roberta_model):
+> super(MultiGPUClassifier, self).__init__
+> # Embedding Layer --> cuda : 0
+> self.embedding = roberta_model.roberta.embeddings.to('cuda:0')
+> # Encoder Layer --> cuda : 1
+> self.encoder = roberta_model.roberta.encoder.to('cuda:1')
+> # Classifier --> cuda : 1
+> self.classifier = roberta_model.classifier.to('cuda:1')
+> def forward(self, input_ids, token_type_ids=None, attention_mask=None, labels=None):
+> # Pass the input_ids to cuda:0 since embedding layer in cuda:0
+> emb_out = self.embedding(input_ids.to('cuda:0'))
+> # Move the outputs of embedding layer to cuda:1 as input to encoder layer
+> enc_out = self.encoder(emb_out.to('cuda:1'))
+> classifier_out = self.classifier(enc_out[0])
+> return classifier_out
 > # Initialize the model
 > multi_gpu_roberta = MultiGPUClassifier(roberta_model)
 > ```
@@ -1132,13 +1132,13 @@ description: "직역"
 > - 장점과 도전 과제 (Advantages and Challenges)
 >
 > - 장점 (Advantages):
->   - 병렬화(Parallelization): RNN과 달리 트랜스포머는 전체 시퀀스를 한 번에 처리하여 학습이 더 빠르다.
->   - 유연성(Flexibility): NLP를 넘어 비전, 오디오 같은 다양한 작업에 적용할 수 있다.
->   - 확장성(Scalability): 트랜스포머는 큰 데이터셋과 모델 크기를 다룰 수 있어 더 나은 성능으로 이어진다.
+> - 병렬화(Parallelization): RNN과 달리 트랜스포머는 전체 시퀀스를 한 번에 처리하여 학습이 더 빠르다.
+> - 유연성(Flexibility): NLP를 넘어 비전, 오디오 같은 다양한 작업에 적용할 수 있다.
+> - 확장성(Scalability): 트랜스포머는 큰 데이터셋과 모델 크기를 다룰 수 있어 더 나은 성능으로 이어진다.
 > - 도전 과제 (Challenges):
->   - 연산 비용(Computational Cost): 큰 트랜스포머 모델 학습은 상당한 연산 자원을 요구한다.
->   - 데이터 요구량(Data Requirements): 트랜스포머 사전학습은 종종 거대한 데이터셋을 요구한다.
->   - 해석 가능성(Interpretability): 어텐션 메커니즘이 어떻게 동작하는지 이해하는 것이 어려울 수 있다.
+> - 연산 비용(Computational Cost): 큰 트랜스포머 모델 학습은 상당한 연산 자원을 요구한다.
+> - 데이터 요구량(Data Requirements): 트랜스포머 사전학습은 종종 거대한 데이터셋을 요구한다.
+> - 해석 가능성(Interpretability): 어텐션 메커니즘이 어떻게 동작하는지 이해하는 것이 어려울 수 있다.
 
 ## 슬라이드 49
 

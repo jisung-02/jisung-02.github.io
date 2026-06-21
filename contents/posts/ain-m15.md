@@ -7,7 +7,7 @@ tags: ["AI네트워킹"]
 description: "Masquerader: 계정이 없으면서 계정 있는 정상 사용자인 것처럼 위장 (외부자)."
 ---
 
-> AI 네트워킹 **중간** 범위 — 노션 강의 노트를 옵시디언용으로 정리한 노트.
+> AI 네트워킹 **중간**범위 — 노션 강의 노트를 옵시디언용으로 정리한 노트.
 > [← 전체 목차](/posts/ain-overview/)
 
 ## 1. Intruders (침입자 유형)
@@ -55,7 +55,7 @@ description: "Masquerader: 계정이 없으면서 계정 있는 정상 사용자
 
 ## 4. Firewalls
 - 정의: 내부 네트워크 보호 + 외부 인터넷 연결 제공.
-- 설계 목적: Controlled link 제공, 내부 네트워크 보호, **Single choke point** 제공.
+- 설계 목적: Controlled link 제공, 내부 네트워크 보호, **Single choke point**제공.
 - 설계 원칙: 모든 트래픽은 firewall를 통과, 정책 기반 허용만 가능, firewall 자체는 침투 불가해야 함.
 - 제어 방식 4가지: **Service control / Direction control / User control / Behavior control**.
 
@@ -91,14 +91,14 @@ description: "Masquerader: 계정이 없으면서 계정 있는 정상 사용자
 - Access Matrix 구성: Subject(사용자/프로세스), Object(파일 등), Access Right(read/write/execute).
 
 ### Multilevel Security
-- 규칙: **No read up** (상위 등급 읽기 금지), **No write down** (하위 등급 쓰기 금지).
+- 규칙: **No read up**(상위 등급 읽기 금지), **No write down**(하위 등급 쓰기 금지).
 
 ### Reference Monitor
 - 역할: 접근 제어 핵심 모듈. 모든 접근 통제, 보안 DB 활용, 정책 강제.
 - 속성: **Complete mediation**(완전한 중재), **Isolation**(격리), **Verifiability**(검증 가능성).
 - Trojan Horse 방어: Trusted OS 사용.
 
-## ✅ 핵심 정리 (시험 포인트)
+## 핵심 정리 (시험 포인트)
 - 침입자 3유형: Masquerader(위장·외부자), Misfeasor(권한 초과·내부자), Clandestine user(root 장악).
 - UNIX 비밀번호는 password+salt→crypt 저장. salt는 동일 비밀번호 구분·DES 공격 방어 역할, 현재는 shadow file(root 전용).
 - 침입 탐지 2방식: Statistical anomaly(통계·프로파일) vs Rule-based(이상행위·침투 탐지).

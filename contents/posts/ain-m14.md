@@ -7,22 +7,22 @@ tags: ["AI네트워킹"]
 description: "인증은 다음을 반드시 검증할 수 있어야 한다."
 ---
 
-> AI 네트워킹 **중간** 범위 — 노션 강의 노트를 옵시디언용으로 정리한 노트.
+> AI 네트워킹 **중간**범위 — 노션 강의 노트를 옵시디언용으로 정리한 노트.
 > [← 전체 목차](/posts/ain-overview/)
 
 ## Authentication 요구사항
 인증은 다음을 반드시 검증할 수 있어야 한다.
-1. **Message came from apparent source** — 메시지가 명시된 출처/작성자로부터 왔는지.
-2. **Contents have not been altered** — 내용이 변경되지 않았는지.
-3. **Sent at a certain time or sequence** — (경우에 따라) 특정 시간/순서로 전송되었는지.
+1. **Message came from apparent source**— 메시지가 명시된 출처/작성자로부터 왔는지.
+2. **Contents have not been altered**— 내용이 변경되지 않았는지.
+3. **Sent at a certain time or sequence**— (경우에 따라) 특정 시간/순서로 전송되었는지.
 - 능동적 공격(데이터 및 트랜잭션 위조, falsification)에 대한 보호가 목적.
 
 ## Message Authentication 구현 3가지
 - **(1) Conventional Encryption 기반**: 송신자·수신자만 키 공유. 암호화 자체로 인증 수행(`M → Encrypt(K) → C`, 복호화 성공 = 인증 성공).
 - **(2) Encryption 없이 인증**: 메시지는 평문, 대신 **authentication tag**를 추가 → `(M, Tag)`.
 - **(3) MAC (Message Authentication Code)**: 메시지와 키의 함수로 계산. `MAC = F(K, M)` (K = 공유 비밀 키, M = 메시지).
-  - 송신: `MAC = F(K, M)` → `(M, MAC)` 전송 / 수신: `MAC' = F(K, M)` 계산 후 비교.
-  - 핵심: 암호화 없이도 "secret key + function"으로 인증 가능.
+ - 송신: `MAC = F(K, M)` → `(M, MAC)` 전송 / 수신: `MAC' = F(K, M)` 계산 후 비교.
+ - 핵심: 암호화 없이도 "secret key + function"으로 인증 가능.
 
 ## One-way Hash Function
 - 개념: 메시지를 고정 길이 fingerprint로 변환 (`M → H(M)`).
@@ -33,9 +33,9 @@ description: "인증은 다음을 반드시 검증할 수 있어야 한다."
 1. 임의 길이 입력 허용
 2. 고정 길이 출력
 3. 계산이 쉬움
-4. **Preimage resistance** (역산 불가)
-5. **Second preimage resistance** (같은 해시 갖는 다른 입력 찾기 어려움)
-6. **Collision resistance** (충돌쌍 찾기 어려움)
+4. **Preimage resistance**(역산 불가)
+5. **Second preimage resistance**(같은 해시 갖는 다른 입력 찾기 어려움)
+6. **Collision resistance**(충돌쌍 찾기 어려움)
 
 | 속성 | 의미 |
 | --- | --- |
@@ -67,8 +67,8 @@ description: "인증은 다음을 반드시 검증할 수 있어야 한다."
 - 등장 배경: hash는 빠르고 library가 많음 → MAC으로 활용.
 - 핵심 아이디어: **Hash + Secret Key → MAC**.
 - 구조:
-  - `inner = H((K ⊕ ipad) || M)`
-  - `outer = H((K ⊕ opad) || inner)` → 최종 `HMAC(K, M)`.
+ - `inner = H((K ⊕ ipad) || M)`
+ - `outer = H((K ⊕ opad) || inner)` → 최종 `HMAC(K, M)`.
 - Why it works: 단순 `H(K || M)`는 **length extension attack**에 취약. HMAC은 두 번 hashing + key mixing(ipad, opad)으로 공격을 방지.
 - 특징: 보안성 높음, 성능 빠름, 표준으로 널리 사용.
 
@@ -85,9 +85,9 @@ Message Authentication
 - 설계 패턴: Integrity → Hash / Authentication → MAC·HMAC / 효율성 → HMAC.
 
 ## 대칭키 vs 비대칭키 (Public-Key)
-- 대칭키의 근본 문제: 키를 미리 공유해야 함(**key distribution problem**), 누가 보냈는지 증명 어려움(authentication 한계), 키 하나 유출 시 전체 붕괴 → 이를 해결하려 **비대칭키(public/private)** 등장.
+- 대칭키의 근본 문제: 키를 미리 공유해야 함(**key distribution problem**), 누가 보냈는지 증명 어려움(authentication 한계), 키 하나 유출 시 전체 붕괴 → 이를 해결하려 **비대칭키(public/private)**등장.
 - 구성: plaintext(M), encryption(E)/decryption(D) 알고리즘, public key(Ku), private key(Kr), ciphertext(C).
-  - `C = E(Ku, M)`, `M = D(Kr, C)` → 공개키로 암호화, 개인키로 복호화.
+ - `C = E(Ku, M)`, `M = D(Kr, C)` → 공개키로 암호화, 개인키로 복호화.
 
 | 기능 | 방법 |
 | --- | --- |
@@ -119,7 +119,7 @@ Message Authentication
 3. 이후 대칭키로 통신(빠름)
 - 이유: 비대칭키는 느리고 대칭키는 빠름.
 
-## ✅ 핵심 정리 (시험 포인트)
+## 핵심 정리 (시험 포인트)
 - 메시지 인증 3방식: 대칭키 암호화 기반 / 평문+인증 태그 / MAC(`F(K,M)`). 핵심 원리는 "secret key + function".
 - Secure Hash 3대 조건: Preimage·Second preimage·Collision resistance. SHA-1=160bit/80step, MD5=128bit/64step.
 - HMAC = Hash 기반 MAC. `H((K⊕opad)||H((K⊕ipad)||M))`, 두 번 해싱으로 length extension attack 방지.

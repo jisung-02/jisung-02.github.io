@@ -15,5 +15,5 @@ export function collectTags<T extends { data: { tags: string[] } }>(
   }
   return [...counts.entries()]
     .map(([tag, count]) => ({ tag, count }))
-    .sort((a, b) => a.tag.localeCompare(b.tag, 'en'));
+    .sort((a, b) => a.tag.localeCompare(b.tag, 'ko'));
 }

@@ -20,14 +20,14 @@ describe('sortByDate', () => {
 });
 
 describe('collectTags', () => {
-  it('counts unique tags, sorted by name', () => {
+  it('counts unique tags, sorted by name (Korean collation: 한글 우선)', () => {
     const posts = [
       { data: { tags: ['cs', '자료구조'] } },
       { data: { tags: ['cs'] } },
     ];
     expect(collectTags(posts)).toEqual([
-      { tag: 'cs', count: 2 },
       { tag: '자료구조', count: 1 },
+      { tag: 'cs', count: 2 },
     ]);
   });
 });

@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import { isVisible, collectCategories } from '../lib/posts';
+
+interface Props { activeParent?: string | null; activeChild?: string | null }
+const { activeParent = null, activeChild = null } = Astro.props;
+
+const all = await getCollection('posts');
+const tree = collectCategories(all.filter((p) => isVisible(p.data, import.meta.env.PROD)));
+---
+<aside class="cat-index">
+  <p class="eyebrow">Index</p>
+  <ul class="cat-tree">
+    <li>
+      <a class={`cat-parent${!activeParent ? ' active' : ''}`} href="/posts">전체</a>
+    </li>
+    {tree.map((c) => (
+      <li>
+        <a class={`cat-parent${activeParent === c.parent && !activeChild ? ' active' : ''}`} href={`/categories/${c.parent}`}>
+          {c.parent} <span class="count">{c.count}</span>
+        </a>
+        {c.children.length > 0 && (
+          <ul>
+            {c.children.map((ch) => (
+              <li>
+                <a class={`cat-child${activeParent === c.parent && activeChild === ch.child ? ' active' : ''}`} href={`/categories/${c.parent}/${ch.child}`}>
+                  {ch.child} <span class="count">{ch.count}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </li>
+    ))}
+  </ul>
+</aside>

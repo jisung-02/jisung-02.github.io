@@ -2,7 +2,7 @@
 title: "Ansible 학습"
 date: 2026-03-30
 publish: true
-category: "학교수업/풀스택네트워킹"
+category: "개인공부/인프라"
 tags: ["Ansible", "인프라"]
 description: "Ansible 소개와 특징(에이전트리스·멱등성 등) 정리"
 ---

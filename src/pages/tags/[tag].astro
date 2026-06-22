@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
 import { isVisible, sortByDate, collectTags } from '../../lib/posts';
 
 export async function getStaticPaths() {
@@ -13,17 +14,9 @@ export async function getStaticPaths() {
 }
 
 const { tag, posts } = Astro.props;
-const fmt = (d: Date) => d.toISOString().slice(0, 10);
 ---
 <BaseLayout title={`#${tag} · jisung-02`}>
   <p class="eyebrow">Tag</p>
   <h1>#{tag}</h1>
-  <ul class="post-list">
-    {posts.map((p) => (
-      <li>
-        <div class="meta">{fmt(p.data.date)}</div>
-        <a class="title marker" href={`/posts/${p.id}`}>{p.data.title}</a>
-      </li>
-    ))}
-  </ul>
+  <PostList posts={posts} />
 </BaseLayout>

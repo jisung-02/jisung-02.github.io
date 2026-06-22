@@ -1,0 +1,14 @@
+---
+import { fmtDate } from '../lib/posts';
+interface Props { posts: any[] }
+const { posts } = Astro.props;
+---
+<ul class="post-list">
+  {posts.map((p) => (
+    <li>
+      <div class="meta">{fmtDate(p.data.date)}</div>
+      <a class="title marker" href={`/posts/${p.id}`}>{p.data.title}</a>
+      {p.data.description && <p>{p.data.description}</p>}
+    </li>
+  ))}
+</ul>

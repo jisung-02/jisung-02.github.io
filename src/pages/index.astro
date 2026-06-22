@@ -1,11 +1,11 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { isVisible, sortByDate } from '../lib/posts';
+import PostList from '../components/PostList.astro';
+import { isVisible, sortByDate, fmtDate } from '../lib/posts';
 
 const all = await getCollection('posts');
 const posts = sortByDate(all.filter((p) => isVisible(p.data, import.meta.env.PROD)));
-const fmt = (d: Date) => d.toISOString().slice(0, 10);
 const site = Astro.site?.href;
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -28,15 +28,7 @@ const jsonLd = {
     <p class="eyebrow">Lab Notebook</p>
     <h1>jisung-02</h1>
     <p class="lede">학부생의 CS 학습 정리 노트.</p>
-    <p class="ledger">기록 {posts.length}개 · 최근 갱신 {posts.length > 0 ? fmt(posts[0].data.date) : '—'}</p>
+    <p class="ledger">기록 {posts.length}개 · 최근 갱신 {posts.length > 0 ? fmtDate(posts[0].data.date) : '—'}</p>
   </header>
-  <ul class="post-list">
-    {posts.map((p) => (
-      <li>
-        <div class="meta">{fmt(p.data.date)}</div>
-        <a class="title marker" href={`/posts/${p.id}`}>{p.data.title}</a>
-        {p.data.description && <p>{p.data.description}</p>}
-      </li>
-    ))}
-  </ul>
+  <PostList posts={posts} />
 </BaseLayout>

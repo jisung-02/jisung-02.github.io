@@ -1,3 +1,5 @@
+export const fmtDate = (d: Date): string => d.toISOString().slice(0, 10);
+
 export function isVisible(data: { publish: boolean }, isProd: boolean): boolean {
   return isProd ? data.publish === true : true;
 }

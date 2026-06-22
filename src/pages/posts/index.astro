@@ -2,26 +2,18 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CategoryIndex from '../../components/CategoryIndex.astro';
+import PostList from '../../components/PostList.astro';
 import { isVisible, sortByDate } from '../../lib/posts';
 
 const all = await getCollection('posts');
 const posts = sortByDate(all.filter((p) => isVisible(p.data, import.meta.env.PROD)));
-const fmt = (d: Date) => d.toISOString().slice(0, 10);
 ---
 <BaseLayout title="게시글 · jisung-02">
   <div class="index-layout">
     <CategoryIndex />
     <div class="index-main">
       <h1>게시글</h1>
-      <ul class="post-list">
-        {posts.map((p) => (
-          <li>
-            <div class="meta">{fmt(p.data.date)}</div>
-            <a class="title marker" href={`/posts/${p.id}`}>{p.data.title}</a>
-            {p.data.description && <p>{p.data.description}</p>}
-          </li>
-        ))}
-      </ul>
+      <PostList posts={posts} />
     </div>
   </div>
 </BaseLayout>

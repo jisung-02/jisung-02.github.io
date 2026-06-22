@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import CategoryIndex from '../../components/CategoryIndex.astro';
+import PostList from '../../components/PostList.astro';
 import { isVisible, sortByDate, buildCategoryTree, flattenCategoryNodes, postsUnder } from '../../lib/posts';
 
 export async function getStaticPaths() {
@@ -15,7 +16,6 @@ export async function getStaticPaths() {
 }
 
 const { path, posts } = Astro.props;
-const fmt = (d: Date) => d.toISOString().slice(0, 10);
 // 브레드크럼: 각 세그먼트를 누적 경로 링크로
 const crumbs = path.map((seg, i) => ({ seg, href: `/categories/${path.slice(0, i + 1).join('/')}` }));
 ---
@@ -31,15 +31,7 @@ const crumbs = path.map((seg, i) => ({ seg, href: `/categories/${path.slice(0, i
           </>
         ))}
       </h1>
-      <ul class="post-list">
-        {posts.map((p) => (
-          <li>
-            <div class="meta">{fmt(p.data.date)}</div>
-            <a class="title marker" href={`/posts/${p.id}`}>{p.data.title}</a>
-            {p.data.description && <p>{p.data.description}</p>}
-          </li>
-        ))}
-      </ul>
+      <PostList posts={posts} />
     </div>
   </div>
 </BaseLayout>

@@ -28,6 +28,23 @@ export function categoryPath(cat?: string): string[] {
   return cat.split('/').map((s) => s.trim()).filter(Boolean);
 }
 
+// 카테고리는 `contents/posts/` 아래 디렉터리 경로 전체다(1차·2차 모두 디렉터리).
+// 루트에 바로 있는 글은 카테고리가 없다.
+export function categoryFromPath(filePath?: string): string | undefined {
+  const m = filePath?.match(/contents\/posts\/(.+)\/[^/]+$/);
+  return m ? m[1] : undefined;
+}
+
+// 디렉터리 경로로 data.category를 채운다(프런트매터 category는 쓰지 않는다).
+export function withFullCategory<T extends { filePath?: string; data: { category?: string } }>(
+  posts: T[],
+): T[] {
+  return posts.map((p) => {
+    const category = categoryFromPath(p.filePath);
+    return category ? { ...p, data: { ...p.data, category } } : p;
+  });
+}
+
 export interface CatNode {
   name: string;
   path: string[]; // 루트부터의 경로 세그먼트

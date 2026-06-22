@@ -1,12 +1,12 @@
 ---
 import { getCollection } from 'astro:content';
-import { isVisible, buildCategoryTree } from '../lib/posts';
+import { isVisible, buildCategoryTree, withFullCategory } from '../lib/posts';
 import CatTree from './CatTree.astro';
 
 interface Props { activePath?: string[] }
 const { activePath = [] } = Astro.props;
 
-const all = await getCollection('posts');
+const all = withFullCategory(await getCollection('posts'));
 const tree = buildCategoryTree(all.filter((p) => isVisible(p.data, import.meta.env.PROD)));
 const total = tree.reduce((s, n) => s + n.count, 0);
 ---

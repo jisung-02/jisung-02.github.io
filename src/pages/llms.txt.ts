@@ -1,10 +1,10 @@
 import { getCollection } from 'astro:content';
-import { isVisible, sortByDate, categoryPath } from '../lib/posts';
+import { isVisible, sortByDate, categoryPath, withFullCategory } from '../lib/posts';
 
 // llms.txt — 생성형 엔진(LLM)이 사이트 구조를 이해하도록 돕는 마크다운 인덱스 (GEO)
 export async function GET(context) {
   const site = context.site?.href?.replace(/\/$/, '') ?? '';
-  const all = await getCollection('posts');
+  const all = withFullCategory(await getCollection('posts'));
   const posts = sortByDate(all.filter((p) => isVisible(p.data, import.meta.env.PROD)));
 
   const groups = new Map<string, typeof posts>();

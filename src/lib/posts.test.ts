@@ -7,7 +7,35 @@ import {
   buildCategoryTree,
   flattenCategoryNodes,
   postsUnder,
+  withFullCategory,
 } from './posts';
+
+describe('withFullCategory', () => {
+  it('1차·2차 디렉터리 경로 전체를 카테고리로 쓴다', () => {
+    const [p] = withFullCategory([
+      { filePath: 'contents/posts/학교공부/AI네트워킹/ain-f01.md', data: {} },
+    ]);
+    expect(p.data.category).toBe('학교공부/AI네트워킹');
+  });
+  it('1차만 있으면 그 디렉터리명', () => {
+    const [p] = withFullCategory([
+      { filePath: 'contents/posts/개발도구·생산성/cli.md', data: {} },
+    ]);
+    expect(p.data.category).toBe('개발도구·생산성');
+  });
+  it('프런트매터 category는 무시하고 경로로 덮어쓴다', () => {
+    const [p] = withFullCategory([
+      { filePath: 'contents/posts/학교공부/운영체제/os.md', data: { category: '엉뚱' } },
+    ]);
+    expect(p.data.category).toBe('학교공부/운영체제');
+  });
+  it('루트 글은 카테고리 없음', () => {
+    const [p] = withFullCategory([
+      { filePath: 'contents/posts/foo.md', data: {} },
+    ]);
+    expect(p.data.category).toBeUndefined();
+  });
+});
 
 describe('isVisible', () => {
   it('hides unpublished in prod', () => {

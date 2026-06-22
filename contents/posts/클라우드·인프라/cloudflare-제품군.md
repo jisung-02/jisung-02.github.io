@@ -1,0 +1,354 @@
+---
+title: "Cloudflare 제품군 정리"
+date: 2026-04-01
+publish: true
+category: "Cloudflare"
+tags: ["클라우드", "네트워크"]
+description: "Cloudflare 제품군을 카테고리별로 한 줄씩 정리"
+---
+
+
+> Cloudflare = **Reverse Proxy + Global Anycast Network + Security Layer + Edge Compute**
+>
+> 모든 요청은 Cloudflare를 통과 → L3~L7 + App 레벨 전부 제어 가능
+
+---
+
+## 표기 기준
+
+| 구분 | 설명 |
+|------|------|
+| **SaaS** | Cloudflare 인프라에서 완전 관리 (설치 불필요) |
+| **Edge** | Cloudflare POP(엣지 노드)에서 실행되는 코드/로직 |
+| **Client** | 사용자 디바이스에 설치 필요 |
+| **On-prem** | 자체 인프라에 에이전트/데몬 설치 필요 |
+
+---
+
+## 1. Core / Traffic
+
+### CDN
+- **형태**: SaaS · L7
+- **한 줄 요약**: 사용자 가까운 POP에서 대신 응답하는 캐시 프록시
+- **원리**:
+  - 요청이 origin까지 안 가고 Cloudflare POP에서 처리 (Reverse Proxy + Cache)
+  - 전세계 300+ 도시에 Anycast로 배포된 노드가 캐시 응답
+  - `Cache-Control` 헤더 기반으로 TTL 관리
+- **효과**: latency ↓, origin 부하 ↓
+
+---
+
+### DNS
+- **형태**: SaaS · L3
+- **한 줄 요약**: 도메인을 IP로 바꾸는 진입점 + 트래픽 컨트롤러
+- **원리**:
+  - Anycast DNS — 전세계에 동일한 IP(1.1.1.1 등)를 BGP로 광고, 가장 가까운 노드 응답
+  - 단순 A/CNAME 변환 외에 Geo routing, Failover, Load Balancing 정책 내장
+  - Cloudflare 트래픽 흐름의 **시작점** (DNS 응답에 CF IP를 주므로 이후 트래픽도 CF 통과)
+
+---
+
+### Load Balancing
+- **형태**: SaaS · L7
+- **한 줄 요약**: 여러 origin 중 어디로 보낼지 결정하는 라우터
+- **원리**:
+  - Active health check로 origin 상태 주기적 확인
+  - Weight, geo, random 등 알고리즘으로 분배
+  - origin 장애 시 자동 failover
+
+---
+
+### Argo Smart Routing
+- **형태**: SaaS · L3~L7
+- **한 줄 요약**: 공인 인터넷 대신 Cloudflare 내부 백본으로 우회
+- **원리**:
+  - 인터넷은 BGP best-path 기반이라 혼잡도를 고려 안 함
+  - Cloudflare는 전체 POP 간 RTT/loss를 실시간 측정 → congestion-aware 경로 선택
+  - 패킷이 CF 내부 사설망을 타고 이동 → TCP RTT 개선
+
+---
+
+## 2. Security
+
+### WAF (Web Application Firewall)
+- **형태**: SaaS · L7
+- **한 줄 요약**: HTTP 요청을 검사해서 공격 패턴이면 차단
+- **원리**:
+  - Reverse Proxy이므로 모든 HTTP 요청이 CF를 통과 → payload 검사 가능
+  - Rule 기반 (OWASP 룰셋) + ML 기반 (zero-day 대응)
+  - SQLi, XSS, RCE payload를 시그니처/행동 분석으로 탐지
+
+---
+
+### DDoS Protection
+- **형태**: SaaS · L3~L7
+- **한 줄 요약**: 대량 트래픽을 Anycast로 흡수 + 필터링
+- **원리**:
+  - **Anycast 흡수**: 공격 트래픽이 전세계 POP에 분산 도달 → 한 곳에 집중 불가
+  - L3/L4: IP/TCP 헤더 기반 필터 (SYN flood, UDP amplification 등)
+  - L7: HTTP 패턴 분석 (rate, method, header 이상 탐지)
+  - 현재 CF 전체 네트워크 용량 ~300Tbps
+
+---
+
+### Bot Management
+- **형태**: SaaS · L7
+- **한 줄 요약**: 사람 vs 자동화 트래픽을 구분
+- **원리**:
+  - TLS fingerprint (JA3), HTTP header 패턴, 행동 분석으로 봇 점수(Bot Score) 산출
+  - JS challenge / CAPTCHA / 차단 선택 가능
+  - 방어 대상: scraping, credential stuffing, carding
+
+---
+
+### Rate Limiting
+- **형태**: SaaS · L7
+- **한 줄 요약**: 요청 횟수 임계값 초과 시 차단
+- **원리**:
+  - IP 또는 세션 단위로 sliding window 카운팅
+  - 특정 URL/경로 단위 설정 가능
+  - 방어 대상: brute-force, API abuse
+
+---
+
+## 3. Zero Trust / SASE
+
+> **핵심 개념**: VPN 없이 "누가 + 어디서 + 무엇을" 기준으로 접근 제어
+> Cloudflare One = Access + Gateway + Tunnel + Magic WAN 묶음
+
+### Cloudflare Access (ZTNA)
+- **형태**: SaaS · App
+- **한 줄 요약**: VPN 없이 Identity 기반으로 내부 서비스 접근 제어
+- **원리**:
+  1. 사용자가 내부 서비스 URL 접근 시 CF가 인터셉트
+  2. IdP(Okta, Google 등)로 인증 요청 → JWT 발급
+  3. JWT의 claims(이메일, 그룹 등)로 정책 평가 → 허용/차단
+  - VPN처럼 "네트워크 전체" 개방 안 하고 **앱 단위**로 접근 제어
+
+---
+
+### Cloudflare Gateway (SWG)
+- **형태**: SaaS · L4/L7
+- **한 줄 요약**: 사용자 outbound 트래픽을 필터링하는 프록시
+- **원리**:
+  - WARP 클라이언트 또는 DNS over HTTPS로 트래픽 CF 경유
+  - DNS 필터링: 악성/카테고리 도메인 차단
+  - HTTP 필터링: URL/MIME type/DLP 규칙 적용
+  - 방어 대상: 악성 사이트 접속, 데이터 유출
+
+---
+
+### Cloudflare Tunnel (cloudflared)
+- **형태**: On-prem 데몬 + SaaS · App
+- **한 줄 요약**: 서버에서 outbound 연결만으로 외부 접근을 허용하는 터널
+- **원리**:
+  - 서버에 `cloudflared` 데몬 설치 → CF 엣지로 **outbound** 연결 유지
+  - inbound 포트 개방 불필요 (방화벽 변경 없음)
+  - 외부 요청: `앱.example.com` → CF → cloudflared 터널 → 내부 서버
+  - Zero Trust의 핵심 인프라 (Access와 조합 필수)
+
+---
+
+### Magic WAN
+- **형태**: SaaS + On-prem 연동 · L3
+- **한 줄 요약**: 지사/클라우드 네트워크를 CF로 통합하는 SD-WAN
+- **원리**:
+  - GRE/IPSec 터널로 각 거점을 CF에 연결
+  - CF 백본이 MPLS 역할 수행 → 지사 ↔ 지사 트래픽도 CF 경유
+  - 기존 MPLS 전용선 대비 비용 ↓, 유연성 ↑
+
+---
+
+### Network Firewall (Magic Firewall)
+- **형태**: SaaS · L3/L4
+- **한 줄 요약**: IP/Port 기반 패킷 필터링을 클라우드에서 수행
+- **원리**:
+  - Magic Transit/WAN 경유 트래픽에 적용
+  - iptables 룰셋을 CF 엣지에서 실행하는 개념
+  - 기존 온프레미스 방화벽 어플라이언스 대체
+
+---
+
+## 4. Network Protection
+
+### Magic Transit
+- **형태**: SaaS · L3/L4
+- **한 줄 요약**: BGP로 내 IP 대역을 CF가 광고 → 트래픽을 CF가 먼저 받아 보호
+- **원리**:
+  1. 고객 IP prefix를 CF가 BGP로 인터넷에 광고
+  2. 인터넷 트래픽이 CF POP로 먼저 진입 (Anycast)
+  3. CF에서 DDoS 필터링/검사 후 GRE 터널로 고객 데이터센터에 전달
+  - 데이터센터/ISP 수준 보호, L3/L4 전부 커버
+  - 평균 <3초 내 공격 탐지 및 완화
+
+---
+
+### Spectrum
+- **형태**: SaaS · L4
+- **한 줄 요약**: HTTP가 아닌 TCP/UDP 서비스에도 CF 보호 적용
+- **원리**:
+  - CF가 L4 Reverse Proxy 역할
+  - SSH, 게임 서버, DB 포트 등 임의 TCP/UDP에 DDoS 보호 + IP 난독화 적용
+
+---
+
+## 5. Developer Platform
+
+### Workers
+- **형태**: Edge (SaaS 형태로 제공) · App
+- **한 줄 요약**: 서버 없이 요청을 처리하는 Edge 함수
+- **원리**:
+  - Node.js 같은 프로세스 모델 아님 — **V8 Isolate** 기반
+  - Isolate: 단일 프로세스 내에 수천 개의 독립 실행 컨텍스트 (메모리 격리)
+  - VM 부팅 없이 Isolate를 재사용 → cold start < 5ms
+  - 요청이 CF 엣지에 도달하면 origin으로 가기 전에 Worker 코드 실행
+  - `Request → Worker(Isolate) → Response` 또는 origin forwarding
+
+---
+
+### Workers KV
+- **형태**: Edge + SaaS · App
+- **한 줄 요약**: 전세계에 복제되는 읽기 최적화 key-value 스토어
+- **원리**:
+  - Write: 중앙에서 수신 후 전체 POP에 비동기 복제
+  - Read: 가장 가까운 POP에서 응답 (eventual consistency)
+  - 용도: feature flag, config, session cache
+
+---
+
+### Pages
+- **형태**: SaaS · App
+- **한 줄 요약**: 프론트엔드 빌드 + CDN + CI/CD 통합
+- **원리**:
+  - Git push → 빌드 실행 → CF 엣지에 정적 파일 배포
+  - Workers와 통합 가능 (SSR, API)
+  - CDN/WAF 자동 적용
+
+---
+
+### R2
+- **형태**: SaaS · App
+- **한 줄 요약**: S3 호환 객체 스토리지 (egress 무료)
+- **원리**:
+  - S3 API 호환 — AWS SDK 그대로 사용 가능
+  - CF 네트워크 내부에서 CDN/Workers와 연계 → egress 비용 없음
+  - 일반 S3 대비 데이터 꺼내는 비용이 없는 게 핵심
+
+---
+
+### D1
+- **형태**: Edge · App
+- **한 줄 요약**: SQLite 기반 서버리스 DB
+- **원리**:
+  - Workers와 함께 엣지에서 실행
+  - SQLite 엔진을 CF 인프라에서 서버리스로 제공
+  - 경량 DB가 필요한 엣지 애플리케이션에 최적화
+
+---
+
+### Queues
+- **형태**: SaaS · App
+- **한 줄 요약**: Workers 간 비동기 메시지 처리용 큐
+- **원리**:
+  - Producer Worker → Queue → Consumer Worker
+  - event-driven 아키텍처 구성 가능
+  - 재처리(retry), dead-letter queue 지원
+
+---
+
+## 6. Media
+
+### Images
+- **형태**: SaaS · App
+- **한 줄 요약**: 이미지 저장 + 변환(resize/format) + CDN 제공 통합
+- URL 파라미터로 width, height, format 지정 → 동적 변환 후 CDN 캐싱
+
+### Stream
+- **형태**: SaaS · App
+- **한 줄 요약**: 영상 업로드 + 인코딩 + HLS/DASH 스트리밍 파이프라인
+- 자체 인코딩 인프라 없이 video pipeline 완전 추상화
+
+---
+
+## 7. TLS / Identity
+
+### SSL/TLS
+- **형태**: SaaS · L4/L7
+- **한 줄 요약**: HTTPS 인증서 발급 + 갱신 자동화
+- CF가 엣지에서 TLS 종료 → origin과는 별도 연결 (Full/Full Strict 모드 선택)
+
+### mTLS
+- **형태**: SaaS · L4/L7
+- **한 줄 요약**: 클라이언트도 인증서로 인증하는 TLS
+- 서비스 간 통신 또는 IoT 기기 인증에 사용
+
+### Keyless SSL
+- **형태**: SaaS + On-prem 키 서버 · L4/L7
+- **한 줄 요약**: 개인키를 CF 서버에 두지 않고 TLS 처리
+- CF가 TLS handshake 중 서명이 필요한 순간에 고객 키 서버에 요청 → 키 원본은 고객 인프라에 유지
+
+---
+
+## 8. Reliability / UX
+
+### Always Online
+- **형태**: SaaS · L7
+- origin 장애 시 CF가 캐시한 사본으로 fallback 응답
+
+### Waiting Room
+- **형태**: SaaS · L7
+- 트래픽 폭주 시 사용자를 큐에 대기 (티켓팅/이벤트 대응)
+- JS 기반 주기적 polling으로 사용자 순서 관리
+
+### Analytics
+- **형태**: SaaS · App
+- 트래픽/보안/성능 로그 시각화 (observability)
+
+---
+
+## 9. 기타
+
+### Registrar
+- **형태**: SaaS
+- 도메인 등록 서비스 (at-cost 가격, markup 없음)
+
+### 1.1.1.1 / WARP
+- **형태**: Client + SaaS
+- 1.1.1.1: Anycast 공개 DNS 리졸버 (빠름 + 프라이버시)
+- WARP: WireGuard 기반 VPN 클라이언트 → Gateway(SWG)와 연결되는 엔드포인트
+
+---
+
+## 전체 구조 한눈에 보기
+
+```
+[사용자] ──DNS(Anycast)──▶ [Cloudflare 엣지 POP]
+                                   │
+              ┌────────────────────┼────────────────────┐
+              │                    │                    │
+          L3/L4                  L7 / App           Zero Trust
+      Magic Transit           CDN / WAF            Access / Gateway
+      DDoS (Anycast)          Workers              Tunnel
+      Magic Firewall          Pages / R2           Magic WAN
+              │                    │                    │
+              └────────────────────┴────────────────────┘
+                                   │
+                            [origin / 내부 서버]
+                         (Tunnel or 직접 연결)
+```
+
+### 핵심 해석 3가지
+
+1. **"모든 것은 프록시"** — 모든 요청이 CF 엣지 통과 → L7 완전 제어 가능
+
+2. **"네트워크-앱 경계가 없음"** — L3(Magic Transit) ~ L7(WAF) ~ App(Workers)를 단일 플랫폼에서 처리
+
+3. **"Tunnel + Identity = 새로운 접근 모델"** — inbound 포트 없이 outbound 터널 + IdP 인증으로 Zero Trust 구현 (기존 VPN 대체)
+
+---
+
+## 더 파고들 것들
+
+- OpenStack + Cloudflare + Tunnel 구조 설계
+- alpacon vs Cloudflare Access 아키텍처 비교
+- Magic Transit vs Spectrum 선택 기준 (L3 보호 vs 앱 레벨 보호)

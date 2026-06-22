@@ -1,10 +1,10 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { isVisible, categoryPath, fmtDate } from '../../lib/posts';
+import { isVisible, categoryPath, fmtDate, withFullCategory } from '../../lib/posts';
 
 export async function getStaticPaths() {
-  const all = await getCollection('posts');
+  const all = withFullCategory(await getCollection('posts'));
   return all
     .filter((p) => isVisible(p.data, import.meta.env.PROD))
     .map((p) => ({ params: { id: p.id }, props: { post: p } }));

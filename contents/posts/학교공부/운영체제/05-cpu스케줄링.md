@@ -7,8 +7,6 @@ description: "프로세스의 실행 과정은 CPU burst와 I/O burst가 번갈�
 ---
 
 > 원본 Notion 정리 — 강의 슬라이드/설명.
-> [← 전체 목차](/posts/학교공부/운영체제/목차/)
-
 ***
 
 # Process Execution

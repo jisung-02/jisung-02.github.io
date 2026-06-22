@@ -6,7 +6,6 @@ tags: ["가상머신", "Mac"]
 description: "Mac에서 UTM으로 Ubuntu 가상머신을 설치하는 과정 정리"
 ---
 
-
 > 참고: [MAC 가상머신 UTM 설치 방법](https://cocococo.tistory.com/entry/MAC-%EA%B0%80%EC%83%81%EB%A8%B8%EC%8B%A0-UTM-%EC%84%A4%EC%B9%98-%EB%B0%A9%EB%B2%95#google_vignette)
 
 ---

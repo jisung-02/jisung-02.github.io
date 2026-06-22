@@ -7,8 +7,6 @@ description: "svm은 각 요소들과 가장 멀리 떨어진 것을 좋은 것�
 ---
 
 > 원본 Notion 정리 — 강의 슬라이드 이미지 + 설명.
-> [← 전체 목차](/posts/학교공부/기계학습/목차/)
-
 ***
 
 ![](../../../attachments/ml/L20/slide-01.webp)

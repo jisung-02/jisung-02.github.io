@@ -7,8 +7,6 @@ description: "PDU (Protocol Data Unit): 각 계층에서 다루는 데이터 단
 ---
 
 > AI 네트워킹 **중간**범위 — 노션 강의 노트를 옵시디언용으로 정리한 노트.
-> [← 전체 목차](/posts/학교공부/ai네트워킹/목차/)
-
 ## 핵심 용어
 - **PDU (Protocol Data Unit)**: 각 계층에서 다루는 데이터 단위.
 - **SDU (Service Data Unit)**: 상위 계층에서 내려온 "순수 데이터".

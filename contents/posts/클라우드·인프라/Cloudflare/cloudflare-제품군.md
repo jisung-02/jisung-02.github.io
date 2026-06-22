@@ -6,6 +6,8 @@ tags: ["클라우드", "네트워크"]
 description: "Cloudflare 제품군을 카테고리별로 한 줄씩 정리"
 ---
 
+*Claude와 함께 작성*
+
 > Cloudflare = **Reverse Proxy + Global Anycast Network + Security Layer + Edge Compute**
 >
 > 모든 요청은 Cloudflare를 통과 → L3~L7 + App 레벨 전부 제어 가능

@@ -1,12 +1,14 @@
 ---
-title: "SSH 라우팅 한계 분석"
-date: 2026-03-30
+title: SSH 라우팅 한계 분석
+date: 2026-06-22
 publish: true
-tags: ["네트워크", "ssh"]
-description: "하나의 소켓 주소에 여러 서비스를 올릴 수 없는 SSH의 한계와 우회법"
+tags:
+  - 네트워크
+  - ssh
+description: 하나의 소켓 주소에 여러 서비스를 올릴 수 없는 SSH의 한계와 우회법
 ---
 
-SSH는 하나의 IP + Port (Socket Address)에 대해 여러 서비스(프로세스)를 실행할 수 없다. 이 문서는 그 이유와 우회 방법을 정리한다.
+SSH는 하나의 IP + Port (Socket Address)에 대해 여러 서비스(프로세스)를 실행할 수 없다. 이 글은 그 이유와 우회 방법을 정리한다.
 
 ---
 
@@ -53,6 +55,7 @@ TCP → TLS Handshake → HTTP
 ```
 
 서버는 TLS 단계에서 HTTP를 볼 수 없으므로 `Host` 헤더를 알 수 없다. 이를 해결하기 위해 **SNI(Server Name Indication)** 을 사용한다.
+SNI는 TLS의 확장으로,  TLS handshaking 과정 초기에 클라이언트가 어느 호스트명에 접속하려는지 서버에 알리는 역할을 한다.(출처: [위키백과](https://ko.wikipedia.org/wiki/%EC%84%9C%EB%B2%84_%EB%84%A4%EC%9E%84_%EC%9D%B8%EB%94%94%EC%BC%80%EC%9D%B4%EC%85%98))
 
 ```
 ClientHello:
@@ -220,15 +223,47 @@ Client →  │ SSH Proxy  │ → VM1
    - 장점: UX 개선
    - 단점: GitHub Actions, Ansible 등 자동화 도구에서 동작하지 않음 (별도 처리 필요)
 4. Control Plane 서버를 구성해 비표준 SSH 컨텍스트로 라우팅 정보 전달
+---
+### 6. 대화형 선택
+
+내가 개인 프로젝트에서 사용한 방식이다. 해당 구조에서는 SSH요청 후 인증절차를 거치고, 중간에 ssh 연결을 담당하는 별도의 서버를 추가해 접속할 vm을 선택하면 접속이 가능하게 했다.
+```
+          ┌────────────┐
+Client →  │ SSH Proxy  │ → VM1
+          │ (Process)  │ → VM2
+          │            │ → VM3
+          └────────────┘
+
+```
+- 위 SSH Proxy는 기존 ssh 프록시와 달리 직접 작성된 로직이 수행되는 서버(호스트가 아닌 프로세스)
+
+#### 동작 흐름
+1. TCP연결
+2. SSH 초기 Handshake시작
+3. Client 가 SSH Proxy로 인증요청
+4. 인증이 완료되면 SSH Proxy가 접속 가능한 호스트 목록을 Client로 응답
+5. Client는 그 중 접속 희망 호스트 선택 SSH Proxy로 전달
+6. SSH Proxy가 이 정보를 바탕으로 희망하는 Host(ex. VM1)로 ssh연결
+7. 이후  Client <-> SSH Proxy <-> Host(ex. VM1) 으로 양방향 릴레이
+
+#### 장점
+- 호스트를 점프하는 표준적인 SSH 프록시가 아닌 SSH를 릴레이하는 별도 서버를 작성하는 것이므로 특수한 로직을 추가하기 쉬움
+- 서비스를 위해 사용해본 결과 OAuth인증과 SSH 접속의 UX흐름 작성이 용이
+#### 단점
+- 대화형 환경에서 사용 가능
+- 비 대화형 환경에서 사용하기 위해서는 vm1+user@ip:port 같은 특수한 지정 스킴이 필요
+- 실질적으로 ssh가 아닌, ssh를 사용하는 별도의 프로토콜
+
 
 ---
 
 ## 방법 비교 요약
 
-| 방법 | 라우팅 기준 | UX | 인프라 복잡도 | 레이턴시 |
-|---|---|---|---|---|
-| Port 기반 분리 | 포트 번호 | 나쁨 | 낮음 | 낮음 |
-| Bastion / Jump Host | 도메인/IP | 보통 | 낮음 | 높음 |
-| SSH Port Forwarding | 포트 번호 | 나쁨 | 낮음 | 보통 |
-| NAT / L4 Proxy | 포트 번호 | 나쁨 | 중간 | 낮음 |
-| Identity 기반 라우팅 | 공개키 / username | 좋음 | 높음 | 보통 |
+| 방법                  | 라우팅 기준         | UX  | 인프라 복잡도 | 레이턴시 |
+| ------------------- | -------------- | --- | ------- | ---- |
+| Port 기반 분리          | 포트 번호          | 나쁨  | 낮음      | 낮음   |
+| Bastion / Jump Host | 도메인/IP         | 보통  | 낮음      | 높음   |
+| SSH Port Forwarding | 포트 번호          | 나쁨  | 낮음      | 보통   |
+| NAT / L4 Proxy      | 포트 번호          | 나쁨  | 중간      | 낮음   |
+| Identity 기반 라우팅     | 공개키 / username | 좋음  | 높음      | 보통   |
+| 대화형 선택              | 유저의 입력         | 보통  | 높음      | 높음   |

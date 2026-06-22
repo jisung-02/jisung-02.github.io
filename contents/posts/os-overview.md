@@ -1,6 +1,6 @@
 ---
 title: "운영체제 정리"
-date: 2026-06-21
+date: 2024-12-20
 publish: true
 category: "학교공부/운영체제"
 tags: ["운영체제"]

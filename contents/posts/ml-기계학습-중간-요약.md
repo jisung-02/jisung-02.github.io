@@ -1,6 +1,6 @@
 ---
 title: "기계학습 — 중간 핵심 요약"
-date: 2026-06-20
+date: 2025-12-20
 publish: true
 category: "학교공부/기계학습"
 tags: ["기계학습", "중간"]

@@ -1,6 +1,6 @@
 ---
 title: "Chapter 14-15. File System Implementation & Internals"
-date: 2026-06-21
+date: 2024-12-20
 publish: true
 category: "학교공부/운영체제"
 tags: ["운영체제"]

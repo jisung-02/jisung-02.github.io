@@ -1,6 +1,6 @@
 ---
 title: "모델 평가지표"
-date: 2026-06-21
+date: 2025-12-20
 publish: true
 category: "학교공부/기계학습"
 tags: ["기계학습"]

@@ -1,6 +1,6 @@
 ---
 title: "gRPC"
-date: 2026-06-21
+date: 2025-12-20
 publish: true
 category: "학교공부/풀스택 서비스 네트워킹"
 tags: ["풀스택 서비스 네트워킹"]

@@ -254,8 +254,8 @@ Client →  │ SSH Proxy  │ → VM1
 3. Client 가 SSH Proxy로 인증요청
 4. 인증이 완료되면 SSH Proxy가 접속 가능한 호스트 목록을 Client로 응답
 5. Client는 그 중 접속 희망 호스트 선택 SSH Proxy로 전달
-6. SSH Proxy가 이 정보를 바탕으로 희망하는 Host(ex. VM1)로 ssh연결
-7. 이후  Client <-> SSH Proxy <-> Host(ex. VM1) 으로 양방향 릴레이
+6. SSH Proxy가 이 정보를 바탕으로 희망하는 VM으로 ssh연결
+7. 이후  Client <-> SSH Proxy <-> VM 으로 양방향 릴레이
 
 #### 장점
 - 호스트를 점프하는 표준적인 SSH 프록시가 아닌 SSH를 릴레이하는 별도 서버를 작성하는 것이므로 특수한 로직을 추가하기 쉬움

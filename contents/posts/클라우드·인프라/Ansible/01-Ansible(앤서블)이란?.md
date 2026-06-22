@@ -5,9 +5,8 @@ publish: true
 tags: ["Ansible", "인프라"]
 description: "Ansible 소개와 특징(에이전트리스·멱등성 등) 정리"
 ---
-
-참고자료
-1. https://product.kyobobook.co.kr/detail/S000209345794
+> 참고자료
+> 1. https://product.kyobobook.co.kr/detail/S000209345794
 
 # 앤서블 소개
 ## 앤서블이란?
@@ -118,7 +117,10 @@ description: "Ansible 소개와 특징(에이전트리스·멱등성 등) 정리
 3. **CMDB** (Configuration Management DB): 인벤토리, 인증 정보, 실행 환경 등의 정보를 관리
 4. **오토메이션 허브**: 레드햇 기술지원이 가능한 컬렉션 제공 서비스
 
----
+
+
+
+
 # 앤서블 실습 환경 만들기
 ## 가상환경 설치
 [UTM 가상머신 설치 가이드](/posts/클라우드-인프라/utm-가상화/utm-가상머신-설치/)
@@ -148,5 +150,4 @@ brew update
 brew install ansible
 ```
 
----
-~260330 앤서블 소개 및 실습 환경 구성까지 학습 완료
+

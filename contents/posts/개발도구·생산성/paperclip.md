@@ -1,9 +1,11 @@
 ---
-title: "PaperClip"
+title: PaperClip
 date: 2026-03-30
-publish: true
-tags: ["도구", "메모"]
-description: "PaperClip 설치 메모"
+publish: false
+tags:
+  - 도구
+  - 메모
+description: PaperClip 설치 메모
 ---
 
 ## 설치 겸 실행

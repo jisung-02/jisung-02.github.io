@@ -1,9 +1,11 @@
 ---
-title: "AI를 위한 CLI"
+title: AI를 위한 CLI
 date: 2026-04-05
-publish: true
-tags: ["AI", "도구"]
-description: "AI 에이전트 친화적인 CLI를 만들기 위한 개선 순서 메모"
+publish: false
+tags:
+  - AI
+  - 도구
+description: AI 에이전트 친화적인 CLI를 만들기 위한 개선 순서 메모
 ---
 
 > 참고자료

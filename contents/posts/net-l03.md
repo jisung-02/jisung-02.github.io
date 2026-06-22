@@ -14,57 +14,57 @@ description: "1.1 프로세스-프로세스 통신(Process-to-Process Delivery)"
 ***
 
 ## 목차
-	## 1. Transport 계층의 이해
+## 1. Transport 계층의 이해
 
-	- 1.1 프로세스-프로세스 통신(Process-to-Process Delivery)
-	- 1.2 클라이언트/서버 패러다임
-	- 1.3 포트 번호(주소지정)
-	- 1.4 멀티플렉싱과 디멀티플렉싱
-	## 2. 연결 방식의 분류
+- 1.1 프로세스-프로세스 통신(Process-to-Process Delivery)
+- 1.2 클라이언트/서버 패러다임
+- 1.3 포트 번호(주소지정)
+- 1.4 멀티플렉싱과 디멀티플렉싱
+## 2. 연결 방식의 분류
 
-	- 2.1 연결 없는 서비스(Connectionless)
-	- 2.2 연결 지향 서비스(Connection-oriented)
-	- 2.3 신뢰할 수 있는 서비스 vs 신뢰할 수 없는 서비스
-	## 3. User Datagram Protocol (UDP)
+- 2.1 연결 없는 서비스(Connectionless)
+- 2.2 연결 지향 서비스(Connection-oriented)
+- 2.3 신뢰할 수 있는 서비스 vs 신뢰할 수 없는 서비스
+## 3. User Datagram Protocol (UDP)
 
-	- 3.1 개념 및 특징
-	- 3.2 프레임 형식
-	- 3.3 동작 방식
-	- 3.4 클라이언트/서버 큐잉
-	- 3.5 UDP 사용 애플리케이션
-	## 4. Transmission Control Protocol (TCP)
+- 3.1 개념 및 특징
+- 3.2 프레임 형식
+- 3.3 동작 방식
+- 3.4 클라이언트/서버 큐잉
+- 3.5 UDP 사용 애플리케이션
+## 4. Transmission Control Protocol (TCP)
 
-	- 4.1 개념 및 특징
-	- 4.2 스트림 전달 서비스(Stream Delivery)
-	- 4.3 송수신 버퍼
-	- 4.4 세그먼트 및 바이트 번호
-	- 4.5 TCP 세그먼트 형식
-	- 4.6 제어 필드(Control field)
-	## 5. TCP 연결 관리
+- 4.1 개념 및 특징
+- 4.2 스트림 전달 서비스(Stream Delivery)
+- 4.3 송수신 버퍼
+- 4.4 세그먼트 및 바이트 번호
+- 4.5 TCP 세그먼트 형식
+- 4.6 제어 필드(Control field)
+## 5. TCP 연결 관리
 
-	- 5.1 연결 설정(3-way handshake)
-	- 5.2 데이터 전송
-	- 5.3 연결 종료(4-way handshake)
-	- 5.4 반개방(Half-close)
-	## 6. TCP 흐름 제어 및 오류 제어
+- 5.1 연결 설정(3-way handshake)
+- 5.2 데이터 전송
+- 5.3 연결 종료(4-way handshake)
+- 5.4 반개방(Half-close)
+## 6. TCP 흐름 제어 및 오류 제어
 
-	- 6.1 정상 동작
-	- 6.2 손실 세그먼트 처리
-	- 6.3 빠른 재전송(Fast Retransmission)
-	- 6.4 손실된 확인번호 처리
-	## 7. TCP 혼잡 제어
+- 6.1 정상 동작
+- 6.2 손실 세그먼트 처리
+- 6.3 빠른 재전송(Fast Retransmission)
+- 6.4 손실된 확인번호 처리
+## 7. TCP 혼잡 제어
 
-	- 7.1 Slow Start (지수적 증가)
-	- 7.2 Congestion Avoidance (선형 증가)
-	- 7.3 Tahoe TCP 예시
-	- 7.4 Reno TCP 예시
-	- 7.5 AIMD(Additive Increase, Multiplicative Decrease)
-	
-	
-	
-	
-	
-	
+- 7.1 Slow Start (지수적 증가)
+- 7.2 Congestion Avoidance (선형 증가)
+- 7.3 Tahoe TCP 예시
+- 7.4 Reno TCP 예시
+- 7.5 AIMD(Additive Increase, Multiplicative Decrease)
+
+
+
+
+
+
 ***
 
 # Transport Layer(Layer 4, 전송층)

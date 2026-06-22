@@ -14,72 +14,72 @@ description: "Message (메시지)"
 ***
 
 ## 목차
-	### **1. 기본적인 단어의 이해**
+### **1. 기본적인 단어의 이해**
 
-	- Message (메시지)
-	- Sender (송신자)
-	- Receiver (수신자)
-	- Medium (전송 매체)
-	- Protocol (프로토콜)
-	### **2. MAC 계층 (L2 - Data Link Layer)**
-	### **2.1 Multiple Access Protocols (다중 접속 프로토콜)**
+- Message (메시지)
+- Sender (송신자)
+- Receiver (수신자)
+- Medium (전송 매체)
+- Protocol (프로토콜)
+### **2. MAC 계층 (L2 - Data Link Layer)**
+### **2.1 Multiple Access Protocols (다중 접속 프로토콜)**
 
-	- Random-access protocols
-	- Controlled-access protocols
-	- Channelization protocols
-	### **2.2 CSMA/CD (Carrier Sense Multiple Access with Collision Detection)**
+- Random-access protocols
+- Controlled-access protocols
+- Channelization protocols
+### **2.2 CSMA/CD (Carrier Sense Multiple Access with Collision Detection)**
 
-	- 이더넷, 초고속 인터넷, 광랜, IEEE 802.3
-	- 충돌 감지 및 중단 메커니즘
-	- Flow diagram
-	### **2.3 CSMA/CA (Carrier Sense Multiple Access with Collision Avoidance)**
+- 이더넷, 초고속 인터넷, 광랜, IEEE 802.3
+- 충돌 감지 및 중단 메커니즘
+- Flow diagram
+### **2.3 CSMA/CA (Carrier Sense Multiple Access with Collision Avoidance)**
 
-	- 무선랜, WiFi, IEEE 802.11
-	- Inter-frame space, Contention window, ACK
-	- RTS/CTS 프레임
-	- NAV (Network Allocation Vector)
-	- Hidden station problem
-	### **2.4 Flow and Error Control**
+- 무선랜, WiFi, IEEE 802.11
+- Inter-frame space, Contention window, ACK
+- RTS/CTS 프레임
+- NAV (Network Allocation Vector)
+- Hidden station problem
+### **2.4 Flow and Error Control**
 
-	- Flow Control (흐름 제어)
-	- Error Control (오류 제어)
-	- Best-Effort 철학
-	### **3. Network 계층 (L3 - Network Layer)**
-	### **3.1 Network Layer 기본 개념**
+- Flow Control (흐름 제어)
+- Error Control (오류 제어)
+- Best-Effort 철학
+### **3. Network 계층 (L3 - Network Layer)**
+### **3.1 Network Layer 기본 개념**
 
-	- Packetizing (패킷화)
-	- Routing and Forwarding (라우팅과 포워딩)
-	### **3.2 Datagram Approach**
+- Packetizing (패킷화)
+- Routing and Forwarding (라우팅과 포워딩)
+### **3.2 Datagram Approach**
 
-	- Connectionless packet-switched network
-	- Host-to-Host communication
-	- Forwarding process in router
-	### **3.3 IP Protocol**
+- Connectionless packet-switched network
+- Host-to-Host communication
+- Forwarding process in router
+### **3.3 IP Protocol**
 
-	- IP 프로토콜의 위치
-	- IP Datagram format
-	- Header 구조
-	### **3.4 IP Addressing (IPv4)**
+- IP 프로토콜의 위치
+- IP Datagram format
+- Header 구조
+### **3.4 IP Addressing (IPv4)**
 
-	- 32-bit 주소 체계
-	- Binary, Dotted-decimal, Hexadecimal 표기법
-	- Hierarchy in addressing (Prefix/Suffix)
-	- Slash notation (CIDR)
-	- Network address 추출
-	- Forwarding table
-	### **3.5 네트워크 기술 이해**
+- 32-bit 주소 체계
+- Binary, Dotted-decimal, Hexadecimal 표기법
+- Hierarchy in addressing (Prefix/Suffix)
+- Slash notation (CIDR)
+- Network address 추출
+- Forwarding table
+### **3.5 네트워크 기술 이해**
 
-	- IP Address 개념
-	- Domain Name
-	- Domain Name System (DNS)
-	- Dynamic Host Configuration Protocol (DHCP)
-	- Network Address Translation (NAT)
-	- Port Address Translation (PAT)
-	- Private IP vs Public IP
-	### **4. 기술적 시사점**
+- IP Address 개념
+- Domain Name
+- Domain Name System (DNS)
+- Dynamic Host Configuration Protocol (DHCP)
+- Network Address Translation (NAT)
+- Port Address Translation (PAT)
+- Private IP vs Public IP
+### **4. 기술적 시사점**
 
-	- **MAC Layer**: QoS 저하 (충돌, 손실)
-	- **Network Layer**: Connectionless 특성과 서비스 설계 고려사항
+- **MAC Layer**: QoS 저하 (충돌, 손실)
+- **Network Layer**: Connectionless 특성과 서비스 설계 고려사항
 ***
 
 ***

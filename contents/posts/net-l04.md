@@ -14,32 +14,32 @@ description: "Network Socket 개념"
 ***
 
 ### 목차
-	## 1. Socket & Socket API의 이해
+## 1. Socket & Socket API의 이해
 
-	- Network Socket 개념
-	- Socket Programming 소개
-	- Berkeley Socket API
+- Network Socket 개념
+- Socket Programming 소개
+- Berkeley Socket API
  - API 함수 (1/3): socket, bind, listen, connect
  - API 함수 (2/3): accept, send, recv, close
  - API 함수 (3/3): gethostbyname, select, poll, getsockopt, setsockopt
-	- TCP를 위한 Berkeley Socket API 절차
-	## 2. 1:1 TCP Socket 프로그래밍
+- TCP를 위한 Berkeley Socket API 절차
+## 2. 1:1 TCP Socket 프로그래밍
 
-	- TCP Echo Server in Python (기본 예제)
-	- TCP Echo Client in Python (기본 예제)
-	- TCP Echo Client/Server 실행 화면
-	- Socket API 함수 상세
+- TCP Echo Server in Python (기본 예제)
+- TCP Echo Client in Python (기본 예제)
+- TCP Echo Client/Server 실행 화면
+- Socket API 함수 상세
  - socket function (1/2, 2/2)
  - bind function
  - listen function
  - accept function (1/2, 2/2)
  - connect function (1/2, 2/2)
-	- TCP Echo Server in Python (개선된 예제)
-	- TCP Echo Client in Python (개선된 예제)
-	- TCP Echo Client & Server in C (예제)
-	## 3. 1:N 동기식 & 비동기식 TCP Socket 서버 프로그래밍
+- TCP Echo Server in Python (개선된 예제)
+- TCP Echo Client in Python (개선된 예제)
+- TCP Echo Client & Server in C (예제)
+## 3. 1:N 동기식 & 비동기식 TCP Socket 서버 프로그래밍
 
-	- TCP Echo Server 개선을 통한 비동기식 1:N 지원
+- TCP Echo Server 개선을 통한 비동기식 1:N 지원
  - Socket API 기반 개발 vs 언어별 차별화 기능
  - Python socketserver 활용
 	- socketserver 기반 TCP Echo Server 개발
@@ -53,34 +53,34 @@ description: "Network Socket 개념"
  - Request Handler 수정
  - Main Thread 설정 및 실행
  - 예제 프로그램 및 실행 화면
-	- 다른 비동기식 개발 방법 (asyncio, selectors)
-	## 4. N:M TCP 기반 비동기식 채팅 서비스 개발
+- 다른 비동기식 개발 방법 (asyncio, selectors)
+## 4. N:M TCP 기반 비동기식 채팅 서비스 개발
 
-	- 비동기식 TCP Chatting 서비스 개요
-	- Server 변경 내용 (client 정보 관리, 브로드캐스트)
-	- Client 변경 내용 (Thread 기반 송수신 분리)
-	- 예제 프로그램 및 실행 화면
-	## 5. 1:N UDP Socket 서버 프로그래밍
+- 비동기식 TCP Chatting 서비스 개요
+- Server 변경 내용 (client 정보 관리, 브로드캐스트)
+- Client 변경 내용 (Thread 기반 송수신 분리)
+- 예제 프로그램 및 실행 화면
+## 5. 1:N UDP Socket 서버 프로그래밍
 
-	- socketserver 기반 UDP Echo 서비스 개발
-	- TCP vs UDP 차이점 (connection-less)
-	- UDP Echo Client 개발
-	- UDP Echo Server 개발
-	## 6. N:M UDP 기반 채팅 서비스 개발
+- socketserver 기반 UDP Echo 서비스 개발
+- TCP vs UDP 차이점 (connection-less)
+- UDP Echo Client 개발
+- UDP Echo Server 개발
+## 6. N:M UDP 기반 채팅 서비스 개발
 
-	- socketserver 기반 UDP 채팅 서비스 개요
-	- Connection-less 특성에 따른 client 정보 관리
-	- 등록/해제 프로토콜 (#REG, #DEREG)
-	- 예제 프로그램 및 실행 화면
-	## 7. SEASON #2 Examples
+- socketserver 기반 UDP 채팅 서비스 개요
+- Connection-less 특성에 따른 client 정보 관리
+- 등록/해제 프로토콜 (#REG, #DEREG)
+- 예제 프로그램 및 실행 화면
+## 7. SEASON #2 Examples
 
-	- GUI 기반의 Chatting Program (PySimpleGUI)
-	## 8. 심도 있는 Socket 기반 개발을 위한 추천 도서
+- GUI 기반의 Chatting Program (PySimpleGUI)
+## 8. 심도 있는 Socket 기반 개발을 위한 추천 도서
 
-	- UNIX TCP/IP 커널 코드 설명 & 개발
-	- Linux TCP/IP 커널 코드 설명 & 개발
-	- Python 네트워크 프로그래밍
-	- C++ 네트워크 프로그래밍
+- UNIX TCP/IP 커널 코드 설명 & 개발
+- Linux TCP/IP 커널 코드 설명 & 개발
+- Python 네트워크 프로그래밍
+- C++ 네트워크 프로그래밍
 
 
 ***

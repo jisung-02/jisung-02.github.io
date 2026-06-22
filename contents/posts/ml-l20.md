@@ -50,31 +50,31 @@ description: "svm은 각 요소들과 가장 멀리 떨어진 것을 좋은 것�
 
 ## 아래는 이번 강의의 가정
 
-	![](../attachments/ml/L20/slide-04.webp)
+![](../attachments/ml/L20/slide-04.webp)
 
-	→ 이번 강의에서는 -1, +1로 나뉘는 분류 모델로 가정
+→ 이번 강의에서는 -1, +1로 나뉘는 분류 모델로 가정
 
-	![](../attachments/ml/L20/slide-05.webp)
+![](../attachments/ml/L20/slide-05.webp)
 
-	## 선형 모델 계열들
+## 선형 모델 계열들
 
-	- 이 강에서는 아래와 같은 것들로 고정
-	$$
-	f_\theta(x) = \theta_0 + \theta_1 \cdot x_1 + \theta_2 \cdot x_2 + \dots + \theta_d \cdot x_d
-	$$
+- 이 강에서는 아래와 같은 것들로 고정
+$$
+f_\theta(x) = \theta_0 + \theta_1 \cdot x_1 + \theta_2 \cdot x_2 + \dots + \theta_d \cdot x_d
+$$
 
-	- 여기서 $`x \in \mathbb{R}^d`$는 특징(feature)들의 벡터이고,
-	- $`y \in \{-1, 1\}`$은 타깃이다.
-	- $`\theta_j`$ 들은 모델의 파라미터이다.
+- 여기서 $`x \in \mathbb{R}^d`$는 특징(feature)들의 벡터이고,
+- $`y \in \{-1, 1\}`$은 타깃이다.
+- $`\theta_j`$ 들은 모델의 파라미터이다.
 
-	이 모델은 다음과 같이 **벡터화된 형태**로 표현할 수 있음
-	$$
-	f_\theta(x) = \theta^T x + \theta_0
-	$$
+이 모델은 다음과 같이 **벡터화된 형태**로 표현할 수 있음
+$$
+f_\theta(x) = \theta^T x + \theta_0
+$$
 
-	![](../attachments/ml/L20/slide-06.webp)
+![](../attachments/ml/L20/slide-06.webp)
 
-	붗꽃 데이터셋으로 가정
+붗꽃 데이터셋으로 가정
 
 ![](../attachments/ml/L20/slide-07.webp)
 
@@ -681,79 +681,79 @@ $$
 ***
 
 # 전체 정리
-	# **0. 오늘 강의의 목표 한 줄**
-	> 선형으로 두 클래스를 나누되, “가장 안전하게” 나누는 경계(마진 최대)를 찾고,
-	> 그걸 수학적으로 풀기 위해 QP→라그랑주→KKT→서포트벡터→예측식까지 도달한다.
+# **0. 오늘 강의의 목표 한 줄**
+> 선형으로 두 클래스를 나누되, “가장 안전하게” 나누는 경계(마진 최대)를 찾고,
+> 그걸 수학적으로 풀기 위해 QP→라그랑주→KKT→서포트벡터→예측식까지 도달한다.
 ***
-	# **1. 분류는 점수로 한다**
-	선형 분류기는
-	$$
-	f(x)=\theta^T x+\theta_0
-	$$
-	라는 **점수(score)**를 만들고,
-	$$
-	\hat y=\text{sign}(f(x))
-	$$
-	즉 **부호**로 클래스(+1/-1)를 정합니다.
-	여기서 중요한 건:
+# **1. 분류는 점수로 한다**
+선형 분류기는
+$$
+f(x)=\theta^T x+\theta_0
+$$
+라는 **점수(score)**를 만들고,
+$$
+\hat y=\text{sign}(f(x))
+$$
+즉 **부호**로 클래스(+1/-1)를 정합니다.
+여기서 중요한 건:
 
-	- \\theta: 경계의 방향(법선)
-	- \\theta_0: 경계의 위치(절편)
+- \\theta: 경계의 방향(법선)
+- \\theta_0: 경계의 위치(절편)
 ***
-	# **2. “경계가 여러 개면 뭘 골라야 하지?” → 마진**
-	같은 데이터를 분리하는 직선(경계)은 여러 개가 나올 수 있습니다.
-	SVM은 그 중에서
-	> 두 클래스 사이 “틈”이 가장 넓은 경계(마진 최대)
-	를 고릅니다.
-	왜?
-	틈이 넓으면 새 데이터가 조금 흔들려도(노이즈) 잘못 분류될 가능성이 줄어듭니다 → 일반화가 좋아짐.
+# **2. “경계가 여러 개면 뭘 골라야 하지?” → 마진**
+같은 데이터를 분리하는 직선(경계)은 여러 개가 나올 수 있습니다.
+SVM은 그 중에서
+> 두 클래스 사이 “틈”이 가장 넓은 경계(마진 최대)
+를 고릅니다.
+왜?
+틈이 넓으면 새 데이터가 조금 흔들려도(노이즈) 잘못 분류될 가능성이 줄어듭니다 → 일반화가 좋아짐.
 ***
-	# **3. functional margin의 문제 → 스케일 장난 가능**
-	처음엔 마진을
-	$$
-	\tilde\gamma_i=y_i(\theta^T x_i+\theta_0)
-	$$
-	라고 정의하면 “정답 방향으로 얼마나 점수가 큰지”를 줍니다.
-	$$
-	하지만 \theta,\theta_0 를 \alpha배 키우면 분류는 그대로인데 \tilde\gamma_i는 \alpha배 커집니다.
-	$$
-	즉 **같은 경계인데 마진이 커졌다고 착각**하게 됨.
-	그래서 functional margin은 최적화 기준으로 쓰기 어렵습니다.
+# **3. functional margin의 문제 → 스케일 장난 가능**
+처음엔 마진을
+$$
+\tilde\gamma_i=y_i(\theta^T x_i+\theta_0)
+$$
+라고 정의하면 “정답 방향으로 얼마나 점수가 큰지”를 줍니다.
+$$
+하지만 \theta,\theta_0 를 \alpha배 키우면 분류는 그대로인데 \tilde\gamma_i는 \alpha배 커집니다.
+$$
+즉 **같은 경계인데 마진이 커졌다고 착각**하게 됨.
+그래서 functional margin은 최적화 기준으로 쓰기 어렵습니다.
 ***
-	# **4. geometric margin = “진짜 거리”로 고친다**
-	스케일 문제를 없애려면 점수에 \\\|\\theta\\\| 로 정규화를 합니다:
-	$$
-	\gamma_i=y_i\frac{\theta^T x_i+\theta_0}{\|\theta\|}
-	$$
-	$$
-	이 \gamma_i는 실제로
-	$$
-	$$
-	점 x_i에서 결정경계 \theta^T x+\theta_0=0까지의 수직거리입니다.
-	$$
-	그래서 geometric margin은 스케일을 바꿔도 값이 변하지 않습니다.
+# **4. geometric margin = “진짜 거리”로 고친다**
+스케일 문제를 없애려면 점수에 \\\|\\theta\\\| 로 정규화를 합니다:
+$$
+\gamma_i=y_i\frac{\theta^T x_i+\theta_0}{\|\theta\|}
+$$
+$$
+이 \gamma_i는 실제로
+$$
+$$
+점 x_i에서 결정경계 \theta^T x+\theta_0=0까지의 수직거리입니다.
+$$
+그래서 geometric margin은 스케일을 바꿔도 값이 변하지 않습니다.
 ***
-	# **5. Plus-plane / Minus-plane과 “±1”의 의미**
-	결정경계는
-	$$
-	\theta^T x+\theta_0=0
-	$$
-	마진 경계는 관례적으로
-	$$
-	\theta^T x+\theta_0=+1,\quad \theta^T x+\theta_0=-1
-	$$
-	라고 둡니다.
-	여기서 **±1은 자연법칙이 아니라 “스케일을 고정하기 위한 약속”**이에요.
-	이 약속을 두면 마진 폭이
-	$$
-	\text{Margin}=\frac{2}{\|\theta\|}
-	$$
-	로 깔끔해집니다.
+# **5. Plus-plane / Minus-plane과 “±1”의 의미**
+결정경계는
+$$
+\theta^T x+\theta_0=0
+$$
+마진 경계는 관례적으로
+$$
+\theta^T x+\theta_0=+1,\quad \theta^T x+\theta_0=-1
+$$
+라고 둡니다.
+여기서 **±1은 자연법칙이 아니라 “스케일을 고정하기 위한 약속”**이에요.
+이 약속을 두면 마진 폭이
+$$
+\text{Margin}=\frac{2}{\|\theta\|}
+$$
+로 깔끔해집니다.
 ***
-	# **6. “마진 최대화”를 최적화 문제로 만들면?**
-	마진이 \\frac\{2\}\{\\\|\\theta\\\|\} 이니까
+# **6. “마진 최대화”를 최적화 문제로 만들면?**
+마진이 \\frac\{2\}\{\\\|\\theta\\\|\} 이니까
 
-	- 마진 최대화
+- 마진 최대화
  $$
  \max \frac{2}{\|\theta\|}
  $$
@@ -774,83 +774,83 @@ y_i(\theta^T x_i+\theta_0)\ge 1\ \forall i
 	→ **Convex**라서 전역 최적해 보장.
 	단, 하드 마진은 데이터가 **선형 분리 가능**해야 해가 존재합니다.
 ***
-	# **7. 이제 왜 라그랑주를 쓰나?**
-	Primal은 “제약이 있는 최소화”라서 직접 풀어도 되지만,
-	SVM은 라그랑주로 바꾸면 좋은 점이 많습니다:
+# **7. 이제 왜 라그랑주를 쓰나?**
+Primal은 “제약이 있는 최소화”라서 직접 풀어도 되지만,
+SVM은 라그랑주로 바꾸면 좋은 점이 많습니다:
 
-	- 제약을 목적함수에 합쳐 “한 식”으로 다룸
-	- Dual로 가면 데이터가 **내적 형태**로만 등장 → 커널 트릭 가능
-	- 서포트 벡터가 왜 생기는지 수학적으로 깔끔히 보임
-	라그랑지안은:
-	$$
-	L(\theta,\theta_0,\lambda)=\frac12\|\theta\|^2+\sum_i\lambda_i\big(1-y_i(\theta^T x_i+\theta_0)\big)
-	$$
-	$$
-	(여기서 \lambda_i\ge 0)
-	$$
-	$`\lambda_i`$는 사람이 정하는 값이 아니라 **최적화가 찾아내는 변수**입니다.
+- 제약을 목적함수에 합쳐 “한 식”으로 다룸
+- Dual로 가면 데이터가 **내적 형태**로만 등장 → 커널 트릭 가능
+- 서포트 벡터가 왜 생기는지 수학적으로 깔끔히 보임
+라그랑지안은:
+$$
+L(\theta,\theta_0,\lambda)=\frac12\|\theta\|^2+\sum_i\lambda_i\big(1-y_i(\theta^T x_i+\theta_0)\big)
+$$
+$$
+(여기서 \lambda_i\ge 0)
+$$
+$`\lambda_i`$는 사람이 정하는 값이 아니라 **최적화가 찾아내는 변수**입니다.
 ***
-	# **8. Dual로 가는 핵심 계산 (미분=0)**
-	$`\theta,\theta_0`$Dual을 만들기 위해 먼저 에 대해 최솟값을 만들면(미분=0):
-	$$
-	\theta=\sum_i\lambda_i y_i x_i
-	$$
-	$$
-	\sum_i\lambda_i y_i=0
-	$$
-	이 두 식이 “오늘 강의의 큰 전환점”입니다:
+# **8. Dual로 가는 핵심 계산 (미분=0)**
+$`\theta,\theta_0`$Dual을 만들기 위해 먼저 에 대해 최솟값을 만들면(미분=0):
+$$
+\theta=\sum_i\lambda_i y_i x_i
+$$
+$$
+\sum_i\lambda_i y_i=0
+$$
+이 두 식이 “오늘 강의의 큰 전환점”입니다:
 
-	- \\theta가 **데이터의 선형 결합으로 표현**
-	- 즉, 어떤 데이터는 영향력(λ)이 0이면 아예 사라짐
-	$$
-	이걸 L에 대입하면 \lambda만 남는 문제(Dual) 가 됩니다:
-	$$
-	$$
-	\max_{\lambda\ge0}\ \sum_i\lambda_i-\frac12\sum_i\sum_k\lambda_i\lambda_k y_i y_k (x_i^T x_k)
-	$$
-	$$
-	\text{s.t. } \sum_i\lambda_i y_i=0
-	$$
+- \\theta가 **데이터의 선형 결합으로 표현**
+- 즉, 어떤 데이터는 영향력(λ)이 0이면 아예 사라짐
+$$
+이걸 L에 대입하면 \lambda만 남는 문제(Dual) 가 됩니다:
+$$
+$$
+\max_{\lambda\ge0}\ \sum_i\lambda_i-\frac12\sum_i\sum_k\lambda_i\lambda_k y_i y_k (x_i^T x_k)
+$$
+$$
+\text{s.t. } \sum_i\lambda_i y_i=0
+$$
 ***
-	# **9. KKT 조건: “왜 서포트 벡터만 남나?”**
-	KKT는 제약 최적화의 최적해가 만족해야 할 조건이고,
-	그 중 결정적인 한 줄이:
-	$$
-	\lambda_i\big(1-y_i(\theta^T x_i+\theta_0)\big)=0
-	$$
-	이게 의미하는 바는 딱 두 가지 뿐입니다:
-	### **(A) 마진 밖 안전하면**
-	$$
-	y_i(\theta^T x_i+\theta_0)>1 \Rightarrow (1-\cdot)<0 \Rightarrow \lambda_i=0
-	$$
-	→ 영향 없음 (학습 결과에 기여 X)
-	### **(B) 마진 경계에 딱 걸리면**
-	$$
-	y_i(\theta^T x_i+\theta_0)=1 \Rightarrow (1-\cdot)=0 \Rightarrow \lambda_i\text{가 살아있을 수 있음}
-	$$
-	→ 이 점이 경계를 결정 (Support Vector)
-	그래서
-	> $`\lambda_i>0`$
+# **9. KKT 조건: “왜 서포트 벡터만 남나?”**
+KKT는 제약 최적화의 최적해가 만족해야 할 조건이고,
+그 중 결정적인 한 줄이:
+$$
+\lambda_i\big(1-y_i(\theta^T x_i+\theta_0)\big)=0
+$$
+이게 의미하는 바는 딱 두 가지 뿐입니다:
+### **(A) 마진 밖 안전하면**
+$$
+y_i(\theta^T x_i+\theta_0)>1 \Rightarrow (1-\cdot)<0 \Rightarrow \lambda_i=0
+$$
+→ 영향 없음 (학습 결과에 기여 X)
+### **(B) 마진 경계에 딱 걸리면**
+$$
+y_i(\theta^T x_i+\theta_0)=1 \Rightarrow (1-\cdot)=0 \Rightarrow \lambda_i\text{가 살아있을 수 있음}
+$$
+→ 이 점이 경계를 결정 (Support Vector)
+그래서
+> $`\lambda_i>0`$
  **인 점만 서포트 벡터**
 	> 나머지는 자동으로 제거됨(λ=0)
 	이게 SVM이 sparse 한 이유입니다.
 ***
-	# **10. 새 데이터는 어떻게 분류하나?**
-	결정경계는
-	(\\theta\^\*)\^T x+\\theta_0\^\*=0
-	따라서
-	$$
-	\hat y_{new}=\text{sign}\big((\theta^*)^T x_{new}+\theta_0^*\big)
-	$$
-	$$
-	그런데 \theta^*=\sum_{i\in SV}\lambda_i^* y_i x_i 이므로
-	$$
-	$$
-	(\theta^*)^T x_{new}=\sum_{i\in SV}\lambda_i^* y_i (x_i^T x_{new})
-	$$
-	즉 최종 분류식은:
-	$$
-	\boxed{
+# **10. 새 데이터는 어떻게 분류하나?**
+결정경계는
+(\\theta\^\*)\^T x+\\theta_0\^\*=0
+따라서
+$$
+\hat y_{new}=\text{sign}\big((\theta^*)^T x_{new}+\theta_0^*\big)
+$$
+$$
+그런데 \theta^*=\sum_{i\in SV}\lambda_i^* y_i x_i 이므로
+$$
+$$
+(\theta^*)^T x_{new}=\sum_{i\in SV}\lambda_i^* y_i (x_i^T x_{new})
+$$
+즉 최종 분류식은:
+$$
+\boxed{
 \hat y_{new}=
 \text{sign}\left(
 \sum_{i\in SV}\lambda_i^* y_i (x_i^T x_{new})+\theta_0^*
@@ -861,10 +861,10 @@ y_i(\theta^T x_i+\theta_0)\ge 1\ \forall i
 	여기서 내적 x_i^T x_{new} 만 커널 K(x_i,x_{new})로 바꾸면 비선형 SVM이 됩니다(다음 강에서 보통 이어짐).
 	$$
 ***
-	# **이 강의의 “핵심 5문장” 요약**
+# **이 강의의 “핵심 5문장” 요약**
 
-	1. SVM은 **마진(최소 거리)**을 최대화하는 경계를 찾는다.
-	2. 마진 최대화는 \\\|\\theta\\\| 최소화로 바뀌고, 그래서 \\min \\frac12\\\|\\theta\\\|\^2가 된다.
-	3. 제약 y_i(\\theta\^T x_i+\\theta_0)\\ge1 때문에 QP(Convex)가 된다.
-	4. 라그랑주/듀얼로 바꾸면 \\theta=\\sum\\lambda_i y_i x_i가 되어 데이터가 내적 형태로만 남는다.
-	5. KKT의 \\lambda_i(1-y_if(x_i))=0 때문에 **서포트 벡터만 λ가 남고**, 예측도 서포트 벡터만으로 한다.
+1. SVM은 **마진(최소 거리)**을 최대화하는 경계를 찾는다.
+2. 마진 최대화는 \\\|\\theta\\\| 최소화로 바뀌고, 그래서 \\min \\frac12\\\|\\theta\\\|\^2가 된다.
+3. 제약 y_i(\\theta\^T x_i+\\theta_0)\\ge1 때문에 QP(Convex)가 된다.
+4. 라그랑주/듀얼로 바꾸면 \\theta=\\sum\\lambda_i y_i x_i가 되어 데이터가 내적 형태로만 남는다.
+5. KKT의 \\lambda_i(1-y_if(x_i))=0 때문에 **서포트 벡터만 λ가 남고**, 예측도 서포트 벡터만으로 한다.

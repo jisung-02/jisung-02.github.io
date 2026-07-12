@@ -1,0 +1,129 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const projects = [
+  {
+    name: 'RCP (Return Cloud Platform)',
+    what: '동아리 유휴 PC를 묶어 부원 전용 사설 클라우드로 제공, 운영 중.',
+    stack: 'Go(Gin, ent) · OpenStack · Cloudflare Tunnel · systemd · GitHub Actions',
+    links: [{ label: 'GitHub ↗', href: 'https://github.com/KHU-RETURN/rcp-server' }],
+  },
+  {
+    name: 'Paper Tools',
+    what: '브라우저에서 로컬로만 동작하는 PDF·파일 도구 38종, 운영 중.',
+    stack: 'Go → WebAssembly(TinyGo) · PWA',
+    links: [
+      { label: 'papertools.dev ↗', href: 'https://papertools.dev' },
+      { label: 'GitHub ↗', href: 'https://github.com/jisung-02/paper-tools' },
+    ],
+  },
+  {
+    name: 'VoLTE SIP 퍼징',
+    what: 'IMS 테스트베드를 직접 구축하고 3계층 변이 퍼징으로 VoLTE 시그널링 검증, 상용 단말 취약점 발견·제보 (KCC2026 제1저자).',
+    stack: 'Open5GS · srsRAN · Kamailio · SIP/IMS',
+    links: [],
+  },
+  {
+    name: 'NUVO',
+    what: '전화공포증 해소를 돕는 AI 통화 트레이닝, 멀티 런타임 에이전트 파이프라인.',
+    stack: 'Python · gRPC · LangGraph · Kotlin/Spring · Elixir/Bandit · Qwen3 8B',
+    links: [],
+  },
+  {
+    name: '당일',
+    what: '유저의 업무 공간을 구현한 서비스 (예술적인 소프트웨어 2024).',
+    stack: 'Python · FastAPI · Redis · MongoDB',
+    links: [],
+  },
+];
+
+const stack = [
+  { label: 'Language', items: 'Python · Go · Java · TypeScript' },
+  { label: 'Backend', items: 'Django/DRF · FastAPI · Spring' },
+  { label: 'Infra', items: 'Docker · Docker Compose · Ansible · OpenStack · GitHub Actions' },
+  { label: 'Data', items: 'PostgreSQL · MongoDB · Redis · Elasticsearch' },
+  { label: '기타', items: 'WebAssembly(TinyGo) · gRPC · WebSocket · Linux/Windows 시스템 프로그래밍' },
+];
+---
+<BaseLayout
+  title="포트폴리오 · jisung-02"
+  description="백엔드·플랫폼 엔지니어 채지성의 포트폴리오 — RCP, Paper Tools, VoLTE 퍼징 등."
+>
+  <header class="masthead">
+    <p class="eyebrow">Portfolio</p>
+    <h1>채지성</h1>
+    <p class="lede">
+      백엔드·플랫폼 엔지니어. CS 이론 위에 AI로 구현을 가속하고 측정·검증으로 신뢰성을 확보.
+    </p>
+    <p class="ledger">
+      경희대 컴퓨터공학 · AlpacaX 백엔드팀 · <a href="mailto:jschae02@khu.ac.kr">jschae02@khu.ac.kr</a>
+    </p>
+  </header>
+
+  <section class="pf-section">
+    <p class="eyebrow">Projects</p>
+    <h2>프로젝트</h2>
+    <div class="pf-list">
+      {projects.map((p) => (
+        <div class="pf-item">
+          <p class="pf-line"><span class="pf-name">{p.name}</span> — {p.what}</p>
+          <p class="pf-tech">
+            {p.stack}
+            {p.links.map((l) => <a class="marker" href={l.href}>{l.label}</a>)}
+          </p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="pf-section">
+    <p class="eyebrow">Experience</p>
+    <h2>경력</h2>
+    <div class="pf-list">
+      <div class="pf-item">
+        <p class="pf-line">
+          <span class="pf-name">AlpacaX 백엔드팀</span> — 인턴(2024.12) → 계약직(2025.06) → 정규직(2026.01~현재)
+        </p>
+        <p class="pf-tech">
+          Django/DRF·Go 기반 서버와 리눅스 시스템 에이전트/CLI 개발, 백엔드 서비스 개발·운영 및 담당 기능 인프라 운영 참여.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="pf-section">
+    <p class="eyebrow">Stack</p>
+    <h2>기술</h2>
+    <dl class="stack">
+      {stack.map((row) => (
+        <div class="stack-row">
+          <dt>{row.label}</dt>
+          <dd>{row.items}</dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+
+  <section class="pf-section">
+    <p class="eyebrow">Elsewhere</p>
+    <h2>학력 · 자격</h2>
+    <ul class="p-points">
+      <li>경희대학교 컴퓨터공학과 — 2026.08 졸업예정 (3.797 / 4.3)</li>
+      <li>정보처리기사</li>
+      <li>SQLD</li>
+      <li>TOPCIT 수준4</li>
+      <li>KCC2026 제1저자 — 「VoLTE 단말 IMS 환경에서의 SIP 기반 취약점 탐지를 위한 Over-the-Air 블랙박스 퍼징 시스템」</li>
+    </ul>
+  </section>
+
+  <section class="pf-section">
+    <p class="eyebrow">Contact</p>
+    <h2>연락처</h2>
+    <ul class="p-points">
+      <li>메일 <a href="mailto:jschae02@khu.ac.kr">jschae02@khu.ac.kr</a></li>
+      <li>GitHub <a href="https://github.com/jisung-02">github.com/jisung-02</a></li>
+      <li>LinkedIn <a href="https://www.linkedin.com/in/지성-채-6a98a4320/">지성 채</a></li>
+      <li>Instagram <a href="https://www.instagram.com/chae_ji.sung">@chae_ji.sung</a></li>
+    </ul>
+  </section>
+</BaseLayout>

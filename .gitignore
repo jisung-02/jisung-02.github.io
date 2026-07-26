@@ -6,4 +6,4 @@ dist/
 # Obsidian 로컬 상태 (app.json만 추적, 나머지는 무시)
 contents/.obsidian/*
 !contents/.obsidian/app.json
-.superpowers/
+.vscode/

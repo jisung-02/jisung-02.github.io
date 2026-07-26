@@ -1,9 +1,11 @@
 ---
-title: "RCP 배운 점"
+title: RCP 배운 점
 date: 2026-05-04
-publish: true
-tags: ["Go", "메모"]
-description: "Go RCP 작업에서 배운 잡다한 점들 (os.Exit, nonce, SOCKS5 등)"
+publish: false
+tags:
+  - Go
+  - 메모
+description: Go RCP 작업에서 배운 잡다한 점들 (os.Exit, nonce, SOCKS5 등)
 ---
 
 ## os.Exit()

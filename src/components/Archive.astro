@@ -1,8 +1,9 @@
 ---
 import {getCollection} from 'astro:content';
 import PostList from './PostList.astro';
+import CategoryIndex from './CategoryIndex.astro';
 import {isVisible,sortByDate,withFullCategory} from '../lib/posts';
 const posts=sortByDate(withFullCategory(await getCollection('posts')).filter(p=>isVisible(p.data,import.meta.env.PROD)));
 ---
 <header class="masthead"><div class="eyebrow">ALL POSTS</div><h1>Archive</h1></header>
-<div class="index-layout"><section class="index-main" id="records"><label for="search" class="side-title">글 검색</label><input class="search" id="search" type="search" placeholder="제목, 본문, 태그로 검색" autocomplete="off" /><div class="entries-head"><h2>POSTS</h2><small id="results" aria-live="polite">{posts.length}개의 기록</small></div><PostList posts={posts} /></section></div>
+<div class="index-layout archive-layout"><CategoryIndex /><section class="index-main" id="records"><label for="search" class="side-title">글 검색</label><input class="search" id="search" type="search" placeholder="제목, 본문, 태그로 검색" autocomplete="off" /><div class="entries-head"><h2>POSTS</h2><small id="results" aria-live="polite">{posts.length}개의 기록</small></div><PostList posts={posts} /></section></div>

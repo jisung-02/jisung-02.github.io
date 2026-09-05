@@ -95,3 +95,22 @@ document.addEventListener("click", (event) => {
   if (compactScreen.matches && menu?.open && !menu.contains(event.target))
     menu.open = false;
 });
+
+const categoryRail = document.querySelector('.floating-index');
+const wideScreen = matchMedia('(min-width: 1440px)');
+function syncCategoryRail() {
+  if (categoryRail) categoryRail.open = wideScreen.matches;
+}
+syncCategoryRail();
+wideScreen.addEventListener('change', syncCategoryRail);
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !wideScreen.matches && categoryRail?.open) {
+    categoryRail.open = false;
+    categoryRail.querySelector('summary')?.focus();
+  }
+});
+document.addEventListener('click', (event) => {
+  if (!wideScreen.matches && categoryRail?.open && !categoryRail.contains(event.target)) {
+    categoryRail.open = false;
+  }
+});

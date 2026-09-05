@@ -1265,3 +1265,85 @@ article,
   .collection-link { transition: none; }
   .post-card:hover { transform: none; }
 }
+
+/* The category rail floats independently of the ordinary page header. */
+.topbar {
+  position: relative;
+  top: auto;
+  margin-top: 22px;
+  padding: 10px 0 18px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  box-shadow: none;
+}
+.index-layout {
+  display: block;
+}
+.floating-index {
+  position: fixed;
+  top: 100px;
+  left: 16px;
+  z-index: 30;
+  max-width: calc(100vw - 32px);
+}
+.floating-index > summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: 0 3px 12px rgb(0 0 0 / 6%);
+  cursor: pointer;
+  font-size: 13px;
+  list-style: none;
+}
+.floating-index > summary::-webkit-details-marker { display: none; }
+.floating-index[open] > summary { color: var(--accent); }
+.floating-index-panel {
+  width: 240px;
+  max-width: calc(100vw - 32px);
+  margin-top: 8px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: var(--paper);
+  box-shadow: 0 8px 28px rgb(0 0 0 / 8%);
+  padding: 20px 16px;
+}
+.floating-index .cat-index {
+  position: static;
+  max-height: calc(100dvh - 220px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 0 5px 0 0;
+}
+.floating-index .cat-link { font-size: 12px; }
+@media (min-width: 1440px) {
+  .floating-index {
+    top: 132px;
+    left: max(16px, calc(50% - 750px));
+  }
+  .floating-index[open] > summary { display: none; }
+  .floating-index-panel {
+    width: 190px;
+    margin-top: 0;
+    padding: 0 14px 0 0;
+    border: 0;
+    border-right: 1px solid var(--line);
+    border-radius: 0;
+    box-shadow: none;
+  }
+  .floating-index .cat-index { max-height: calc(100dvh - 170px); }
+}
+@media (max-width: 1439px) {
+  .floating-index { top: auto; bottom: 20px; }
+  .floating-index-panel { position: absolute; bottom: 54px; left: 0; }
+}

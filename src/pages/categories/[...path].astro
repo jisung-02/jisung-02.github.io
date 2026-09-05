@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import CategoryIndex from '../../components/CategoryIndex.astro';
 import PostList from '../../components/PostList.astro';
 import { isVisible, sortByDate, buildCategoryTree, flattenCategoryNodes, postsUnder, withFullCategory } from '../../lib/posts';
 
@@ -21,7 +20,7 @@ const crumbs = path.map((seg, i) => ({ seg, href: `/categories/${path.slice(0, i
 ---
 <BaseLayout title={`${path[path.length - 1]} · jisung-02`}>
   <div class="index-layout">
-    <CategoryIndex activePath={path} />
+    
     <div class="index-main">
       <h1 class="breadcrumb">
         {crumbs.map((c, i) => (

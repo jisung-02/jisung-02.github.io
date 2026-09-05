@@ -3,10 +3,10 @@ title: "ZeroMQ"
 date: 2025-12-20
 publish: true
 tags: ["풀스택 서비스 네트워킹"]
-description: "1. 과거 ⇒ 커널"
+description: "운영체제 커널의 소켓과 애플리케이션 메시징의 차이를 살펴보고 ZeroMQ의 위치와 통신 방식을 정리한 노트입니다."
 ---
 
-> 원본 Notion 정리 — 강의 슬라이드 이미지 + 설명.
+> Notion 원본 페이지의 강의 슬라이드와 설명을 바탕으로 정리한 노트입니다.
 
 ***
 

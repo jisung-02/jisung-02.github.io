@@ -14,7 +14,7 @@ description: "Mac에서 UTM으로 Ubuntu 가상머신을 설치하는 과정 정
 
 두 가지 파일이 필요하다.
 
-1. **UTM 프로그램** — [mac.getutm.app](https://mac.getutm.app) 에서 무료로 다운로드한다 (App Store 유료판 말고 여기서 받는다)
+1. **UTM 프로그램** — [mac.getutm.app](https://mac.getutm.app)에서 무료로 다운로드한다 (App Store 유료판 말고 여기서 받는다)
 2. **Ubuntu ISO 파일** — M1/M2/M3 Mac은 반드시 **ARM 아키텍처** 버전으로 받는다
 
 ---

@@ -3,10 +3,10 @@ title: "11.2 Application Layer - FTP & SMTP"
 date: 2026-06-20
 publish: true
 tags: ["AI네트워킹"]
-description: "직역"
+description: "FTP의 파일 전송 과정과 SMTP의 메일 전달 절차를 비교하고 응용 계층 프로토콜의 특징을 정리한 노트입니다."
 ---
 
-> 원본 슬라이드를 슬라이드별로 직역하고 강의 녹취 설명을 함께 정리한 노트.
+> 원본 슬라이드와 강의 녹취 설명을 바탕으로 정리한 노트입니다.
 ## 슬라이드 1
 
 ![](../../../attachments/ain/11.2/slide-01.webp)

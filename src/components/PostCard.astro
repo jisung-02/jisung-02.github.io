@@ -1,0 +1,10 @@
+---
+import {fmtDate} from '../lib/posts';
+const {post,lead=false}=Astro.props;
+const category=post.data.category?.split('/').at(-1)||'기록';
+const code=/```(?:\w+)?\n([\s\S]*?)```/.exec(post.body||'')?.[1];
+---
+<a class:list={['post-card',{'lead-card':lead}]} href={`/posts/${post.id}/`}>
+{code&&!lead?<div class="post-cover code-cover" aria-hidden="true"><div class="code-label">{category}<span>● ● ●</span></div><pre>{code.trim().split('\n').slice(0,6).join('\n')}</pre></div>:<div class:list={['post-cover','type-cover',lead?'study-cover':'thought-cover']} aria-hidden="true"><span class="cover-kicker">{category}</span><strong>{post.data.title}</strong><span class="cover-foot">{fmtDate(post.data.date)}<span>↗</span></span></div>}
+<div class="card-body">{lead&&<span class="latest">FEATURED</span>}<h2>{post.data.title}</h2>{lead&&<p>{post.data.description}</p>}<div class="card-meta"><time datetime={fmtDate(post.data.date)}>{fmtDate(post.data.date)}</time><span>·</span><span>{Math.max(1,Math.ceil((post.body||'').length/650))} min read</span></div></div>
+</a>

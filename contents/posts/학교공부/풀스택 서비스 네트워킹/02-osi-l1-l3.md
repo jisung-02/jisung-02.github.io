@@ -3,10 +3,10 @@ title: "OSI L1~L3"
 date: 2025-12-20
 publish: true
 tags: ["풀스택 서비스 네트워킹"]
-description: "Message (메시지)"
+description: "OSI 물리 계층부터 네트워크 계층까지의 역할을 살펴보고 MAC 주소와 다중 접속, 충돌 제어를 정리한 노트입니다."
 ---
 
-> 원본 Notion 정리 — 강의 슬라이드 이미지 + 설명.
+> Notion 원본 페이지의 강의 슬라이드와 설명을 바탕으로 정리한 노트입니다.
 
 ***
 

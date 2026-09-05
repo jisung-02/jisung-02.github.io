@@ -3,10 +3,10 @@ title: "11.1 Application Layer - HTTP"
 date: 2026-06-20
 publish: true
 tags: ["AI네트워킹"]
-description: "직역"
+description: "HTTP의 요청과 응답 구조, 주요 메서드와 상태 코드, 지속 연결의 동작 원리를 슬라이드 중심으로 정리한 노트입니다."
 ---
 
-> 원본 슬라이드를 슬라이드별로 직역하고 강의 녹취 설명을 함께 정리한 노트.
+> 원본 슬라이드와 강의 녹취 설명을 바탕으로 정리한 노트입니다.
 ## 슬라이드 1
 
 ![](../../../attachments/ain/11.1/slide-01.webp)

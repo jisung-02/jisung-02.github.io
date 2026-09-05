@@ -2,10 +2,10 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostList from '../../components/PostList.astro';
-import { isVisible, sortByDate, collectTags } from '../../lib/posts';
+import { isVisible, sortByDate, collectTags, withFullCategory } from '../../lib/posts';
 
 export async function getStaticPaths() {
-  const all = await getCollection('posts');
+  const all = withFullCategory(await getCollection('posts'));
   const posts = all.filter((p) => isVisible(p.data, import.meta.env.PROD));
   return collectTags(posts).map((t) => ({
     params: { tag: t.tag },

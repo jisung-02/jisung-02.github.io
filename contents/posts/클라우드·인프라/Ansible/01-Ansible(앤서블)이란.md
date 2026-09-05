@@ -1,9 +1,9 @@
 ---
-title: "Ansible 학습"
+title: "Ansible 소개"
 date: 2026-03-30
 publish: true
 tags: ["Ansible", "인프라"]
-description: "Ansible 소개와 특징(에이전트리스·멱등성 등) 정리"
+description: "Ansible의 핵심 개념과 구성 요소, 설치 방법 정리"
 ---
 > 참고자료
 > 1. https://product.kyobobook.co.kr/detail/S000209345794
@@ -123,7 +123,7 @@ description: "Ansible 소개와 특징(에이전트리스·멱등성 등) 정리
 
 # 앤서블 실습 환경 만들기
 ## 가상환경 설치
-[UTM 가상머신 설치 가이드](/posts/클라우드-인프라/utm-가상화/utm-가상머신-설치/)
+[UTM 가상머신 설치 가이드](/posts/클라우드-인프라/가상머신/utm-설치/)
 - 앤서블이 실행될 가상환경을 생성한다.
 
 ## 앤서블 설치

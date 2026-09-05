@@ -3,10 +3,10 @@ title: "11-2 Federated & Split Learning"
 date: 2026-06-20
 publish: true
 tags: ["AI네트워킹"]
-description: "직역"
+description: "연합학습과 분할학습의 학습 구조와 통신 방식을 비교하고 개인정보 보호와 효율성의 장단점을 정리한 노트입니다."
 ---
 
-> 원본 슬라이드를 슬라이드별로 직역하고 강의 녹취 설명을 함께 정리한 노트.
+> 원본 슬라이드와 강의 녹취 설명을 바탕으로 정리한 노트입니다.
 ## 슬라이드 1
 
 ![](../../../attachments/ain/11-2/slide-01.webp)

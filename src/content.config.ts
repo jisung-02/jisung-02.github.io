@@ -20,6 +20,7 @@ const posts = defineCollection({
     category: z.string().optional(),
     tags: z.array(z.string()).default([]),
     description: z.string().optional(),
+    featured: z.boolean().default(false),
     updated: z.coerce.date().optional(),
   }),
 });

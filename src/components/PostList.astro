@@ -1,14 +1,12 @@
 ---
-import { fmtDate } from '../lib/posts';
-interface Props { posts: any[] }
-const { posts } = Astro.props;
+import {fmtDate} from '../lib/posts';
+interface Props {posts:any[]}
+const {posts}=Astro.props;
 ---
-<ul class="post-list">
-  {posts.map((p) => (
-    <li>
-      <div class="meta">{fmtDate(p.data.date)}</div>
-      <a class="title marker" href={`/posts/${p.id}`}>{p.data.title}</a>
-      {p.data.description && <p>{p.data.description}</p>}
-    </li>
-  ))}
-</ul>
+<div id="entries">
+{posts.map(p=><a class="entry" href={`/posts/${p.id}/`} data-category={p.data.category||''} data-tags={JSON.stringify(p.data.tags)} data-search={[p.data.title,p.data.description,p.body,...p.data.tags].filter(Boolean).join(' ').normalize('NFC').toLocaleLowerCase()}>
+<time class="entry-date" datetime={fmtDate(p.data.date)}>{fmtDate(p.data.date)}</time>
+<div><h3>{p.data.title}</h3>{p.data.description&&<p>{p.data.description}</p>}<div class="entry-tags">{p.data.category?.split('/').join(' › ')}{p.data.tags.length>0&&` · ${p.data.tags.map(t=>'#'+t).join(' ')}`}{!p.data.publish&&' · 초안'}</div></div>
+</a>)}
+</div>
+<p id="empty" class="empty" hidden={posts.length>0}>검색 결과가 없습니다. 다른 검색어를 입력하세요.</p>

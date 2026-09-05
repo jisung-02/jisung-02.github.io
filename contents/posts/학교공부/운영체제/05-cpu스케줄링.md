@@ -6,7 +6,7 @@ tags: ["운영체제"]
 description: "프로세스의 실행 과정은 CPU burst와 I/O burst가 번갈아가며 실행됨"
 ---
 
-> 원본 Notion 정리 — 강의 슬라이드/설명.
+> Notion 원본 페이지의 강의 슬라이드와 설명을 바탕으로 정리한 노트입니다.
 ***
 
 # Process Execution

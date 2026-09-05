@@ -3,10 +3,10 @@ title: "11-3 Communication Challenge in ML"
 date: 2026-06-20
 publish: true
 tags: ["AI네트워킹"]
-description: "직역"
+description: "분산 머신러닝에서 발생하는 통신 병목을 살펴보고 대역폭과 지연 시간, 확장성 문제를 정리한 노트입니다."
 ---
 
-> 원본 슬라이드를 슬라이드별로 직역하고 강의 녹취 설명을 함께 정리한 노트.
+> 원본 슬라이드와 강의 녹취 설명을 바탕으로 정리한 노트입니다.
 ## 슬라이드 1
 
 ![](../../../attachments/ain/11-3/slide-01.webp)

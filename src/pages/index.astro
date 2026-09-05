@@ -1,34 +1,17 @@
 ---
-import { getCollection } from 'astro:content';
+import {getCollection} from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
 import PostList from '../components/PostList.astro';
-import { isVisible, sortByDate, fmtDate } from '../lib/posts';
-
-const all = await getCollection('posts');
-const posts = sortByDate(all.filter((p) => isVisible(p.data, import.meta.env.PROD)));
-const site = Astro.site?.href;
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Blog',
-  name: 'jisung-02',
-  description: '학부생의 CS 학습 정리 노트 — 기계학습·운영체제·네트워크·클라우드 인프라 등.',
-  url: site,
-  inLanguage: 'ko-KR',
-  author: { '@type': 'Person', name: 'jisung-02', url: site },
-  blogPost: posts.slice(0, 20).map((p) => ({
-    '@type': 'BlogPosting',
-    headline: p.data.title,
-    url: site ? new URL(`/posts/${p.id}/`, site).href : undefined,
-    datePublished: p.data.date.toISOString(),
-  })),
-};
+import {isVisible,sortByDate,withFullCategory,buildCategoryTree} from '../lib/posts';
+const posts=sortByDate(withFullCategory(await getCollection('posts')).filter(p=>isVisible(p.data,import.meta.env.PROD)));
+const featured=posts.filter(p=>p.data.featured);
+const picks=[...featured,...posts.filter(p=>!p.data.featured)].slice(0,3);
+const tree=buildCategoryTree(posts);
 ---
-<BaseLayout title="jisung-02" jsonLd={jsonLd}>
-  <header class="masthead">
-    <p class="eyebrow">Lab Notebook</p>
-    <h1>jisung-02</h1>
-    <p class="lede">학부생의 CS 학습 정리 노트.</p>
-    <p class="ledger">기록 {posts.length}개 · 최근 갱신 {posts.length > 0 ? fmtDate(posts[0].data.date) : '—'}</p>
-  </header>
-  <PostList posts={posts} />
+<BaseLayout title="jisung-02">
+<section class="profile"><a class="profile-avatar" href="/about/" aria-label="소개 보기"><img src="/avatar.jpg" alt="jisung-02 GitHub 프로필 사진" width="76" height="76" /><span class="profile-dot"></span></a><h1>jisung-02</h1></section>
+<section class="featured-grid" aria-label="대표 글">{picks.map((p,i)=><PostCard post={p} lead={i===0} />)}</section>
+<section class="collection-section"><div class="entries-head"><h2>COLLECTIONS</h2><a class="all-link" href="/archive/">전체 분류 ↗</a></div><div class="collection-grid">{tree.flatMap(n=>n.name==='학교공부'?n.children:[n]).map(n=><a class="collection-link" href={`/categories/${n.path.join('/')}/`}><span>{n.name}</span><small>{n.count}편 →</small></a>)}</div></section>
+<section class="record-section"><div class="entries-head"><h2>RECENT POSTS</h2><a class="all-link" href="/archive/">전체 {posts.length}편 ↗</a></div><PostList posts={posts.slice(0,9)} /></section>
 </BaseLayout>

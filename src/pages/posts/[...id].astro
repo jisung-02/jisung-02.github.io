@@ -1,60 +1,23 @@
 ---
-import { getCollection, render } from 'astro:content';
+import {getCollection,render} from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { isVisible, categoryPath, fmtDate, withFullCategory } from '../../lib/posts';
-
-export async function getStaticPaths() {
-  const all = withFullCategory(await getCollection('posts'));
-  return all
-    .filter((p) => isVisible(p.data, import.meta.env.PROD))
-    .map((p) => ({ params: { id: p.id }, props: { post: p } }));
+import {isVisible,categoryPath,fmtDate,withFullCategory} from '../../lib/posts';
+export async function getStaticPaths(){
+ const posts=withFullCategory(await getCollection('posts')).filter(p=>isVisible(p.data,import.meta.env.PROD));
+ return posts.map(post=>({params:{id:post.id},props:{post,posts}}));
 }
-
-const { post } = Astro.props;
-const { Content } = await render(post);
-const catSegs = categoryPath(post.data.category);
-const catCrumbs = catSegs.map((seg, i) => ({ seg, href: `/categories/${catSegs.slice(0, i + 1).join('/')}` }));
-const url = new URL(`/posts/${post.id}/`, Astro.site).href;
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'BlogPosting',
-  headline: post.data.title,
-  description: post.data.description ?? undefined,
-  datePublished: post.data.date.toISOString(),
-  dateModified: (post.data.updated ?? post.data.date).toISOString(),
-  author: { '@type': 'Person', name: 'jisung-02' },
-  publisher: { '@type': 'Person', name: 'jisung-02' },
-  mainEntityOfPage: url,
-  url,
-  inLanguage: 'ko-KR',
-  ...(post.data.tags.length ? { keywords: post.data.tags.join(', ') } : {}),
-  ...(catSegs.length ? { articleSection: catSegs[catSegs.length - 1] } : {}),
-};
+const {post,posts}=Astro.props;
+const {Content,headings}=await render(post);
+const catSegs=categoryPath(post.data.category);
+const related=posts.filter(p=>p.id!==post.id&&p.data.category===post.data.category).sort((a,b)=>a.id.localeCompare(b.id,'ko',{numeric:true}));
+const url=new URL(`/posts/${post.id}/`,Astro.site).href;
+const jsonLd={'@context':'https://schema.org','@type':'BlogPosting',headline:post.data.title,description:post.data.description,datePublished:post.data.date.toISOString(),dateModified:(post.data.updated??post.data.date).toISOString(),author:{'@type':'Person',name:'jisung-02'},mainEntityOfPage:url,url,inLanguage:'ko-KR'};
 ---
 <BaseLayout title={post.data.title} description={post.data.description} ogType="article" jsonLd={jsonLd}>
-  <article class="post">
-    <aside class="rail">
-      {catCrumbs.length > 0 && (
-        <div class="meta rail-cat">
-          {catCrumbs.map((c, i) => (
-            <>
-              {i > 0 && <span class="sep">›</span>}
-              <a href={c.href}>{c.seg}</a>
-            </>
-          ))}
-        </div>
-      )}
-      <div class="meta">{fmtDate(post.data.date)}</div>
-      {post.data.updated && <div class="meta">수정 {fmtDate(post.data.updated)}</div>}
-      {post.data.tags.length > 0 && (
-        <ul class="tags">
-          {post.data.tags.map((t) => <li><a class="marker" href={`/tags/${t}`}>#{t}</a></li>)}
-        </ul>
-      )}
-    </aside>
-    <div class="post-body">
-      <h1>{post.data.title}</h1>
-      <Content />
-    </div>
-  </article>
+<div class="article-top"><a href="/archive/">← Archive</a></div>
+<div class="article-layout"><article>
+<header class="article-header"><div class="meta">{catSegs.map((seg,i)=><><a class="category" href={`/categories/${catSegs.slice(0,i+1).join('/')}/`}>{seg}</a>{(i < catSegs.length - 1) && <span>›</span>}</>)}</div><h1>{post.data.title}</h1>{post.data.description&&<p class="summary">{post.data.description}</p>}<div class="meta"><span>jisung-02</span><time datetime={fmtDate(post.data.date)}>{fmtDate(post.data.date)}</time>{post.data.updated&&<span>수정 {fmtDate(post.data.updated)}</span>}{!post.data.publish&&<span>초안</span>}</div><div class="article-tags">{post.data.tags.map(t=><a href={`/tags/${t}/`}>#{t}</a>)}</div></header>
+<div class="prose"><Content /></div>
+{related.length>0&&<section class="backlinks"><h2>같은 분류의 글</h2><div class="related-list">{related.map(p=><a href={`/posts/${p.id}/`}>{p.data.title} ↗</a>)}</div></section>}
+</article><aside class="toc"><div class="side-title">ON THIS PAGE</div><div class="toc-links">{headings.filter(h=>h.depth<=2).map(h=><a href={`#${h.slug}`}>{h.text}</a>)}</div><a href="#main">처음으로 ↑</a></aside></div>
 </BaseLayout>

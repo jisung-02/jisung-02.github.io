@@ -3,10 +3,10 @@ title: "SVM"
 date: 2025-12-20
 publish: true
 tags: ["기계학습"]
-description: "svm은 각 요소들과 가장 멀리 떨어진 것을 좋은 것으로 생각"
+description: "서포트 벡터 머신의 분류 경계와 마진 개념을 살펴보고 마진을 최대화하는 선형 분류 원리를 정리한 노트입니다."
 ---
 
-> 원본 Notion 정리 — 강의 슬라이드 이미지 + 설명.
+> Notion 원본 페이지의 강의 슬라이드와 설명을 바탕으로 정리한 노트입니다.
 ***
 
 ![](../../../attachments/ml/L20/slide-01.webp)

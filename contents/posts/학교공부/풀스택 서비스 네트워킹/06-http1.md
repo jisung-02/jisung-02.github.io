@@ -3,10 +3,10 @@ title: "HTTP/1.1"
 date: 2025-12-20
 publish: true
 tags: ["풀스택 서비스 네트워킹"]
-description: "ARPANET은 오늘날 우리가 부르는 인터넷의 시초"
+description: "ARPANET에서 웹으로 이어진 인터넷의 발전 배경을 살펴보고 HTTP와 네트워크의 기본 개념을 정리한 노트입니다."
 ---
 
-> 원본 Notion 정리 — 강의 슬라이드 이미지 + 설명.
+> Notion 원본 페이지의 강의 슬라이드와 설명을 바탕으로 정리한 노트입니다.
 
 ***
 
@@ -16,7 +16,7 @@ description: "ARPANET은 오늘날 우리가 부르는 인터넷의 시초"
 
 ![](../../../attachments/net/L06/slide-01.webp)
 
-### Arphanet(알파넷)
+### ARPANET(알파넷)
 
 - ARPANET은 오늘날 우리가 부르는 인터넷의 시초
 - **미국 국방부(DoD)의 투자**로 시작

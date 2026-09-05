@@ -10,7 +10,7 @@ description: "Cloudflare 제품군을 카테고리별로 한 줄씩 정리"
 
 > Cloudflare = **Reverse Proxy + Global Anycast Network + Security Layer + Edge Compute**
 >
-> 모든 요청은 Cloudflare를 통과 → L3~L7 + App 레벨 전부 제어 가능
+> Cloudflare를 경유하도록 설정한 트래픽에 각 제품의 기능이 적용된다. DNS만 사용한다고 모든 트래픽이 프록시되는 것은 아니다.
 
 ---
 
@@ -39,12 +39,12 @@ description: "Cloudflare 제품군을 카테고리별로 한 줄씩 정리"
 ---
 
 ### DNS
-- **형태**: SaaS · L3
+- **형태**: SaaS · 응용 계층
 - **한 줄 요약**: 도메인을 IP로 바꾸는 진입점 + 트래픽 컨트롤러
 - **원리**:
-  - Anycast DNS — 전세계에 동일한 IP(1.1.1.1 등)를 BGP로 광고, 가장 가까운 노드 응답
+  - 권한 DNS와 공개 재귀 DNS(1.1.1.1)는 역할이 다르다. 도메인의 레코드를 관리하는 서비스는 권한 DNS다.
   - 단순 A/CNAME 변환 외에 Geo routing, Failover, Load Balancing 정책 내장
-  - Cloudflare 트래픽 흐름의 **시작점** (DNS 응답에 CF IP를 주므로 이후 트래픽도 CF 통과)
+  - 프록시를 켠 레코드는 Cloudflare IP를 응답해 HTTP/HTTPS 트래픽을 경유시킨다. DNS-only 레코드는 원본 주소를 응답한다.
 
 ---
 
@@ -74,7 +74,7 @@ description: "Cloudflare 제품군을 카테고리별로 한 줄씩 정리"
 - **형태**: SaaS · L7
 - **한 줄 요약**: HTTP 요청을 검사해서 공격 패턴이면 차단
 - **원리**:
-  - Reverse Proxy이므로 모든 HTTP 요청이 CF를 통과 → payload 검사 가능
+  - Cloudflare 프록시를 경유하는 HTTP 요청의 payload 검사 가능
   - Rule 기반 (OWASP 룰셋) + ML 기반 (zero-day 대응)
   - SQLi, XSS, RCE payload를 시그니처/행동 분석으로 탐지
 
@@ -352,3 +352,8 @@ description: "Cloudflare 제품군을 카테고리별로 한 줄씩 정리"
 - OpenStack + Cloudflare + Tunnel 구조 설계
 - alpacon vs Cloudflare Access 아키텍처 비교
 - Magic Transit vs Spectrum 선택 기준 (L3 보호 vs 앱 레벨 보호)
+
+## 참고
+
+- [Cloudflare DNS 프록시 상태](https://developers.cloudflare.com/dns/proxy-status/)
+- [HTTP 프록시의 지원 범위](https://developers.cloudflare.com/dns/proxy-status/limitations/)

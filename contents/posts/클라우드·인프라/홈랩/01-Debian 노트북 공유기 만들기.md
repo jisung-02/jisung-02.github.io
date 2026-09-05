@@ -1,6 +1,7 @@
 ---
 title: Debian 노트북으로 홈랩 공유기 만들기
 date: 2026-07-12
+featured: true
 publish: true
 tags:
   - 홈랩
@@ -11,9 +12,9 @@ description: 남는 Debian 노트북에 NAT와 DHCP를 설정해 홈랩 공유�
 
 > 이 글은 아직 작성 중입니다.
 
-K3s 같은 것도 직접 설치해 보고 싶어서 집에 남는 장비들로 홈랩을 만들기로 했다.
+K3s 같은 것도 직접 설치해 보고 싶어서 집에 남은 장비들로 홈랩을 만들기로 했다.
 
-장비는 노트북 한 대와 Lenovo M72e Tiny 두 대가 있었다. 미니PC들을 스위치에 연결하고 나니 문제가 하나 있었는데, 인터넷을 연결해 줄 공유기가 따로 없었다.
+장비는 노트북 한 대와 Lenovo M72e Tiny 두 대였다. 미니 PC를 스위치에 연결하고 나니 문제가 하나 있었는데, 인터넷에 연결해 줄 공유기가 따로 없었다.
 
 그래서 노트북을 그냥 공유기로 만들었다.
 
@@ -70,7 +71,7 @@ SSD: BITS-S128GSATA3 128GB
 -bash: sudo: command not found
 ```
 
-처음에는 왜 없나 했는데 root 계정을 따로 만들어서 일반 사용자에 `sudo`가 준비되지 않은 상태였다. 일단 root로 바꿔서 작업했다.
+처음에는 왜 없는지 의아했는데, root 계정을 따로 만들어 일반 사용자에게 `sudo`가 준비되지 않은 상태였다. 일단 root로 바꿔서 작업했다.
 
 ```bash
 su -
@@ -209,7 +210,7 @@ net.ipv4.ip_forward1
 rm -f /etc/sysctl.d/99.router.conf
 ```
 
-파일 이름도 중간에 `99.router.conf`, `99-router.conf` 두 가지로 만들었어서 최종 파일만 남겼다.
+파일 이름도 중간에 `99.router.conf`와 `99-router.conf` 두 가지로 만들었기 때문에 최종 파일만 남겼다.
 
 ## nftables로 NAT 설정
 
@@ -308,7 +309,7 @@ system restart dnsmasq
 
 `system`이 아니라 `systemctl`이다.
 
-현재 설정에서는 클라이언트가 외부 DNS인 `1.1.1.1`, `8.8.8.8`에 직접 질의한다. 따라서 dnsmasq는 지금은 거의 DHCP 서버 역할만 한다.
+현재 설정에서는 클라이언트가 외부 DNS인 `1.1.1.1`과 `8.8.8.8`에 직접 질의한다. 따라서 dnsmasq는 지금 거의 DHCP 서버 역할만 한다.
 
 나중에 내부 이름까지 쓰려면 DNS 주소를 노트북으로 주면 된다.
 

@@ -5,6 +5,7 @@ import CategoryIndex from '../components/CategoryIndex.astro';
 interface Props { title: string; description?: string; ogType?: string; jsonLd?: unknown; }
 const {title,description='jisung-02의 공부 노트와 개인 기록.',ogType='website',jsonLd}=Astro.props;
 const current=Astro.url.pathname;
+const showCategoryRail = current.replace(/\/$/, '') === '/archive';
 const active=(href:string)=>href==='/'?current==='/':current.startsWith(href);
 const canonical=new URL(current,Astro.site).href;
 ---
@@ -25,13 +26,13 @@ const canonical=new URL(current,Astro.site).href;
 </head>
 <body>
 <a class="skip" href="#main">본문으로 건너뛰기</a>
-<details class="floating-index">
+{showCategoryRail && <details class="floating-index">
 <summary><span aria-hidden="true">☰</span> Categories</summary>
 <div class="floating-index-panel">
 <CategoryIndex activePath={current.startsWith('/categories/') ? decodeURIComponent(current).split('/').filter(Boolean).slice(1) : []} />
 </div>
-</details>
-<div class="shell">
+</details>}
+<div class:list={["shell", { "has-category-rail": showCategoryRail }]}>
 <header class="topbar">
 <a class="wordmark" href="/" aria-label="jisung-02 홈">jisung-02<span class="brand-note">notes</span></a>
 <details class="site-menu" open><summary aria-label="메뉴 열기 또는 닫기"><span>Menu</span><span class="menu-icon" aria-hidden="true"></span></summary>

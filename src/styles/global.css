@@ -1359,10 +1359,10 @@ article,
 }
 
 @media (min-width: 1200px) and (max-width: 1439px) {
-  .shell {
+  .shell.has-category-rail {
     width: calc(100% - 220px);
     margin-left: 220px;
     margin-right: 0;
   }
-  .toc { display: none; }
+  .has-category-rail .toc { display: none; }
 }

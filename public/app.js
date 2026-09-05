@@ -97,7 +97,7 @@ document.addEventListener("click", (event) => {
 });
 
 const categoryRail = document.querySelector('.floating-index');
-const wideScreen = matchMedia('(min-width: 1440px)');
+const wideScreen = matchMedia('(min-width: 1200px)');
 function syncCategoryRail() {
   if (categoryRail) categoryRail.open = wideScreen.matches;
 }

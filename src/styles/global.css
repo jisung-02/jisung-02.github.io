@@ -1326,7 +1326,7 @@ article,
   padding: 0 5px 0 0;
 }
 .floating-index .cat-link { font-size: 12px; }
-@media (min-width: 1440px) {
+@media (min-width: 1200px) {
   .floating-index {
     top: 132px;
     left: max(16px, calc(50% - 750px));
@@ -1343,7 +1343,7 @@ article,
   }
   .floating-index .cat-index { max-height: calc(100dvh - 170px); }
 }
-@media (max-width: 1439px) {
+@media (max-width: 1199px) {
   .floating-index { top: auto; bottom: 20px; }
   .floating-index-panel { position: absolute; bottom: 54px; left: 0; }
 }
@@ -1356,4 +1356,13 @@ article,
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid var(--line);
+}
+
+@media (min-width: 1200px) and (max-width: 1439px) {
+  .shell {
+    width: calc(100% - 220px);
+    margin-left: 220px;
+    margin-right: 0;
+  }
+  .toc { display: none; }
 }

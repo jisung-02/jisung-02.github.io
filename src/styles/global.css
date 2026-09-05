@@ -1347,3 +1347,13 @@ article,
   .floating-index { top: auto; bottom: 20px; }
   .floating-index-panel { position: absolute; bottom: 54px; left: 0; }
 }
+
+.about-avatar {
+  display: block;
+  width: 96px;
+  height: 96px;
+  margin: 24px 0 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--line);
+}

@@ -17,6 +17,13 @@ const projects = [
     links: [{ label: 'GitHub ↗', href: 'https://github.com/KHU-RETURN/rcp-server' }],
   },
   {
+    name: 'NUVO',
+    period: '2025',
+    description: '전화 상황을 연습하는 AI 통화 트레이닝 서비스',
+    stack: 'Python · gRPC · LangGraph · Kotlin/Spring · Elixir · STT/TTS',
+    links: [],
+  },
+  {
     name: 'Aether',
     period: '2025',
     description: 'Gleam으로 작성한 서버 프레임워크와 학습용 네트워킹 스택',
@@ -24,11 +31,21 @@ const projects = [
     links: [{ label: 'GitHub ↗', href: 'https://github.com/jisung-02/aether' }],
   },
   {
-    name: 'NUVO',
-    period: '2025',
-    description: '전화 상황을 연습하는 AI 통화 트레이닝 서비스',
-    stack: 'Python · gRPC · LangGraph · Kotlin/Spring · Elixir · STT/TTS',
-    links: [],
+    name: '경희대학교 NLP Lab 홈페이지',
+    period: '2026',
+    description: '연구실 구성원·논문·소식을 소개하고, 관리자 화면에서 콘텐츠를 편집할 수 있는 웹사이트',
+    stack: 'Python · FastAPI · Jinja2 · SQLModel · SQLite',
+    links: [
+      { label: '홈페이지 ↗', href: 'https://nlp.khu.ac.kr/' },
+      { label: 'GitHub ↗', href: 'https://github.com/jisung-02/nlp-lab' },
+    ],
+  },
+  {
+    name: 'AI Routing Lab',
+    period: '2026',
+    description: 'eBPF로 수집한 네트워크 지표와 성능 예측을 활용해 경로 선택 전략을 비교하는 수업 프로젝트',
+    stack: 'Python · Linux · eBPF · scikit-learn',
+    links: [{ label: 'GitHub ↗', href: 'https://github.com/jisung-02/ai-routing-lab' }],
   },
   {
     name: '사랑에 은퇴란 없다',
@@ -75,20 +92,6 @@ const skills = [
     </article>
   </section>
 
-  <section class="pf-section" aria-labelledby="projects-heading">
-    <p class="eyebrow">Projects</p>
-    <h2 id="projects-heading">프로젝트</h2>
-    {projects.map((project) => (
-      <article class="pf-item">
-        <div class="pf-heading"><h3 class="pf-name">{project.name}</h3><span class="pf-period">{project.period}</span></div>
-        <p class="pf-description">{project.description}</p>
-
-        <p class="pf-tech">{project.stack}</p>
-        {project.links.length > 0 && <div class="pf-links">{project.links.map((link) => <a href={link.href}>{link.label}</a>)}</div>}
-      </article>
-    ))}
-  </section>
-
   <section class="pf-section" aria-labelledby="research-heading">
     <p class="eyebrow">Research</p>
     <h2 id="research-heading">보안 연구</h2>
@@ -104,20 +107,28 @@ const skills = [
     </article>
   </section>
 
-  <section class="pf-section" aria-labelledby="skills-heading">
-    <p class="eyebrow">Skills</p>
-    <h2 id="skills-heading">기술</h2>
-    <dl class="stack">{skills.map((row) => <div class="stack-row"><dt>{row.label}</dt><dd>{row.items}</dd></div>)}</dl>
+  <section class="pf-section" aria-labelledby="open-source-heading">
+    <p class="eyebrow">Open Source</p>
+    <h2 id="open-source-heading">오픈소스 기여</h2>
+    <article class="pf-item">
+      <div class="pf-heading"><h3 class="pf-name">Bandit</h3><span class="pf-period">2026.07</span></div>
+      <p class="pf-description">Elixir HTTP 서버의 헤더 파싱에서 반복 연산과 옵션 조회를 줄이는 개선 PR을 작성해 병합했습니다.</p>
+      <div class="pf-links"><a href="https://github.com/mtrudel/bandit/pull/626">PR #626 ↗</a></div>
+    </article>
   </section>
 
-  <section class="pf-section" aria-labelledby="education-heading">
-    <p class="eyebrow">Education</p>
-    <h2 id="education-heading">학력</h2>
-    <article class="pf-item">
-      <div class="pf-heading"><h3 class="pf-name">경희대학교</h3><span class="pf-period">2021.03 — 2026.08</span></div>
-      <p class="pf-description">컴퓨터공학과 졸업</p>
-      <p class="pf-tech">GPA 3.797 / 4.3 (4.08 / 4.5)</p>
-    </article>
+  <section class="pf-section" aria-labelledby="projects-heading">
+    <p class="eyebrow">Projects</p>
+    <h2 id="projects-heading">프로젝트</h2>
+    {projects.map((project) => (
+      <article class="pf-item">
+        <div class="pf-heading"><h3 class="pf-name">{project.name}</h3><span class="pf-period">{project.period}</span></div>
+        <p class="pf-description">{project.description}</p>
+
+        <p class="pf-tech">{project.stack}</p>
+        {project.links.length > 0 && <div class="pf-links">{project.links.map((link) => <a href={link.href}>{link.label}</a>)}</div>}
+      </article>
+    ))}
   </section>
 
   <section class="pf-section" aria-labelledby="awards-heading">
@@ -140,6 +151,22 @@ const skills = [
       <div class="pf-heading"><h3 class="pf-name">경기도 평화 두드림 청년 아이디어톤 우수상</h3><span class="pf-period">2024.06</span></div>
       <p class="pf-description">탈북 청년의 사회 정착을 돕는 커뮤니티 플랫폼 기획</p>
     </article>
+  </section>
+
+  <section class="pf-section" aria-labelledby="education-heading">
+    <p class="eyebrow">Education</p>
+    <h2 id="education-heading">학력</h2>
+    <article class="pf-item">
+      <div class="pf-heading"><h3 class="pf-name">경희대학교</h3><span class="pf-period">2021.03 — 2026.08</span></div>
+      <p class="pf-description">컴퓨터공학과 졸업</p>
+      <p class="pf-tech">GPA 3.797 / 4.3 (4.08 / 4.5)</p>
+    </article>
+  </section>
+
+  <section class="pf-section" aria-labelledby="skills-heading">
+    <p class="eyebrow">Skills</p>
+    <h2 id="skills-heading">기술</h2>
+    <dl class="stack">{skills.map((row) => <div class="stack-row"><dt>{row.label}</dt><dd>{row.items}</dd></div>)}</dl>
   </section>
 
   <section class="pf-section" aria-labelledby="certificates-heading">

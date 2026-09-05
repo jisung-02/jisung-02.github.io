@@ -1,1 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="14" fill="#ffffff"/><circle cx="32" cy="32" r="15" fill="#b74d21"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>jisung-02</title>
+  <rect width="64" height="64" rx="14" fill="#242424"/>
+  <circle cx="38" cy="17" r="5" fill="#e5a276"/>
+  <path d="M33 28h10v15c0 10-6 16-16 16h-7V49h7c4 0 6-2 6-6Z" fill="#fafafa"/>
+</svg>

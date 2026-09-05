@@ -1306,3 +1306,27 @@ article,
   .archive-layout { display: block; }
   .archive-layout .cat-index { max-height: 240px; }
 }
+
+.pf-item h3 { font-size: 18px; line-height: 1.6; letter-spacing: -.4px; }
+.pf-description { margin-top: 12px; line-height: 1.85; text-wrap: pretty; }
+.pf-detail { margin-top: 8px; color: var(--muted); line-height: 1.85; text-wrap: pretty; }
+.pf-links { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 14px; font-size: 13px; }
+.pf-links a { color: var(--accent); }
+.pf-links a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+.pf-cves { list-style: none; padding: 0; }
+.pf-cves li { margin: 16px 0; }
+.pf-cves a { color: var(--accent); font-size: 14px; font-weight: 600; }
+.pf-cves a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.pf-cves span { display: block; color: var(--muted); font-size: 14px; line-height: 1.7; }
+
+.p-points .pf-award { margin-block: 18px; }
+.pf-award-title { display: block; font-weight: 500; line-height: 1.7; }
+.pf-award p { margin-top: 5px; color: var(--muted); font-size: 14px; line-height: 1.8; text-wrap: pretty; }
+
+.pf-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 12px 28px; }
+.pf-heading .pf-name { min-width: 0; text-wrap: pretty; }
+.pf-period { flex-shrink: 0; color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+@media (max-width: 680px) {
+  .pf-heading { flex-direction: column; gap: 5px; }
+}

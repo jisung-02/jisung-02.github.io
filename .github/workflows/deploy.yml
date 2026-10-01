@@ -29,6 +29,13 @@ jobs:
           version: 4.7.2
           use-dotnet: false
           include-templates: true
+      - name: Cache the game's minimal Web template
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/mosquito-night-web-build/mosquito-web-release.zip
+            ~/.cache/mosquito-night-web-build/template.json
+          key: mosquito-web-${{ runner.os }}-${{ hashFiles('games/mosquito-night/tools/build_web_template.py', 'games/mosquito-night/tools/web_template.py') }}
       - name: Build Mosquito Night from its pinned submodule
         run: python3 games/mosquito-night/tools/export_web.py --output public/mosquito-night
       - uses: withastro/action@v6

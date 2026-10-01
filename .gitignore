@@ -7,3 +7,6 @@ dist/
 contents/.obsidian/*
 !contents/.obsidian/app.json
 .vscode/
+
+# Generated from games/mosquito-night during Pages deployment.
+/public/mosquito-night/

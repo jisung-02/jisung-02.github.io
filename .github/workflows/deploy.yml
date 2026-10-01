@@ -3,6 +3,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -11,7 +13,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -19,11 +21,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+      - name: Set up Godot and export templates
+        uses: chickensoft-games/setup-godot@92cdaf8c4a2654f205d3ed422bb0bab431c6d59e # v2.3.0
+        with:
+          version: 4.7.2
+          use-dotnet: false
+          include-templates: true
+      - name: Build Mosquito Night from its pinned submodule
+        run: python3 games/mosquito-night/tools/export_web.py --output public/mosquito-night
       - uses: withastro/action@v6
         with:
           node-version: 24
       - run: npm test
   deploy:
+    if: github.event_name != 'pull_request'
     needs: build
     runs-on: ubuntu-latest
     environment:

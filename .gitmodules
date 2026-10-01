@@ -1,0 +1,3 @@
+[submodule "games/mosquito-night"]
+	path = games/mosquito-night
+	url = https://github.com/jisung-02/mosquito-night.git

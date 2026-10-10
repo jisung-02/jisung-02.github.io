@@ -10,7 +10,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "test": "vitest run",
+    "test": "vitest run src",
     "check": "node scripts/check-content.mjs",
     "prebuild": "npm run check"
   },

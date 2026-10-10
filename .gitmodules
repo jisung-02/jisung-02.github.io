@@ -1,3 +1,6 @@
 [submodule "games/mosquito-night"]
 	path = games/mosquito-night
 	url = https://github.com/jisung-02/mosquito-night.git
+[submodule "magic_conch"]
+	url = https://github.com/jisung-02/magic_conch.git
+	path = magic_conch

@@ -10,3 +10,6 @@ contents/.obsidian/*
 
 # Generated from games/mosquito-night during Pages deployment.
 /public/mosquito-night/
+
+# Generated from the Magic Conch submodule during Pages deployment.
+/public/magic_conch/

@@ -6,7 +6,7 @@ import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://jisung-02.github.io',
-  integrations: [sitemap()],
+  integrations: [sitemap({ filter: (page) => !/^\/portfolio\/jb\/?$/.test(new URL(page).pathname) })],
   markdown: {
     processor: unified({
       remarkPlugins: [remarkMath],

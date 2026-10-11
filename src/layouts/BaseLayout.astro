@@ -1,8 +1,8 @@
 ---
 import 'katex/dist/katex.min.css';
 import '../styles/global.css';
-interface Props { title: string; description?: string; ogType?: string; jsonLd?: unknown; }
-const {title,description='jisung-02의 공부 노트와 개인 기록.',ogType='website',jsonLd}=Astro.props;
+interface Props { title: string; description?: string; ogType?: string; jsonLd?: unknown; noindex?: boolean; }
+const {title,description='jisung-02의 공부 노트와 개인 기록.',ogType='website',jsonLd,noindex=false}=Astro.props;
 const current=Astro.url.pathname;
 const active=(href:string)=>href==='/'?current==='/':current.startsWith(href);
 const canonical=new URL(current,Astro.site).href;
@@ -12,7 +12,8 @@ const canonical=new URL(current,Astro.site).href;
 <head>
 <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>{title.endsWith('jisung-02')?title:`${title} · jisung-02`}</title>
-<meta name="description" content={description} /><meta name="theme-color" content="#ffffff" />
+<meta name="description" content={description} />
+{noindex && <meta name="robots" content="noindex, nofollow" />}<meta name="theme-color" content="#ffffff" />
 <link rel="canonical" href={canonical} /><link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
 <meta property="og:title" content={title} /><meta property="og:description" content={description} /><meta property="og:type" content={ogType} /><meta property="og:url" content={canonical} /><meta property="og:site_name" content="jisung-02" /><meta property="og:locale" content="ko_KR" />
 <meta name="twitter:card" content="summary" />

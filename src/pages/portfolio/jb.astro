@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Experience from '../../components/Experience.astro';
+import SecurityResearch from '../../components/SecurityResearch.astro';
+import { projects } from '../../data/projects';
+import work from '../../data/work.json';
+
+const showWorkExperience = false;
+---
+<BaseLayout title="채지성 포트폴리오" description="채지성의 서버 개발, 클라우드 구축, 보안 연구와 활동 기록." noindex>
+  <header class="jb-intro">
+    <div class="jb-profile-grid">
+      <div class="jb-profile-copy">
+        <p class="jb-edition">Portfolio / 2026</p>
+        <h1>채지성</h1>
+        <p class="jb-profile-description">보안, 네트워크, 서버 개발에 관심이 있습니다.<br />사용자의 편의와 보안을 함께 고민하며,<br class="jb-desktop-break" /> 믿고 사용할 수 있는 서비스를 만드는 소프트웨어 엔지니어입니다.</p>
+        <ul class="jb-contact-list" aria-label="연락처와 학력">
+          <li><span>이메일</span><a href="mailto:jschae020919@gmail.com">jschae020919@gmail.com</a></li>
+          <li><span>링크</span><div class="jb-social-links"><a href="https://github.com/jisung-02">GitHub</a><a href="https://jisung-02.github.io/">Blog</a></div></li>
+          <li><span>학력</span><div>경희대학교 컴퓨터공학과 <span class="jb-graduated">졸업</span></div></li>
+        </ul>
+      </div>
+      <aside class="jb-profile-aside" aria-label="프로필과 현재 직무">
+        <img class="jb-portrait" src="/avatar.jpg" alt="채지성 프로필 사진" width="256" height="256" fetchpriority="high" />
+        <div class="jb-current">
+          <h2>Currently</h2>
+          <p class="jb-role">Software Engineer</p>
+          <p class="jb-company">AlpacaX 백엔드팀</p>
+          <p class="jb-tenure">2024.12 — 현재</p>
+        </div>
+        <div class="jb-focus"><h2>Focus</h2><ul><li>Go</li><li>Python</li><li>Django / DRF</li><li>Linux</li><li>PostgreSQL</li></ul></div>
+      </aside>
+    </div>
+    <nav class="jb-contents" aria-label="포트폴리오 목차"><a href="#education-heading">Education</a><a href="#experience-heading">Experience</a><a href="#skills-heading">Skills</a><a href="#qualifications-heading">Qualifications &amp; Languages</a>{showWorkExperience && <a href="#work-heading">Work Experience</a>}<a href="#projects-heading">Projects</a><a href="#open-source-heading">OSS</a><a href="#research-heading">Research</a></nav>
+  </header>
+  <section class="pf-section" aria-labelledby="education-heading"><h2 id="education-heading">Education</h2><article class="pf-item"><div class="pf-heading"><h3>경희대학교 컴퓨터공학과</h3><span class="pf-period">2021.03 — 2026.08</span></div><p class="pf-description">공학사 · 147학점 이수</p><p class="pf-tech">GPA 3.797(3.80) / 4.3 · 환산 4.08 / 4.5</p></article></section>
+  <Experience />
+  <section class="pf-section" aria-labelledby="skills-heading">
+    <h2 id="skills-heading">Skills</h2>
+    <ul class="jb-skills-list">
+      <li><span>Language</span><ul><li>Go</li><li>Python</li><li>Java</li><li>JavaScript</li></ul></li>
+      <li><span>Backend</span><ul><li>Django / DRF</li><li>Spring Boot</li><li>FastAPI</li></ul></li>
+      <li><span>DB</span><ul><li>PostgreSQL</li><li>Redis</li><li>Elasticsearch</li><li>MongoDB</li></ul></li>
+      <li><span>Infra</span><ul><li>Docker</li><li>Docker Compose</li><li>Linux</li></ul></li>
+      <li><span>Research</span><ul><li>4G/VoLTE</li><li>SIP</li></ul></li>
+    </ul>
+  </section>
+  <section class="pf-section" aria-labelledby="qualifications-heading"><h2 id="qualifications-heading">Qualifications &amp; Languages</h2><ul class="p-points"><li>2026.05 · TOPCIT 수준 4 · 680 / 1000</li><li>2025.12 · 정보처리기사</li><li>2024.12 · SQLD</li><li>2026.10 · TOEIC Speaking IH · 140점</li></ul></section>
+  {showWorkExperience && (
+  <section class="pf-section" aria-labelledby="work-heading">
+    <h2 id="work-heading">Work Experience</h2>
+    <p class="pf-description">2024년 12월부터 백엔드팀에서 요구사항 정리, Python·Go 구현, 검증, 배포 설정과 운영 지표 확인을 이어서 수행했습니다.</p>
+    {work.map((item) => <article class="pf-item"><h3>{item.name}</h3><p class="pf-description">{item.description}</p></article>)}
+    <p class="pf-detail">수치는 각 사례의 운영 관측 또는 측정 조건을 기준으로 합니다.</p>
+  </section>
+  )}
+  <section class="pf-section" aria-labelledby="projects-heading"><h2 id="projects-heading">Projects</h2>
+    <article class="pf-item"><div class="pf-heading"><h3>Pertineo 보안 감사</h3><span class="pf-period">2026.09</span></div><p class="pf-description">경희대학교 자기소개서 분석 서비스의 API 취약점을 발견하고, 재현을 위한 PoC를 전달했습니다. 인터넷에 노출된 자원을 점검하고 개선 방안을 제안했습니다.</p><p class="pf-description">후속 이슈로 발생한 Pertineo 저장소 공급망 공격의 원인을 분석하고 후속 조치를 수행했으며, 개선 방안을 제안했습니다.</p><div class="pf-links"><a href="https://pertineo.khu.ac.kr/notice/1789459715668">공식 패치노트</a></div></article>
+    <article class="pf-item"><div class="pf-heading"><h3>VoLTE 무선 테스트베드와 SIP 변이 퍼저</h3><span class="pf-period">2025 — 2026</span></div>
+      <p class="pf-description">SDR·Sysmocom USIM·Open5GS·srsRAN·Kamailio로 무선 IMS 테스트베드를 구성하고, Python으로 SIP 패킷 생성·전송·응답 관찰을 구현했습니다. 주니어스칼라 연구에서는 Model·Wire·Byte 세 계층의 변이 엔진을 개발했습니다.</p>
+      <p class="pf-description">tcpdump·Wireshark로 패킷 전달을 확인하고 srsENB 패킷·ADB 로그·tombstone을 대조해 이상 동작을 분석했습니다. 같은 입력의 재현을 확인한 뒤 제조사에 제보했습니다.</p>
+      <p class="pf-detail">2026년 9월 기록 기준 제조사 제보 3건 중 1건은 중복 판정, 2건은 답변 대기 상태입니다.</p>
+      <p class="pf-tech">Python · SIP/IMS · SDR · Open5GS · srsRAN · Kamailio</p>
+      <div class="pf-links"><a href="https://github.com/jisung-02/sip-mutation-fuzzer">변이 퍼저</a><a href="https://github.com/jisung-02/volte_testbed">무선 테스트베드</a><a href="https://github.com/jisung-02/sip-fuzzer">초기 퍼징 프레임워크</a></div>
+    </article>
+
+    {projects.filter((item) => item.name !== 'SIP Mutation Fuzzer').map((item) => <article class="pf-item"><div class="pf-heading"><h3>{item.name}</h3><span class="pf-period">{item.period}</span></div><p class="pf-description">{item.description}</p>
+    {item.name.startsWith('RCP') && <p class="pf-detail">사용자 SSH 접속과 SOCKS5 프록시, Swift 오브젝트 스토리지 기능을 구현했습니다. 환경 파일·systemd·프록시를 자동 배포에 포함했습니다. HTTP 호스팅은 다른 팀원이 구현하고 이 프록시를 재사용했습니다.</p>}
+    {item.name === 'NUVO' && <p class="pf-detail">로직 서버·WebSocket 서버·AI 에이전트 서버를 맡았습니다. 여러 저장소에서 참조하는 연동 계약 문서를 구현 변경과 함께 갱신했습니다.</p>}
+    {item.name === 'Aether' && <p class="pf-detail">TCP·UDP에서 HTTP/1.x·HTTP/2, QUIC·HTTP/3까지 프로토콜 계층을 구현하고 라우팅·직렬화·콘텐츠 협상 구조를 구성했습니다.</p>}
+    <p class="pf-tech">{item.stack}</p><div class="pf-links">{item.links.map((link) => <a href={link.href}>{link.label}</a>)}</div></article>)}
+  </section>
+
+
+  <section class="pf-section" aria-labelledby="open-source-heading">
+    <h2 id="open-source-heading">Open Source Contributions</h2>
+    <article class="pf-item"><div class="pf-heading"><h3>Bandit</h3><span class="pf-period">2026.07</span></div><p class="pf-description">Elixir HTTP 서버의 헤더 파싱에서 반복 연산과 옵션 조회를 줄이는 개선 PR을 작성해 병합했습니다.</p><div class="pf-links"><a href="https://github.com/mtrudel/bandit/pull/626">PR #626</a></div></article>
+  </section>
+  <SecurityResearch />
+  <section class="pf-section" aria-labelledby="volte-heading">
+    <h2 id="volte-heading">VoLTE 무선 퍼징 연구</h2>
+
+    <article class="pf-item"><h3>KCC2026 제1저자 발표 · 학부생부문 최우수상</h3><p class="pf-description">채지성·박철준, 「VoLTE 단말 IMS 환경에서의 SIP 기반 취약점 탐지를 위한 Over-the-Air 블랙박스 퍼징 시스템」. 2026년 6월 한국컴퓨터종합학술대회 발표.</p><div class="pf-links"><a href="https://kcc2026.kiise.or.kr/Proceedings/SessionSearch.asp?SrchText=%EC%B1%84%EC%A7%80%EC%84%B1">공식 논문집</a><a href="https://swedu.khu.ac.kr/bbs/board.php?bo_table=07_02&wr_id=601">수상 안내</a></div></article>
+  </section>
+  <section class="pf-section" aria-labelledby="awards-heading"><h2 id="awards-heading">수상·장학</h2><ul class="p-points"><li>2022.08 · 35사단 신병교육대대 정신전력 분야 우수 수료 표창</li><li>2024.06 · 경기도 평화 두드림 청년 아이디어톤 우수상 · 팀 술프링</li><li>2024.08 · Blaybus MVP 개발 해커톤 최우수상 · 팀 수상</li><li>2024년 2학기 · 송정농업협동조합 지역인재 장학생</li><li>2025년 1학기 · SW중심대학 장학금</li><li>2025.06 · 국가우수(이공계) 장학생 선발 · 한국장학재단</li><li>2025년 2학기 · SW중심대학 장학금</li><li>2026.07 · KCC2026 학부생부문 최우수상 · 제1저자</li></ul></section>
+
+
+</BaseLayout>
+<style>
+.jb-skills-list{padding-left:24px;margin:24px 0;line-height:1.8}.jb-skills-list>li{margin:24px 0;padding-left:5px}.jb-skills-list>li>span{font-size:20px;font-weight:600}.jb-skills-list ul{list-style-type:circle;padding-left:32px;margin-top:10px}.jb-skills-list ul li{padding-left:4px;margin:6px 0;font-size:17px}
+
+.jb-intro{margin:64px 0 48px}.jb-profile-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(0,1fr);gap:48px;align-items:start}.jb-edition{color:var(--muted);font-size:15px;margin-bottom:24px}.jb-profile-statement{font-size:clamp(18px,2vw,23px);color:var(--muted);line-height:1.65;letter-spacing:-.6px}.jb-profile-copy h1{font-size:clamp(64px,7.8vw,100px);font-weight:700;line-height:1.2;letter-spacing:-5px;margin:12px 0 34px}.jb-profile-description{font-size:19px;line-height:1.95;letter-spacing:-.4px;text-wrap:pretty}.jb-contact-list{padding:0;list-style:none;margin:36px 0 0;display:grid;gap:14px;font-size:15px}.jb-contact-list li{display:grid;grid-template-columns:48px minmax(0,1fr);gap:14px;align-items:baseline}.jb-contact-list li>span,.jb-graduated{color:var(--muted)}.jb-contact-list a{overflow-wrap:anywhere;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:5px}.jb-contact-list a:hover{color:var(--accent)}.jb-social-links{display:flex;gap:24px}.jb-graduated{margin-left:8px;font-size:13px}.jb-profile-aside{padding-top:5px}.jb-portrait{display:block;width:190px;height:190px;object-fit:cover;object-position:50% 30%;border-radius:50%;background:#fff;margin:0 0 30px}.jb-profile-aside h2{font-weight:400;font-size:14px;color:var(--muted);margin-bottom:12px}.jb-role{font-size:22px;line-height:1.6;letter-spacing:-.4px}.jb-company{font-size:17px;color:var(--muted);margin-top:3px}.jb-tenure{font-size:13px;color:var(--muted);margin-top:8px;font-variant-numeric:tabular-nums}.jb-focus{margin-top:26px}.jb-focus ul{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px}.jb-focus li{border:1px solid var(--line);border-radius:100px;padding:4px 13px;font-size:14px;white-space:nowrap}.jb-contents{display:flex;flex-wrap:nowrap;overflow-x:auto;gap:18px;margin-top:48px;padding-top:22px;border-top:1px solid var(--line);font-size:14px}.jb-contents a{flex-shrink:0;white-space:nowrap}.jb-contents a:hover{color:var(--accent)}:global(h2[id]){scroll-margin-top:110px}
+@media(max-width:800px){.jb-profile-grid{gap:28px;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}.jb-profile-description{font-size:17px}.jb-desktop-break{display:none}.jb-portrait{width:155px;height:155px}.jb-role{font-size:19px}.jb-contact-list{font-size:14px}}
+@media(max-width:600px){.jb-intro{margin-top:36px}.jb-profile-grid{grid-template-columns:1fr;gap:32px}.jb-profile-copy h1{font-size:72px;margin-bottom:24px;letter-spacing:-4px}.jb-profile-statement{font-size:18px}.jb-edition{margin-bottom:18px}.jb-profile-description{font-size:16px}.jb-contact-list{margin-top:26px;gap:12px}.jb-profile-aside{display:grid;grid-template-columns:112px minmax(0,1fr);column-gap:24px;row-gap:22px;align-items:center}.jb-portrait{width:112px;height:112px;margin:0;grid-row:1}.jb-current{min-width:0}.jb-profile-aside h2{margin-bottom:6px}.jb-role{font-size:17px}.jb-company{font-size:15px}.jb-tenure{font-size:12px}.jb-focus{grid-column:1/-1;margin:0}.jb-contents{margin-top:32px}}
+</style>

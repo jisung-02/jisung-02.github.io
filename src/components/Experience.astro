@@ -1,0 +1,12 @@
+---
+import { experience } from '../data/portfolio.json';
+---
+<section class="pf-section" aria-labelledby="experience-heading">
+  <h2 id="experience-heading">Experience</h2>
+  <ul class="experience-list">
+    {experience.map((item) => <li><span class="experience-period">{item.period}</span><div><strong>{item.name}</strong><span>{item.description}</span>{'paperTitle' in item && <span class="experience-paper">논문: 「{item.paperTitle}」</span>}</div></li>)}
+  </ul>
+</section>
+<style>
+.experience-list{list-style:none;padding:0;margin:24px 0}.experience-list li{display:grid;grid-template-columns:205px minmax(0,1fr);gap:12px 24px;padding:16px 0;border-bottom:1px solid var(--line);line-height:1.8}.experience-period{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;padding-top:3px}.experience-list strong{display:block;font-weight:600}.experience-list div>span{display:block;color:var(--muted);font-size:14px;margin-top:4px}@media(max-width:680px){.experience-list li{grid-template-columns:1fr;gap:4px}}
+</style>

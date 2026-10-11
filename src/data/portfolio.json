@@ -1,0 +1,128 @@
+{
+  "experience": [
+    {
+      "period": "2021.03 — 2021.12",
+      "name": "경희대학교 컴퓨터공학과 학생회",
+      "description": "학생회 활동"
+    },
+    {
+      "period": "2021.03.01",
+      "name": "경희대학교 컴퓨터공학과 입학",
+      "description": ""
+    },
+    {
+      "period": "2021.07 — 2021.12",
+      "name": "경희대학교 컴퓨터공학과 학술동아리 RETURN",
+      "description": "총무 부장"
+    },
+    {
+      "period": "2022.01 — 2022.06",
+      "name": "경희대학교 컴퓨터공학과 학술동아리 RETURN",
+      "description": "부회장"
+    },
+    {
+      "period": "2024.01 — 2024.06",
+      "name": "경희대학교 컴퓨터공학과 학술동아리 RETURN",
+      "description": "회장"
+    },
+    {
+      "period": "2024.08 — 2024.11",
+      "name": "GIST 창업팀 STS",
+      "description": "Spring 백엔드 개발 · 치매 환자용 알약 디스펜서 서버 개발 참여"
+    },
+    {
+      "period": "2024.09.11 — 2024.12.28",
+      "name": "경희고등학교 창의융합과정",
+      "description": "C++ 교육 멘토 · 프로그래밍·컴퓨터 구조·운영체제 실습 지원"
+    },
+    {
+      "period": "2024.12.23 — 2025.06.22",
+      "name": "AlpacaX",
+      "description": "인턴 · 백엔드팀 · 학교 현장실습"
+    },
+    {
+      "period": "2025.03.01 — 2025.06.30",
+      "name": "학술동아리 RETURN",
+      "description": "신입생 Python 교육 · 기초 문법·객체지향 수업 및 자료 작성"
+    },
+    {
+      "period": "2025.03.02 — 2025.06.22",
+      "name": "경희대학교 운영체제 SW멘토",
+      "description": "수업 보조 · 수강생 질문·실습 지원"
+    },
+    {
+      "period": "2025.06.23 — 2025.12.31",
+      "name": "AlpacaX",
+      "description": "계약직 · 백엔드팀"
+    },
+    {
+      "period": "2026.01.01 — 현재",
+      "name": "AlpacaX",
+      "description": "정규직 Software Engineer · 백엔드팀"
+    },
+    {
+      "period": "2026.03 — 2026.06",
+      "name": "경희대학교 주니어스칼라 및 독립심화학습",
+      "description": "VoLTE/IMS 환경의 SIP 변이 퍼저 연구·개발",
+      "paperTitle": "VoLTE 단말 IMS 환경에서의 SIP 기반 취약점 탐지를 위한 Over-the-Air 블랙박스 퍼징 시스템"
+    },
+    {
+      "period": "2026.08.19",
+      "name": "경희대학교 컴퓨터공학과 졸업",
+      "description": "공학사"
+    }
+  ],
+  "research": [
+    {
+      "name": "Django",
+      "period": "2026.10.06 공개",
+      "description": "HTTP 헤더 파싱의 이차 시간 복잡도로 인한 서비스 거부(DoS) 취약점 발견·제보. 공식 보안 공지에 Jisung Chae로 기재됐습니다.",
+      "items": [
+        {
+          "id": "CVE-2026-84429",
+          "text": "Accept·Content-Type 헤더 파싱의 CPU 자원 소모 · Django 6.1.2 / 6.0.9 / 5.2.18에서 수정",
+          "href": "https://www.djangoproject.com/weblog/2026/oct/06/security-releases/#cve-2026-84429-potential-denial-of-service-vulnerability-in-http-header-parsing"
+        }
+      ]
+    },
+    {
+      "name": "Django REST Framework",
+      "period": "2026.10.06 공개",
+      "description": "콘텐츠 협상과 JSON 파서의 자원 소모 취약점 제보. DRF 3.18.2 보안 릴리스에 반영됐습니다.",
+      "items": [
+        {
+          "id": "GHSA-33wh-fxxf-88vv",
+          "text": "큰 Accept 헤더의 콘텐츠 협상에서 발생하는 CPU 소모·서비스 거부 · 제보 및 수정 기여",
+          "href": "https://github.com/encode/django-rest-framework/security/advisories/GHSA-33wh-fxxf-88vv"
+        },
+        {
+          "id": "GHSA-3547-9m27-7rxg",
+          "text": "JSONParser의 charset에 지정된 압축 코덱으로 인한 메모리 증폭·서비스 거부 · syrull과 공동 발견·제보",
+          "href": "https://github.com/encode/django-rest-framework/security/advisories/GHSA-3547-9m27-7rxg"
+        }
+      ]
+    },
+    {
+      "name": "Ash Framework",
+      "period": "2026.08",
+      "description": "Elixir Ash Framework 취약점 3건 발견·제보 · Reporter: jisung-02",
+      "items": [
+        {
+          "id": "CVE-2026-67579",
+          "text": "키셋 커서의 필터 표현식 주입 — 데이터 계층에 따라 SQL 인젝션 또는 코드 실행",
+          "href": "https://github.com/ash-project/ash/security/advisories/GHSA-3gq3-9xm3-c8v3"
+        },
+        {
+          "id": "CVE-2026-69659",
+          "text": "키셋 커서 역직렬화에 의한 메모리 고갈",
+          "href": "https://github.com/ash-project/ash/security/advisories/GHSA-j35q-v8h8-7mwq"
+        },
+        {
+          "id": "CVE-2026-70395",
+          "text": "관계 조회 조건 주입에 의한 비밀 조회 키 노출",
+          "href": "https://github.com/ash-project/ash/security/advisories/GHSA-vvp6-3wv6-833j"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+---
+import { research } from '../data/portfolio.json';
+---
+<section class="pf-section" aria-labelledby="research-heading">
+  <h2 id="research-heading">Security Research</h2>
+  {research.map((item) => <article class="pf-item">
+    <div class="pf-heading"><h3 class="pf-name">{item.name}</h3><span class="pf-period">{item.period}</span></div>
+    <p class="pf-description">{item.description}</p>
+    <ul class="p-points pf-cves">{item.items.map((advisory) => <li><a href={advisory.href}>{advisory.id}</a><span>{advisory.text}</span></li>)}</ul>
+  </article>)}
+</section>

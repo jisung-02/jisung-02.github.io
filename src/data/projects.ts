@@ -37,7 +37,7 @@ export const projects = [
   {
     name: '경희대학교 NLP Lab 홈페이지',
     period: '2026',
-    description: '연구실 구성원·논문·소식을 소개하고, 관리자 화면에서 콘텐츠를 편집할 수 있는 웹사이트',
+    description: '연구실 구성원·논문·소식을 소개하고, 관리자 화면에서 콘텐츠를 편집할 수 있는 웹사이트입니다. 웹 지식이 없는 AI 연구자들이 쉽게 유지보수할 수 있도록 Python 기반 스택과 간결한 구성을 채택했습니다.',
     stack: 'Python · FastAPI · Jinja2 · SQLModel · SQLite',
     links: [
       { label: '홈페이지 ↗', href: 'https://nlp.khu.ac.kr/' },

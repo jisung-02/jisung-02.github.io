@@ -47,7 +47,7 @@ export const projects = [
   {
     name: '사랑에 은퇴란 없다',
     period: '2024.10 — 2024.11',
-    description: '체레미마카와 함께한 중장년층 사랑 인식 개선 캠페인의 인터랙티브 전시. 삐삐 숫자 메시지를 입력하고 해석하는 웹 체험을 구현했습니다.',
+    description: '경희대학교 시각디자인학과 졸업프로젝트로, 체레미마카와 함께한 중장년층 사랑 인식 개선 캠페인의 인터랙티브 전시입니다. 삐삐 숫자 메시지를 입력하고 해석하는 웹 체험을 구현했습니다.',
     stack: 'React · Redux · JavaScript',
     links: [
       { label: 'GitHub ↗', href: 'https://github.com/jisung-02/LNR' },

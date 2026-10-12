@@ -44,11 +44,20 @@ jobs:
           npm ci --prefix magic_conch
           npm test --prefix magic_conch
           npm run build --prefix magic_conch
+          npm run prepare:laya-assets --prefix magic_conch
           mkdir -p public/magic_conch
           cp -R magic_conch/dist/. public/magic_conch/
       - uses: withastro/action@v6
         with:
           node-version: 24
+      - name: Check published Pages size
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          size = sum(p.stat().st_size for p in Path("dist").rglob("*") if p.is_file())
+          print(f"Published site: {size:,} bytes")
+          assert size < 1_000_000_000, "Pages exceeds the 1 GB published-site limit"
+          PY
       - run: npm test
   deploy:
     if: github.event_name != 'pull_request'
